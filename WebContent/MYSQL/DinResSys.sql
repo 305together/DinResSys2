@@ -8,9 +8,10 @@ create database DinResSys;
 use DinResSys;
 
 /*==============================================================*/
-/* Table: Appraise                                              */
+/* Table: appraise                                              */
 /*==============================================================*/
-create table Appraise
+DROP TABLE IF EXISTS appraise;
+create table appraise
 (
    id                   int not null auto_increment,
    userId               int not null,
@@ -22,9 +23,10 @@ create table Appraise
 );
 
 /*==============================================================*/
-/* Table: Menu_Type_Table                                       */
+/* Table: menuType                                       */
 /*==============================================================*/
-create table Menu_Type_Table
+DROP TABLE IF EXISTS menuType;
+create table menuType
 (
    id                   int not null auto_increment,
    typeID               int not null,
@@ -33,9 +35,10 @@ create table Menu_Type_Table
 );
 
 /*==============================================================*/
-/* Table: Type_Table                                            */
+/* Table: types                                           */
 /*==============================================================*/
-create table Type_Table
+DROP TABLE IF EXISTS types;
+create table types
 (
    id                   int not null auto_increment,
    typeName             varchar(20) not null,
@@ -45,10 +48,11 @@ create table Type_Table
 /*==============================================================*/
 /* Table: activity                                              */
 /*==============================================================*/
+DROP TABLE IF EXISTS activity;
 create table activity
 (
    id                   int not null auto_increment,
-   activity             varchar(64) not null,
+   activityName         varchar(64) not null,
    beginTime            datetime not null,
    endTime              datetime not null,
    descri           varchar(256),
@@ -58,6 +62,7 @@ create table activity
 /*==============================================================*/
 /* Table: address                                               */
 /*==============================================================*/
+DROP TABLE IF EXISTS address;
 create table address
 (
    id                   int not null auto_increment,
@@ -70,6 +75,7 @@ create table address
 /*==============================================================*/
 /* Table: authority                                             */
 /*==============================================================*/
+DROP TABLE IF EXISTS authority;
 create table authority
 (
    id                   int not null auto_increment,
@@ -81,6 +87,7 @@ create table authority
 /*==============================================================*/
 /* Table: menu                                                  */
 /*==============================================================*/
+DROP TABLE IF EXISTS menu;
 create table menu
 (
    id                   int not null auto_increment,
@@ -96,8 +103,9 @@ create table menu
 );
 
 /*==============================================================*/
-/* Table: order                                               */
+/* Table: orders                                               */
 /*==============================================================*/
+DROP TABLE IF EXISTS orders;
 create table orders
 (
    id                   int not null auto_increment,
@@ -113,6 +121,7 @@ create table orders
 /*==============================================================*/
 /* Table: promotion                                             */
 /*==============================================================*/
+DROP TABLE IF EXISTS promotion;
 create table promotion
 (
    id                   int not null auto_increment,
@@ -126,6 +135,7 @@ create table promotion
 /*==============================================================*/
 /* Table: user                                                  */
 /*==============================================================*/
+DROP TABLE IF EXISTS user;
 create table user
 (
    id                   int not null auto_increment,
@@ -139,23 +149,25 @@ create table user
 /*==============================================================*/
 /* Table: userAutho                                             */
 /*==============================================================*/
+DROP TABLE IF EXISTS userAutho;
 create table userAutho
 (
+   id                   int not null auto_increment,
    userId               int not null,
    authoId              int not null,
-   primary key (userId, authoId)
+   primary key (id)
 );
 
-alter table Appraise add constraint FK_Menu_Appraise_Reference foreign key (menuId)
+alter table appraise add constraint FK_Menu_Appraise_Reference foreign key (menuId)
       references menu (id) on delete restrict on update restrict;
 
-alter table Appraise add constraint FK_User_Appraise_Reference foreign key (userId)
+alter table appraise add constraint FK_User_Appraise_Reference foreign key (userId)
       references user (id) on delete restrict on update restrict;
 
-alter table Menu_Type_Table add constraint FK_Menu_MenuType_Refenrence foreign key (menuID)
+alter table menuType add constraint FK_Menu_MenuType_Refenrence foreign key (menuID)
       references menu (id) on delete restrict on update restrict;
 
-alter table Menu_Type_Table add constraint FK_Type_MenuType_Reference foreign key (typeID)
+alter table menuType add constraint FK_Type_MenuType_Reference foreign key (typeID)
       references Type_Table (id) on delete restrict on update restrict;
 
 alter table address add constraint FK_User_Address_Reference foreign key (userId)

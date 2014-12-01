@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * 
  * @author Administrator
- * MD5ÃÜÂë¼ÓÃÜËã·¨
+ * MD5ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã·¨
  */
 public class MD5 {
 	
@@ -28,7 +28,7 @@ public class MD5 {
         byte[] md5Bytes = md5.digest(byteArray);
         StringBuffer hexValue = new StringBuffer();
         for (int i = 0; i < md5Bytes.length; i++) {
-            int val = ((int) md5Bytes[i]) & 0xff;
+            int val = (md5Bytes[i]) & 0xff;
             if (val < 16) {
                 hexValue.append("0");
             }

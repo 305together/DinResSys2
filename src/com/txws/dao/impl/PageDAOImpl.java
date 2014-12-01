@@ -22,6 +22,7 @@ public class PageDAOImpl<T> extends BasicSupportDao implements IPageDAO<T>{
 	private static final long serialVersionUID = -6751008618426265690L;
 	protected String entityClassName = "";
 
+	@Override
 	public String getClassName(){
 		return this.getClass().toString() + " ::" + getSuperClassGenricType(this.getClass()).toString()
 				+ "::" + (getSuperClassGenricType(this.getClass())).getSimpleName();

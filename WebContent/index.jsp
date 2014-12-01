@@ -15,11 +15,12 @@
 <h1>自贡市城乡管理执法信息系统</h1>
 
 <div class="loginContainer">
-    <form action="user!login" method="post">
+    <form action="user!addUser" method="post">
         <div class="inputArea">
-            <label>账号：</label><input class="input" type="text" name="user.userName" placeholder="请在此输入账号">
-            <label>密码：</label><input class="input" type="password" name="user.userPw" placeholder="请在此输入密码">
-            <input class="input sub" type="submit"  value="登录">
+            <label>账号：</label><input class="input" type="text" name="user.name" placeholder="${ user.name }">
+            <label>密码：</label><input class="input" type="password" name="user.password" placeholder="请在此输入密码">
+            <label>手机号码：</label><input class="input" type="text" name="user.tel" placeholder="请在此输入手机号码">
+            <input class="input sub" type="submit"  value="保存">
             <span class="error" id="error"><s:property value="errorString"/></span>
         </div>
     </form>

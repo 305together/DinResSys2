@@ -9,39 +9,47 @@ import com.txws.dao.interfaces.ICommonDAO;
 public class CommonDAOImpl extends BasicSupportDao implements ICommonDAO {
 	private static final long serialVersionUID = 1744644549907514077L;
  
+	@Override
 	public <T> T getObject(Class<T> clazz, Integer id) {
 		return this.getHibernateTemplate().get(clazz, id);
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getObjects(String QueryName) {
 		return this.getHibernateTemplate().find("from " + QueryName);
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getObjectsandRequire(String queryType,String requirement) {
-		return (List<T>) this.getHibernateTemplate().find("from " + queryType + requirement);
+		return this.getHibernateTemplate().find("from " + queryType + requirement);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getObjectsByKeyandRequire(Class<T> clazz, String keyName, String KeyValue,String requirement) {
 		System.out.println("CHECK:"+"from " +  clazz + " where " + keyName + "="+KeyValue + requirement);
-		return (List<T>) this.getHibernateTemplate().find("from " +  clazz.getSimpleName() + " where " + keyName + "="+KeyValue + requirement);	
+		return this.getHibernateTemplate().find("from " +  clazz.getSimpleName() + " where " + keyName + "="+KeyValue + requirement);	
 	}
 	
+	@Override
 	public <T> void update(T obj) {
 		
 		this.getHibernateTemplate().update( obj );
 	}
 
+	@Override
 	public <T> void save(T obj) {
 		this.getHibernateTemplate().save( obj );
 	}
 	
+	@Override
 	public <T> void delete(T obj){
 		this.getHibernateTemplate().delete(obj);
 	}
 
+	@Override
 	public <T> void deleteAll(List<T> list){
 		this.getHibernateTemplate().deleteAll(list);
 	}
@@ -50,7 +58,7 @@ public class CommonDAOImpl extends BasicSupportDao implements ICommonDAO {
 	@Override
 	public <T> List<T> getObjectsByKey(Class<T> clazz, String keyName,String KeyValue) {
 
-		return (List<T>) this.getHibernateTemplate().find("from " + clazz.getSimpleName()+ " where " + keyName + "= '" + KeyValue +"'");
+		return this.getHibernateTemplate().find("from " + clazz.getSimpleName()+ " where " + keyName + "= '" + KeyValue +"'");
 	}
 
 	@Override
@@ -63,6 +71,7 @@ public class CommonDAOImpl extends BasicSupportDao implements ICommonDAO {
 		return newStr;
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T> List<T> getObjectsByKeys(T t) {
 		return this.getHibernateTemplate().findByExample(t);

@@ -4,7 +4,6 @@
     "http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-
 	<constant name="struts.enable.SlashesInActionNames" value="false" />
     <constant name="struts.enable.DynamicMethodInvocation" value="true" />
     <constant name="struts.devMode" value="true" />
@@ -13,7 +12,6 @@
     <constant name="struts.i18n.encoding" value="UTF-8" />
     <constant name="struts.serve.static.browserCache" value="false" />
     <constant name="struts.ui.theme" value="simple" />
-    
     <!--include file="example.xml"/
     
     <package name="ajax" namespace="/" extends="json-default">
