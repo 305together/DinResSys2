@@ -91,12 +91,14 @@ DROP TABLE IF EXISTS menu;
 create table menu
 (
    id                   int not null auto_increment,
+   activityId   		int,
    item                 varchar(20) not null,
    price                int not null,
    isHot                int(1) not null default 0,
    praiseNum            int not null default 0,
    status               int not null default 1,
    isInActivity         int not null default 0,
+   discount				int not null default 100,
    picture              varchar(20),
    descri               varchar(256),
    primary key (id)
@@ -115,20 +117,6 @@ create table orders
    createTime           datetime not null,
    status               varchar(20) not null,
    message              varchar(256),
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: promotion                                             */
-/*==============================================================*/
-DROP TABLE IF EXISTS promotion;
-create table promotion
-(
-   id                   int not null auto_increment,
-   menuId               int not null,
-   activityId           int not null,
-   discount             int not null default 100,
-   lessen               int not null default 0,
    primary key (id)
 );
 
@@ -168,25 +156,19 @@ alter table menuType add constraint FK_Menu_MenuType_Refenrence foreign key (men
       references menu (id) on delete restrict on update restrict;
 
 alter table menuType add constraint FK_Type_MenuType_Reference foreign key (typeID)
-      references Type_Table (id) on delete restrict on update restrict;
+      references types (id) on delete restrict on update restrict;
 
 alter table address add constraint FK_User_Address_Reference foreign key (userId)
       references user (id) on delete restrict on update restrict;
 
-alter table menu add constraint FK_Order_Menu_Reference foreign key (id)
-      references orders (id) on delete restrict on update restrict;
+alter table menu add constraint FK_Menu_Activity_Reference foreign key (activityId)
+      references activity (id) on delete restrict on update restrict;
 
 alter table orders add constraint FK_Order_Address_Reference foreign key (adId)
       references address (id) on delete restrict on update restrict;
 
 alter table orders add constraint FK_User_Order_Reference foreign key (userId)
       references user (id) on delete restrict on update restrict;
-
-alter table promotion add constraint FK_Activity_Promotion_Reference foreign key (activityId)
-      references activity (id) on delete restrict on update restrict;
-
-alter table promotion add constraint FK_Menu_Promotion_Reference foreign key (menuId)
-      references menu (id) on delete restrict on update restrict;
 
 alter table userAutho add constraint FK_Autho_UserAutho_Reference foreign key (authoId)
       references authority (id) on delete restrict on update restrict;
