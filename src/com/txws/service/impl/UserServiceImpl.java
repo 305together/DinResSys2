@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.txws.dao.interfaces.ICommonDAO;
+import com.txws.model.Address;
 import com.txws.model.User;
 import com.txws.model.UserTable;
 import com.txws.service.interfaces.IUserService;
@@ -45,5 +46,13 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void addUser(User user){
 		commonDAO.save(user);
+	}
+	
+	public void addAddress(Address ad){
+		commonDAO.save(ad);
+	}
+	
+	public void delUser(User user){
+		commonDAO.delete(user);
 	}
 }
