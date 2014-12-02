@@ -1,72 +1,39 @@
 package com.txws.model;
 
-/***********************************************************************
- * Module:  Orders.java
- * Author:  Administrator
- * Purpose: Defines the Class Orders
- ***********************************************************************/
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- * 订单表
- * 
- * @pdOid eb1f3165-feed-47c9-973c-06ac842aad6a
- */
 @Entity
 @Table(name = "orders")
 public class Orders {
-	/** @pdOid 5b2ef31c-0e1f-4e31-9abf-6e4bd3ec16b1 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public int id;
-	/**
-	 * 总价，下单时计算填入
-	 * 
-	 * @pdOid ddb7873b-98a3-488e-a221-4034701e429a
-	 */
+	private int id;
 	@Column(name="price")
-	public int price;
-	/**
-	 * 下单时间
-	 * 
-	 * @pdOid 51a53f3d-498d-49d7-b37a-dc8cd3ab976e
-	 */
+	private int price;
 	@Column(name="time")
-	public java.util.Date time;
-	/**
-	 * 订单状态
-	 * 
-	 * @pdOid 1f0398e1-6549-4d66-a5fd-09dc2b890bc7
-	 */
+	private java.util.Date time;
 	@Column(name="status")
-	public java.lang.String status;
-	/**
-	 * 用户留言
-	 * 
-	 * @pdOid cdb23a12-0f91-4093-814c-16213aaa1f65
-	 */
+	private java.lang.String status;
 	@Column(name="message")
-	public java.lang.String message;
-
-	/**
-	 * @pdRoleInfo migr=no name=Menu assc=orderMenuReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=1..*
-	 *             type=Composition
-	 */
-	//public java.util.Collection<Menu> menu;
-	/** @pdRoleInfo migr=no name=User assc=userOrderReference mult=1..1 side=A */
-	//public User user;
-	/**
-	 * @pdRoleInfo migr=no name=Address assc=orderAddressReference mult=1..1
-	 *             side=A
-	 */
-	//public Address address;
+	private java.lang.String message;
+	@OneToMany(mappedBy="orders",cascade={CascadeType.ALL})
+	private java.util.Collection<Menu> menu;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="userId")
+	private User user;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="adId") 
+	private Address address;
 
 	public int getId() {
 		return id;
@@ -107,8 +74,8 @@ public class Orders {
 	public void setMessage(java.lang.String message) {
 		this.message = message;
 	}
-
-/*	public User getUser() {
+	
+	public User getUser() {
 		return user;
 	}
 
@@ -175,6 +142,6 @@ public class Orders {
 				oldMenu.setOrders((Orders) null);
 			}
 		}
-	}*/
+	}
 
 }

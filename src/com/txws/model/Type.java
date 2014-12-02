@@ -1,33 +1,25 @@
 package com.txws.model;
 
-/***********************************************************************
- * Module:  Type.java
- * Author:  Administrator
- * Purpose: Defines the Class Type
- ***********************************************************************/
-
-/** @pdOid d04de217-26de-418b-9eeb-0e49868e6110 */
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "type")
 public class Type {
-	/** @pdOid 1535f0d1-7c29-457a-86e3-3a9377e129f9 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public int id;
-	/** @pdOid 20b20792-abbd-4bd9-9e41-6a0b49012af3 */
+	private int id;
 	@Column(name="typeName")
-	public java.lang.String typeName;
-
-	/** @pdRoleInfo migr=no name=MenuType assc=typeMenuTypeReference mult=1..1 */
-	//public MenuType menuType;
+	private java.lang.String typeName;
+	@OneToMany(mappedBy="menu",cascade={CascadeType.ALL})
+	private java.util.Collection<Menu> menu;
 
 	public int getId() {
 		return id;
@@ -44,13 +36,58 @@ public class Type {
 	public void setTypeName(java.lang.String typeName) {
 		this.typeName = typeName;
 	}
-
-/*	public MenuType getMenuType() {
-		return menuType;
+	
+	public java.util.Collection<Menu> getMenu() {
+		if (menu == null)
+			menu = new java.util.HashSet<Menu>();
+		return menu;
 	}
 
-	public void setMenuType(MenuType menuType) {
-		this.menuType = menuType;
-	}*/
+	@SuppressWarnings("rawtypes")
+	public java.util.Iterator getIteratorMenu() {
+		if (menu == null)
+			menu = new java.util.HashSet<Menu>();
+		return menu.iterator();
+	}
 
+	@SuppressWarnings("rawtypes")
+	public void setMenu(java.util.Collection<Menu> newMenu) {
+		removeAllMenu();
+		for (java.util.Iterator iter = newMenu.iterator(); iter.hasNext();)
+			addMenu((Menu) iter.next());
+	}
+
+	public void addMenu(Menu newMenu) {
+		if (newMenu == null)
+			return;
+		if (this.menu == null)
+			this.menu = new java.util.HashSet<Menu>();
+		if (!this.menu.contains(newMenu)) {
+			this.menu.add(newMenu);
+			newMenu.setType(this);
+		}
+	}
+
+	public void removeMenu(Menu oldMenu) {
+		if (oldMenu == null)
+			return;
+		if (this.menu != null)
+			if (this.menu.contains(oldMenu)) {
+				this.menu.remove(oldMenu);
+				oldMenu.setType((Type) null);
+			}
+	}
+
+	@SuppressWarnings("rawtypes")
+	public void removeAllMenu() {
+		if (menu != null) {
+			Menu oldMenu;
+			for (java.util.Iterator iter = getIteratorMenu(); iter
+					.hasNext();) {
+				oldMenu = (Menu) iter.next();
+				iter.remove();
+				oldMenu.setType((Type) null);
+			}
+		}
+	}
 }

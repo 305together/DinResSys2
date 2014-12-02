@@ -1,48 +1,34 @@
 package com.txws.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-/**
- * 用户对菜单的评价表
- * 
- * @pdOid 3a6a2bee-7d21-4ef5-bf9e-6545da8ba32d
- */
 @Entity
 @Table(name = "appraise")
 public class Appraise {
-	/** @pdOid 654728c9-23c1-4233-b2d4-b45e5080c496 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public int id;
-	/** @pdOid 5d0e323b-5e1f-408b-94b2-c7f37e35ba84 */
+	private int id;
 	@Column(name="praiseTime")
-	public java.util.Date praiseTime;
-	/**
-	 * 用户对菜单的评价等级（1-5）
-	 * 
-	 * @pdOid 0e596695-2a92-4a80-b137-b2f78d81effb
-	 */
+	private java.util.Date praiseTime;
 	@Column(name="praiseLevel")
-	public int praiseLevel = 5;
-	/**
-	 * 用户对菜单的评价内容
-	 * 
-	 * @pdOid ec6cca96-c5a3-4685-a77a-3067d03295e2
-	 */
+	private int praiseLevel = 5;
 	@Column(name="detail")
-	public java.lang.String detail;
-
-	/** @pdRoleInfo migr=no name=Menu assc=menuAppraiseReference mult=1..1 side=A */
-	//public Menu menu;
-	/** @pdRoleInfo migr=no name=User assc=userAppraiseReference mult=1..1 side=A */
-	//public User user;
+	private java.lang.String detail;
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="menuId")
+	private Menu menu;
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="userId")
+	private User user;
 
 	public int getId() {
 		return id;
@@ -76,7 +62,7 @@ public class Appraise {
 		this.detail = detail;
 	}
 
-/*	public Menu getMenu() {
+	public Menu getMenu() {
 		return menu;
 	}
 
@@ -111,5 +97,4 @@ public class Appraise {
 			}
 		}
 	}
-*/
 }

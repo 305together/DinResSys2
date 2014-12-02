@@ -1,76 +1,37 @@
 package com.txws.model;
 
-/***********************************************************************
- * Module:  User.java
- * Author:  Administrator
- * Purpose: Defines the Class User
- ***********************************************************************/
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- * 用户表，记录用户信息
- * 
- * @pdOid b49a8587-1d80-4e62-8e88-e1955dd4c4cc
- */
 @Entity
 @Table(name = "user")
 public class User {
-	/** @pdOid 3ed67683-f2e5-4493-822e-fa2895d4c762 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public Integer id;
-	/**
-	 * 用户昵称
-	 * 
-	 * @pdOid b05cc0fc-796c-421d-b4c0-277a2afa9aa7
-	 */
+	private Integer id;
 	@Column(name="name")
-	public java.lang.String name;
-	/**
-	 * 用户密码
-	 * 
-	 * @pdOid ee9f90ad-736c-4254-bdc4-8b075d9fc2cd
-	 */
+	private java.lang.String name;
 	@Column(name="password")
-	public java.lang.String password;
-	/**
-	 * 用户手机号，用于订单上的联系方式
-	 * 
-	 * @pdOid 99cf7223-81cb-44dd-aa16-7a77904aa8fc
-	 */
+	private java.lang.String password;
 	@Column(name="tel")
-	public java.lang.String tel;
-	/**
-	 * 用户等级，0代表超级管理员，1代表菜单管理人员，2代表普通用户
-	 * 
-	 * @pdOid 83a6ecbf-27ca-4078-a5a9-5e8ece608bf5
-	 */
+	private java.lang.String tel;
 	@Column(name="authoLevel")
-	public int authoLevel = 2;
-
-	/**
-	 * @pdRoleInfo migr=no name=Address assc=userAddressReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
-	 */
-	//public java.util.Collection<Address> address;
-	/** @pdRoleInfo migr=no name=Orders assc=userOrderReference mult=1..1 */
-	//public Orders orders;
-	/**
-	 * @pdRoleInfo migr=no name=Appraise assc=userAppraiseReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
-	 */
-	//public java.util.Collection<Appraise> appraise;
-	/**
-	 * @pdRoleInfo migr=no name=UserAuthority assc=userUserAuthoReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=1..*
-	 */
-	//public java.util.Collection<UserAuthority> userAuthority;
+	private int authoLevel = 2;
+	@OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+	private java.util.Collection<Address> address;
+	@OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+	private java.util.Collection<Appraise> appraise;
+	@OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+	private java.util.Collection<Orders> orders;
+	@OneToMany(mappedBy="user",cascade={CascadeType.ALL})
+	private java.util.Collection<UserAuthority> userAuthority;
 
 	public Integer getId() {
 		return id;
@@ -111,13 +72,58 @@ public class User {
 	public void setAuthoLevel(int authoLevel) {
 		this.authoLevel = authoLevel;
 	}
-/*
-	public Orders getOrders() {
+	
+	public java.util.Collection<Orders> getOrders() {
+		if (orders == null)
+			orders = new java.util.HashSet<Orders>();
 		return orders;
 	}
-
-	public void setOrders(Orders orders) {
-		this.orders = orders;
+	
+	@SuppressWarnings("rawtypes")
+	public java.util.Iterator getIteratorOrders() {
+		if (orders == null)
+			orders = new java.util.HashSet<Orders>();
+		return orders.iterator();
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void setOrders(java.util.Collection<Orders> newOrders) {
+		removeAllOrders();
+		for (java.util.Iterator iter = newOrders.iterator(); iter.hasNext();)
+			addOrders((Orders) iter.next());
+	}
+	
+	public void addOrders(Orders newOrders) {
+		if (newOrders == null)
+			return;
+		if (this.orders == null)
+			this.orders = new java.util.HashSet<Orders>();
+		if (!this.orders.contains(newOrders)) {
+			this.orders.add(newOrders);
+			newOrders.setUser(this);
+		}
+	}
+	
+	public void removeOrders(Orders oldOrders) {
+		if (oldOrders == null)
+			return;
+		if (this.orders != null)
+			if (this.orders.contains(oldOrders)) {
+				this.orders.remove(oldOrders);
+				oldOrders.setUser((User) null);
+			}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public void removeAllOrders() {
+		if (orders != null) {
+			Orders oldOrders;
+			for (java.util.Iterator iter = getIteratorOrders(); iter.hasNext();) {
+				oldOrders = (Orders) iter.next();
+				iter.remove();
+				oldOrders.setUser((User) null);
+			}
+		}
 	}
 	
 	public java.util.Collection<Address> getAddress() {
@@ -281,6 +287,6 @@ public class User {
 				oldUserAuthority.setUser((User) null);
 			}
 		}
-	}*/
+	}
 
 }

@@ -1,10 +1,14 @@
 package com.txws.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 /***********************************************************************
  * Module:  Menu.java
  * Author:  Administrator
@@ -12,88 +16,47 @@ import javax.persistence.Id;
  ***********************************************************************/
 import javax.persistence.Table;
 
-/**
- * 菜单表
- * 
- * @pdOid ae29aa4c-c677-4214-89fa-9f22477142c3
- */
 @Entity
 @Table(name = "menu")
 public class Menu {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public long id;
-	/**
-	 * 菜单项名称
-	 * 
-	 * @pdOid 3d0f3be0-3103-4057-b724-de968de5023d
-	 */
+	private int id;
 	@Column(name="item")
-	public java.lang.String item;
-	/**
-	 * 菜单项价格
-	 * 
-	 * @pdOid 9892e320-2ef5-439c-9063-c519842a94be
-	 */
+	private java.lang.String item;
 	@Column(name="price")
-	public int price;
-	/**
-	 * 是否热销菜单项
-	 * 
-	 * @pdOid 2cc01ad7-78be-480c-b953-01f98f6efe2e
-	 */
+	private int price;
 	@Column(name="isHot")
-	public int isHot = 0;
-	/** @pdOid 1ad506e9-93e8-41a7-8ce7-cc0238a982d8 */
+	private int isHot = 0;
+	@Column(name="orderNum")
+	private int orderNum = 0;
 	@Column(name="praiseNum")
-	public int praiseNum = 0;
-	/**
-	 * 菜单状态（已售完0、在售1）
-	 * 
-	 * @pdOid 62104d3a-d5d8-481c-9d81-9580b77dc006
-	 */
+	private int praiseNum = 0;
 	@Column(name="status")
-	public int status = 1;
-	/**
-	 * 是否参与促销（没有0，有1）
-	 * 
-	 * @pdOid ba4c8232-f086-4829-92f6-4465c125b220
-	 */
+	private int status = 1;
 	@Column(name="isInActivity")
-	public int isInActivity = 0;
-	/** @pdOid 41d13cdb-95b2-42b1-a271-4d1f389e73c9 */
+	private int isInActivity = 0;
+	@Column(name="discount")
+	private int discount = 100;
 	@Column(name="picture")
-	public java.lang.String picture;
-	/**
-	 * 菜单描述
-	 * 
-	 * @pdOid 33edef61-524a-4285-9927-8ff2bbd76177
-	 */
+	private java.lang.String picture;
 	@Column(name="describe")
-	public java.lang.String describe;
+	private java.lang.String describe;
+	@OneToMany(mappedBy="menu",cascade={CascadeType.ALL})
+	private java.util.Collection<Appraise> appraise;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="typeId")
+	private Type type;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="typeId") 
+	private Orders orders;
 
-	/**
-	 * @pdRoleInfo migr=no name=Appraise assc=menuAppraiseReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
-	 */
-	//public java.util.Collection<Appraise> appraise;
-	/**
-	 * @pdRoleInfo migr=no name=Promotion assc=menuPromotionReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=1..*
-	 */
-	//public java.util.Collection<Promotion> promotion;
-	/** @pdRoleInfo migr=no name=MenuType assc=menuMenuTypeRefenrence mult=1..1 */
-	
-	//public MenuType menuType;
-	/** @pdRoleInfo migr=no name=Orders assc=orderMenuReference mult=1..1 side=A */
-	//public Orders orders;
-
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -121,6 +84,14 @@ public class Menu {
 		this.isHot = isHot;
 	}
 
+	public int getOrderNum() {
+		return orderNum;
+	}
+
+	public void setOrderNum(int orderNum) {
+		this.orderNum = orderNum;
+	}
+
 	public int getPraiseNum() {
 		return praiseNum;
 	}
@@ -145,6 +116,14 @@ public class Menu {
 		this.isInActivity = isInActivity;
 	}
 
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
 	public java.lang.String getPicture() {
 		return picture;
 	}
@@ -160,15 +139,7 @@ public class Menu {
 	public void setDescribe(java.lang.String describe) {
 		this.describe = describe;
 	}
-
-/*	public MenuType getMenuType() {
-		return menuType;
-	}
-
-	public void setMenuType(MenuType menuType) {
-		this.menuType = menuType;
-	}
-
+	
 	public java.util.Collection<Appraise> getAppraise() {
 		if (appraise == null)
 			appraise = new java.util.HashSet<Appraise>();
@@ -222,77 +193,21 @@ public class Menu {
 			}
 		}
 	}
-
-	public java.util.Collection<Promotion> getPromotion() {
-		if (promotion == null)
-			promotion = new java.util.HashSet<Promotion>();
-		return promotion;
-	}
 	
-	@SuppressWarnings("rawtypes")
-	public java.util.Iterator getIteratorPromotion() {
-		if (promotion == null)
-			promotion = new java.util.HashSet<Promotion>();
-		return promotion.iterator();
+	public Type getType() {
+		return type;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public void setPromotion(java.util.Collection<Promotion> newPromotion) {
-		removeAllPromotion();
-		for (java.util.Iterator iter = newPromotion.iterator(); iter.hasNext();)
-			addPromotion((Promotion) iter.next());
-	}
-
-	public void addPromotion(Promotion newPromotion) {
-		if (newPromotion == null)
-			return;
-		if (this.promotion == null)
-			this.promotion = new java.util.HashSet<Promotion>();
-		if (!this.promotion.contains(newPromotion)) {
-			this.promotion.add(newPromotion);
-			newPromotion.setMenu(this);
-		}
-	}
-
-	public void removePromotion(Promotion oldPromotion) {
-		if (oldPromotion == null)
-			return;
-		if (this.promotion != null)
-			if (this.promotion.contains(oldPromotion)) {
-				this.promotion.remove(oldPromotion);
-				oldPromotion.setMenu((Menu) null);
-			}
-	}
-
-	@SuppressWarnings("rawtypes")
-	public void removeAllPromotion() {
-		if (promotion != null) {
-			Promotion oldPromotion;
-			for (java.util.Iterator iter = getIteratorPromotion(); iter
-					.hasNext();) {
-				oldPromotion = (Promotion) iter.next();
-				iter.remove();
-				oldPromotion.setMenu((Menu) null);
-			}
-		}
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	public Orders getOrders() {
 		return orders;
 	}
 
-	public void setOrders(Orders newOrders) {
-		if (this.orders == null || !this.orders.equals(newOrders)) {
-			if (this.orders != null) {
-				Orders oldOrders = this.orders;
-				this.orders = null;
-				oldOrders.removeMenu(this);
-			}
-			if (newOrders != null) {
-				this.orders = newOrders;
-				this.orders.addMenu(this);
-			}
-		}
-	}*/
+	public void setOrders(Orders orders) {
+		this.orders = orders;
+	}
 
 }

@@ -1,10 +1,12 @@
 package com.txws.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 /***********************************************************************
  * Module:  Authority.java
  * Author:  Administrator
@@ -12,41 +14,25 @@ import javax.persistence.Id;
  ***********************************************************************/
 import javax.persistence.Table;
 
-/**
- * 权限表，记录所有权限类型
- * 
- * @pdOid 36ce0f13-21ba-46d9-a739-11aa56f7f891
- */
 @Entity
 @Table(name = "authority")
 public class Authority {
-	/** @pdOid 2e03f6af-c4b7-4d3b-8067-750cd232eacc */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public long id;
-	/** @pdOid 422efc21-b072-4891-a756-5b6fcde80c95 */
+	private int id;
 	@Column(name="autho")
-	public java.lang.String autho;
-	/**
-	 * 权限对应的URL路径
-	 * 
-	 * @pdOid be596efa-374a-42c6-b4fc-889cb9afab86
-	 */
+	private java.lang.String autho;
 	@Column(name="authoUrl")
-	public java.lang.String authoUrl;
+	private java.lang.String authoUrl;
+	@OneToMany(mappedBy="authority",cascade={CascadeType.ALL})
+	private java.util.Collection<UserAuthority> userAuthority;
 
-	/**
-	 * @pdRoleInfo migr=no name=UserAuthority assc=authoUserAuthoReference
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
-	 */
-	//public java.util.Collection<UserAuthority> userAuthority;
-
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -65,7 +51,7 @@ public class Authority {
 	public void setAuthoUrl(java.lang.String authoUrl) {
 		this.authoUrl = authoUrl;
 	}
-/*
+
 	public java.util.Collection<UserAuthority> getUserAuthority() {
 		if (userAuthority == null)
 			userAuthority = new java.util.HashSet<UserAuthority>();
@@ -120,6 +106,6 @@ public class Authority {
 				oldUserAuthority.setAuthority((Authority) null);
 			}
 		}
-	}*/
+	}
 
 }

@@ -1,40 +1,28 @@
 package com.txws.model;
 
-/***********************************************************************
- * Module:  UserAuthority.java
- * Author:  Administrator
- * Purpose: Defines the Class UserAuthority
- ***********************************************************************/
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/**
- * 用户-权限表。本系统有三种用户类型，每种类型权限不同
- * 
- * @pdOid 756a59ec-32ac-4f83-8f54-59a18126fdf7
- */
 @Entity
 @Table(name = "userauthority")
 public class UserAuthority {
-	/** @pdOid d876c04c-05e0-42cd-9587-26b252247f87 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id")
-	public int id;
-
-	/**
-	 * @pdRoleInfo migr=no name=Authority assc=authoUserAuthoReference mult=1..1
-	 *             side=A
-	 */
-	//public Authority authority;
-	/**
-	 * @pdRoleInfo migr=no name=User assc=userUserAuthoReference mult=1..1 side=A
-	 */
-	//public User user;
+	private int id;
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="authoId")
+	private Authority authority;
+	@ManyToOne(cascade={CascadeType.ALL})
+	@JoinColumn(name="userId")
+	private User user;
 
 	public int getId() {
 		return id;
@@ -44,7 +32,7 @@ public class UserAuthority {
 		this.id = id;
 	}
 
-/*	public Authority getAuthority() {
+	public Authority getAuthority() {
 		return authority;
 	}
 
@@ -78,6 +66,6 @@ public class UserAuthority {
 				this.user.addUserAuthority(this);
 			}
 		}
-	}*/
+	}
 
 }
