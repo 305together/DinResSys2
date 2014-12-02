@@ -49,7 +49,7 @@ public class Menu {
 	@JoinColumn(name="typeId")
 	private Type type;
 	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="typeId") 
+	@JoinColumn(name="ordersId")
 	private Orders orders;
 
 	public int getId() {

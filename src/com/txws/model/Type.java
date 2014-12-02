@@ -18,7 +18,7 @@ public class Type {
 	private int id;
 	@Column(name="typeName")
 	private java.lang.String typeName;
-	@OneToMany(mappedBy="menu",cascade={CascadeType.ALL})
+	@OneToMany(mappedBy="type",cascade={CascadeType.ALL})
 	private java.util.Collection<Menu> menu;
 
 	public int getId() {

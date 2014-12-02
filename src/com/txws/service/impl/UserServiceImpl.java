@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.txws.dao.interfaces.ICommonDAO;
 import com.txws.model.Address;
 import com.txws.model.User;
-import com.txws.model.UserTable;
 import com.txws.service.interfaces.IUserService;
 
 @Service("userService")
@@ -20,12 +19,12 @@ public class UserServiceImpl implements IUserService {
 	private ICommonDAO commonDAO;
 
 	@Override
-	public UserTable login(UserTable u) {
-		List<UserTable> users = commonDAO.getObjectsByKey(
-				UserTable.class, "userName", u.getUserName());
+	public User login(User u) {
+		List<User> users = commonDAO.getObjectsByKey(
+				User.class, "userName", u.getName());
 		if (users.size() != 0) {
-			for (UserTable userTable : users) {
-				if (u.getUserPw().equals(users.get(0).getUserPw()))
+			for (User userTable : users) {
+				if (u.getPassword().equals(users.get(0).getPassword()))
 					return userTable;
 			}
 		}
