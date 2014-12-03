@@ -61,7 +61,7 @@
         .menu-name,.appraise-btn{
             margin-top: 12px;
         }
-        .sale-num,.praise-num,.price{
+        .sale-num,.price{
             margin-top: 14px;
             font-size: 12px;
             color: #888888;
@@ -83,19 +83,29 @@
             width: 30%;
             float: left;
         }
-        .praise-num{
-            width: 35%;
-            float: left;
-            
+        .delete-num,.price-num{
+            display: block;
+            width:28px;
+            height: 28px;
+            line-height: 28px;
+            float: right;
+        }
+        .delete-num{
+            border-radius: 3px;
+            font-size: 14px;
+            color: #fff;
+            background: #ff6900;
         }
         .price{
             text-align: center;
-            width: 30%;
+            width: 60%;
+            padding-right: 5%;
             float: right;
             margin-top: 8px;
             font-size: 14px;
             .price-btn{
                 display: block;
+                float: right;
                 width: 56px;
                 height: 28px;
                 line-height: 28px;
@@ -105,6 +115,33 @@
             }
         }
         
+	}
+	
+	footer{
+	    position: fixed;
+	    width: 100%;
+	    height: 48px;
+	    
+	    bottom: 0;
+	    background: rgba(0,0,0,0.7);
+	    font-size: 20px;
+	    color: #fff;
+	    &>div{
+	        padding-left: 30px;
+	    }
+	    .total-price{
+	        line-height: 48px;
+	    }
+	    .confirm-dishes-btn{
+	        font-size: 15px;
+	        position: absolute;
+	        right: 10px;
+	        top: 10px;
+            padding: 5px 10px;
+	        text-align: center;
+	        border-radius: 3px;
+	        background: #FF6900;
+	    }
 	}
 	
 }
