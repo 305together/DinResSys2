@@ -1,0 +1,110 @@
+#dishes{
+	.nav{
+		.pub-nav;
+	}
+	.main{
+	    position: absolute;
+        top: @nav-height;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        font-size: 15px;
+	}
+	.side-type-wrap{
+	    
+	    position: absolute;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+        width: 72px;
+        background: #eeeeee;
+        &:before{
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            overflow: hidden;
+            width: 71px;
+            content: '';
+            border-right: 1px solid #ddd;
+        }
+	   .side-type{
+            ul li{
+                padding: 0 4px 0 4px;
+                height: 40px;
+                line-height: 40px;
+                border-bottom: 1px solid #ddd;
+                &:first-child{
+                    border-top: solid 1px #ddd;   
+                }
+                
+            }
+        }
+        .type-active{
+            border-left: solid 2px #ff6900;
+            background: #fff;
+            color: #ff6900;
+        }
+	}
+	#menu-wrap{
+	    position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 72px;
+        right: 0;
+        overflow: hidden;
+        ul li{
+            height: 80px;
+            border-bottom: 1px solid #eee;
+            font-size: 16px;
+        }
+        .menu-name,.appraise-btn{
+            margin-top: 12px;
+        }
+        .sale-num,.praise-num,.price{
+            margin-top: 14px;
+            font-size: 12px;
+            color: #888888;
+        }
+        .menu-name,.sale-num{
+            margin-left: 5%;
+        }
+        .menu-name{
+            width: 65%;
+            float: left;            
+        }
+        .appraise-btn{
+            width: 30%;
+            float: right;
+            text-align: center;
+            font-size: 14px;
+        }
+        .sale-num{
+            width: 30%;
+            float: left;
+        }
+        .praise-num{
+            width: 35%;
+            float: left;
+            
+        }
+        .price{
+            text-align: center;
+            width: 30%;
+            float: right;
+            margin-top: 8px;
+            font-size: 14px;
+            .price-btn{
+                display: block;
+                width: 56px;
+                height: 28px;
+                line-height: 28px;
+                color: #fff;
+                background: #ff6900;
+                border-radius: 3px;
+            }
+        }
+        
+	}
+	
+}
