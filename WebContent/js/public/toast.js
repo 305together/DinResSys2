@@ -12,22 +12,22 @@ var Toast = (function(){
 		toastWrap = document.querySelector(".toast-wrap");
 		toast = document.querySelector(".toast");
 	}
-	function show(text, speed){
+	function show(text, callback){
 		
 		if(typeof text == "string"){
-			if(typeof speed=="undefined" || speed=="short"){
-				toast.addEventListener("webkitAnimationEnd", function(){
-					toastWrap.className = "toast-wrap toast-wrap-next";
-					toast.className = 'toast';
-				},false);
-				toast.addEventListener("animationend", function(){
-					toastWrap.className = "toast-wrap toast-wrap-next";
-					toast.className = 'toast';
-				},false);
-				toastWrap.className = "toast-wrap toast-wrap-active";
-				toast.className = "toast toast-animation";
-				toast.innerHTML = text;
-			}
+			toast.addEventListener("webkitAnimationEnd", function(){
+				toastWrap.className = "toast-wrap toast-wrap-next";
+				toast.className = 'toast';
+				callback && callback();
+			},false);
+			toast.addEventListener("animationend", function(){
+				toastWrap.className = "toast-wrap toast-wrap-next";
+				toast.className = 'toast';
+				callback && callback();
+			},false);
+			toastWrap.className = "toast-wrap toast-wrap-active";
+			toast.className = "toast toast-animation";
+			toast.innerHTML = text;
 		}
 	}
 	/**
