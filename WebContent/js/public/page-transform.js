@@ -436,7 +436,7 @@ $(function(){
 				that.pagePrev(that.from);
 			})
 		},
-		update:function(args){	//必须饮食item和id
+		update:function(args){	//必须传入item和id
 			$appraise = $('#appraise');
 			$appraise.find('.menu-name').html(args.item);
 			console.log(args);
@@ -444,7 +444,7 @@ $(function(){
 				type:"get",
 				url: '/DinResSys2/appraise!getAppraiseByMenuID',
 				data:{
-					id: args.id
+					'menu.id': args.id
 				},
 				dataType: 'json',
 				success:function(data, status, jqXHR) {
@@ -537,7 +537,7 @@ $(function(){
 						url: '/DinResSys2/address!setDefaultAddress',
 						dataType: 'json',
 						data:{
-							addressID: that.addresses[index].id
+							'address.id': that.addresses[index].id
 						},
 						success:function(data, status, jqXHR) {
 							var tmpArr = that.addresses.splice(index, 1);
@@ -610,8 +610,8 @@ $(function(){
 					type:"get",
 					url: '/DinResSys2/user!login',
 					data:{
-						name: username,
-						pwd: pwd
+						'user.name': username,
+						'user.password': pwd
 					},
 					dataType: 'json',
 					success: function(data, status, jqXHR){
@@ -666,10 +666,10 @@ $(function(){
 							type:"get",
 							url: '/DinResSys2/user!register',
 							data:{
-								name: name,
-								pwd: pwd,
-								phone: phone,
-								address: address
+								'user.name': name,
+								'user.password': pwd,
+								'user.tel': phone,
+								'address.ad': address
 							},
 							dataType: 'json',
 							success: function(data, status, jqXHR){

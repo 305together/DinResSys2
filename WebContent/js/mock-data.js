@@ -21,23 +21,6 @@
 	Mock.mock('/DinResSys2/menu!getActivityMenuImg',Datas.activityMenuImg);
 	
 	
-	//DinResSys2/menu!getMenuByType   根据类型获取菜式
-	Datas.menus = {
-		'menus':[{
-			'id': 1,
-			'item': '扬州炒饭',
-			'price':  13,
-			'saleNum': 30,	//月售30份
-			'type':'优惠'
-		},{
-			'id': 3,
-			'item': '牛肉炒饭',
-			'price':  20,
-			'saleNum': 10,	//月售10份
-			'type':'烧烤'
-		}]
-	}
-	Mock.mock('/DinResSys2/menu!getMenuByType', Datas.menus);
 	//console.log(JSON.stringify(Mock.mock(Datas.menus), null, 4));
 	
 	
@@ -102,7 +85,7 @@
 	Mock.mock('/DinResSys2/menu!getAllMenu',Datas.allMenu);
 	
 	
-	//DinResSys2/appraise!getAppraiseByMenuID		根据菜式ID获取菜式评价		{menuID: '2'}
+	//DinResSys2/appraise!getAppraiseByMenuID		根据菜式ID获取菜式评价		{menu.id: '2'}
 	Datas.menuAppraise = {
 		'num':3,
 		'scope': 2.8,		//菜式分数1~5，保留一位小数
@@ -131,14 +114,14 @@
 	Mock.mock('/DinResSys2/user!getLoginStatus', Datas.loginStatus);
 	
 	
-	//DinResSys2/user!login			//登录		{name:'培明',pwd:'8888888'}
+	//DinResSys2/user!login			//登录		{user.name:'培明',user.password:'8888888'}
 	Datas.loginResult = {
 		'status': 1		//返回值1为已登录，2为未登录，其他值为登录异常（随便给个）
 	}
 	Mock.mock('/DinResSys2/user!login', Datas.loginResult);
 	
 	
-	//DinResSys2/user!register			//注册		{name:'培明',pwd:'8888888', phone:'13800138000', address: '天河区五山'}
+	//DinResSys2/user!register			//注册		{user.name:'培明',user.password:'8888888', user.tel:'13800138000', address.ad: '天河区五山'}
 	Datas.registerResult = {
 		'status': 1		//返回值1为注册成功，2为失败，其他值为登录异常（随便给个）
 	}
@@ -161,7 +144,7 @@
 	Mock.mock('/DinResSys2/user!getUserInfo', Datas.userInfo);
 	
 	
-	//DinResSys2/address!setDefaultAddress			//设置默认地址		{addressID: 1}
+	//DinResSys2/address!setDefaultAddress			//设置默认地址		{address.id: 1}
 	Datas.setDefaultAddressResult = {	
 		'status': 1		//返回值1为设置成功，2为失败，其他值为登录异常（随便给个）
 	}
