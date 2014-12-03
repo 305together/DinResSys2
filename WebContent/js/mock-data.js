@@ -102,7 +102,7 @@
 	Mock.mock('/DinResSys2/menu!getAllMenu',Datas.allMenu);
 	
 	
-	//appraise!getAppraiseByMenuID		根据菜式ID获取菜式评价		{menuID: '2'}
+	//DinResSys2/appraise!getAppraiseByMenuID		根据菜式ID获取菜式评价		{menuID: '2'}
 	Datas.menuAppraise = {
 		'num':3,
 		'scope': 2.8,		//菜式分数1~5，保留一位小数
@@ -121,12 +121,12 @@
 			'date': '2014.11.30'
 		}]
 	}
-	Mock.mock('/appraise!getAppraiseByMenuID', Datas.menuAppraise);
+	Mock.mock('/DinResSys2/appraise!getAppraiseByMenuID', Datas.menuAppraise);
 	
 	
 	//DinResSys2/user!getLoginStatus			//获取登录状态
 	Datas.loginStatus = {
-		'status': 2			//返回值1为已登录，2为未登录，其他值为登录异常（随便给个）
+		'status': 1			//返回值1为已登录，2为未登录，其他值为登录异常（随便给个）
 	}
 	Mock.mock('/DinResSys2/user!getLoginStatus', Datas.loginStatus);
 	
@@ -144,6 +144,28 @@
 	}
 	Mock.mock('/DinResSys2/user!register', Datas.registerResult);
 	
+	
+	//DinResSys2/user!getUserInfo		//获取客户信息
+	Datas.userInfo = {
+		phone: '13800138000',
+		addresses: [{		//返回的第一个address必须为默认地址
+			'id': 1,		//address的id
+			'address': '华农万家',	//具体地址
+			'isDefault': 1		//返回值1表示该地址为默认地址, 2为非默认地址
+		},{
+			'id': 2,
+			'address': '五山天河',
+			'isDefault': 0
+		}]
+	}
+	Mock.mock('/DinResSys2/user!getUserInfo', Datas.userInfo);
+	
+	
+	//DinResSys2/address!setDefaultAddress			//设置默认地址		{addressID: 1}
+	Datas.setDefaultAddressResult = {	
+		'status': 1		//返回值1为设置成功，2为失败，其他值为登录异常（随便给个）
+	}
+	Mock.mock('/DinResSys2/address!setDefaultAddress', Datas.setDefaultAddressResult);
 })();
 
 

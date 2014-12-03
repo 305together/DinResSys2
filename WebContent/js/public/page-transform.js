@@ -442,7 +442,7 @@ $(function(){
 			console.log(args);
 			$.ajax({
 				type:"get",
-				url: '/appraise!getAppraiseByMenuID',
+				url: '/DinResSys2/appraise!getAppraiseByMenuID',
 				data:{
 					id: args.id
 				},
@@ -476,19 +476,110 @@ $(function(){
 			var that = this;
 			that.modules[that.moduleName] = that;
 			
+			var addresses;
+			
+			$.ajax({
+				type:"get",
+				url: '/DinResSys2/user!getUserInfo',
+				dataType: 'json',
+				success:function(data, status, jqXHR) {
+					var phone = data.phone;
+					addresses = data.addresses;
+					
+					$('#order-info #address').val(addresses[0].address);
+					$('#order-info #tel').val(phone);
+				}
+			});
 			
 			//返回
 			$('#order-info .nav-back').tap(function(){
 				that.pagePrev(that.from);
 			})
 			
+			$('#order-info .change-address').tap(function(){
+				that.pageNext('address-select', function(){
+					that.notify(that.modules['address-select'], addresses);
+				});
+			})
 			
 		},
-		update:function(){
+		update:function(args){
 			
 		}
 	})
 	orderInfoModule.init();
+	
+	
+	
+	/**
+	 * 	地址选择模块
+	 */
+	var addressSelectModule = Object.extend(Module, {
+		moduleName:"address-select",
+		init:function(){
+			var that = this;
+			that.modules[that.moduleName] = that;
+			
+			that.addresses;
+			
+			//返回
+			$('#address-select .nav-back').tap(function(){
+				that.pagePrev(that.from);
+			})
+			
+			$('#address-select .address-list').on('tap', '.set-default-address, li', function(){
+				
+				if($(this).is('.set-default-address')){
+					var index = $(this).parent().index();
+					console.log(that.addresses[index].id)
+					$.ajax({
+						type:"get",
+						url: '/DinResSys2/address!setDefaultAddress',
+						dataType: 'json',
+						data:{
+							addressID: that.addresses[index].id
+						},
+						success:function(data, status, jqXHR) {
+							var tmpArr = that.addresses.splice(index, 1);
+							that.addresses.unshift(tmpArr[0]);
+							if(parseInt(data.status)==1){
+								var lis = '';
+								that.addresses.forEach(function(ele, i){
+									if(i==0){
+										lis += '<li class="current-address">'+ele.address+'<div class="default-address-tip">默认地址</div></li>'
+										
+									}else{
+										lis += '<li>'+ele.address+'<div class="set-default-address">设为默认地址</div></li>';
+									}
+									$('#address-select .address-list').html(lis);
+								})
+							}else{
+								
+							}
+						}
+					})
+				}else{
+					
+				}
+			})
+			
+		},
+		update: function(args){		//必须要传入addresses
+			var lis = '';
+			this.addresses = args;
+			args.forEach(function(ele, i){
+				if(i==0){
+					lis += '<li class="current-address">'+ele.address+'<div class="default-address-tip">默认地址</div></li>'
+					
+				}else{
+					lis += '<li>'+ele.address+'<div class="set-default-address">设为默认地址</div></li>';
+				}
+				$('#address-select .address-list').html(lis);
+			})
+		}
+	})
+	addressSelectModule.init();
+	
 	
 	/**
 	 * 	登录模块
@@ -601,5 +692,7 @@ $(function(){
 		}
 	})
 	registerModule.init();
+	
+	
 	
 })
