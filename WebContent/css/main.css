@@ -1048,6 +1048,7 @@ body {
 #login #login-form .username-wrap label,
 #login #login-form .pwd-wrap label {
   display: block;
+  height: 21px;
 }
 #login #login-form .username-wrap input,
 #login #login-form .pwd-wrap input {
@@ -1056,7 +1057,7 @@ body {
   box-flex: 1;
   display: block;
   padding: 0;
-  height: 100%;
+  height: 21px;
 }
 #login #login-form .username-wrap {
   border-bottom: 1px solid #dddddd;
@@ -1125,6 +1126,7 @@ body {
 }
 #register #register-form > div label {
   display: block;
+  height: 21px;
 }
 #register #register-form > div input {
   -webkit-box-flex: 1;
@@ -1132,7 +1134,7 @@ body {
   box-flex: 1;
   display: block;
   padding: 0;
-  height: 100%;
+  height: 21px;
 }
 #register #register-form > div:last-child {
   border-bottom: none;

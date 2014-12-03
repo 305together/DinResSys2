@@ -68,7 +68,6 @@ $(function(){
 			var  that = this;
 			setTimeout(function(){
 				loadingCallback && loadingCallback();
-				that.modules[toPage] && (that.modules[toPage].from = that.moduleName);
 				var from = $('#'+that.moduleName), to = $('#'+toPage);
 				from.removeClass('page-active').addClass("page-next page-out");
 				to.removeClass('page-next page-active').addClass("page-prev");
@@ -130,7 +129,7 @@ $(function(){
 			
 			$.ajax({
 				type:"get",
-				url: '/menu!getAllMenuType',
+				url: '/DinResSys2/menu!getAllMenuType',
 				dataType: 'json',
 				success:function(data, status, jqXHR) {
 					var n = data.length;
@@ -150,7 +149,7 @@ $(function(){
 			})
 			$.ajax({
 				type:"get",
-				url:"/menu!getActivityMenuImg",
+				url:"/DinResSys2/menu!getActivityMenuImg",
 				async:true,
 				dataType:'json',
 				success:function(data, status, jqXHR){
@@ -222,7 +221,7 @@ $(function(){
 				//初始化侧边栏
 				$.ajax({
 					type:"get",
-					url: '/menu!getAllMenuType',
+					url: '/DinResSys2/menu!getAllMenuType',
 					dataType: 'json',
 					success:function(data, status, jqXHR) {
 						var n = data.length,
@@ -250,7 +249,7 @@ $(function(){
 				//初始化菜式
 				$.ajax({
 					type:"get",
-					url: '/menu!getAllMenu',
+					url: '/DinResSys2/menu!getAllMenu',
 					dataType: 'json',
 					success:function(data, status, jqXHR) {
 						var menus = data.menus,
@@ -325,13 +324,25 @@ $(function(){
 			
 			//去结算
 			$('#dishes .confirm-dishes-btn').tap(function(){
-				if(that.totalPrice == 0){
-					Toast.show('请先点餐')
-					return;
-				}
-				that.pageNext('shop-cart',function(){
-					that.notify(that.modules['shop-cart'],{orders:that.orders, menus:that.allMenuObj})
-				});
+				$.ajax({
+					type:'get',
+					url: '/DinResSys2/user!getLoginStatus',
+					dataType:'json',
+					success: function(data, status, jqXHR){
+						if(parseInt(data.status)==1){
+							if(that.totalPrice == 0){
+								Toast.show('请先点餐')
+								return;
+							}
+							that.pageNext('shop-cart',function(){
+								that.notify(that.modules['shop-cart'],{orders:that.orders, menus:that.allMenuObj})
+							});
+						}else{
+							that.pageNext('login');
+						}
+					}
+				})
+				
 			})
 			
 			function sortMenu(menus){
@@ -454,5 +465,141 @@ $(function(){
 		}
 	})
 	appraiseModule.init();
-
+	
+	
+	/**
+	 * 送餐信息模块
+	 */
+	var orderInfoModule = Object.extend(Module, {
+		moduleName:"order-info",
+		init:function(){
+			var that = this;
+			that.modules[that.moduleName] = that;
+			
+			
+			//返回
+			$('#order-info .nav-back').tap(function(){
+				that.pagePrev(that.from);
+			})
+			
+			
+		},
+		update:function(){
+			
+		}
+	})
+	orderInfoModule.init();
+	
+	/**
+	 * 	登录模块
+	 */
+	var loginModule = Object.extend(Module, {
+		moduleName:"login",
+		init:function(){
+			var that = this;
+			that.modules[that.moduleName] = that;
+			
+			//首页
+			$('#login .nav-back').tap(function(){
+				that.pagePrev('index');
+			})
+			//注册
+			$('#login .nav-right').tap(function(){
+				that.pageNext('register');
+			})
+			//登录			
+			$('#login .login-btn').tap(function(){
+				var username = $('#login #loginName').val(),
+					pwd = $('#login #loginPwd').val();
+				if(username.trim() == '' || pwd.trim() == ''){
+					Toast.show('用户名或密码不能为空');
+					return;
+				}
+				$.ajax({
+					type:"get",
+					url: '/DinResSys2/user!login',
+					data:{
+						name: username,
+						pwd: pwd
+					},
+					dataType: 'json',
+					success: function(data, status, jqXHR){
+						if(data.status==1){
+							Toast.show('登录成功',function(){
+								that.pageNext('dishes');
+							})
+						}else{
+							Toast.show('登录异常');
+						}
+					}
+				})
+			})
+			
+		},
+		update:function(){
+			
+		}
+	})
+	loginModule.init();
+	
+	
+	/**
+	 * 	注册模块
+	 */
+	var registerModule = Object.extend(Module, {
+		moduleName:"register",
+		init:function(){
+			var that = this;
+			that.modules[that.moduleName] = that;
+			//首页
+			$('#register .nav-back').tap(function(){
+				that.pagePrev('index');
+			})
+			
+			$('#register .register-btn').tap(function(){
+				var name = $('#register #registerName').val().trim(),
+					pwd = $('#register #registerPwd').val().trim(),
+					pwdAgain = $('#register #pwd-again').val().trim(),
+					phone = $('#register #phone').val().trim(),
+					address = $('#register #address').val().trim();
+				if(name=='' || pwd=='' || pwdAgain=='' || phone=='' || address==''){
+					debugger
+					Toast.show('所有输入不能为空');
+				}else{
+					if(pwd!=pwdAgain){
+						Toast.show('两次密码输入不一致');
+					}else if(/^\d{11}$/.test(phone)){
+						Toast.show('手机号码格式不正确')
+					}else{
+						$.ajax({
+							type:"get",
+							url: '/DinResSys2/user!register',
+							data:{
+								name: name,
+								pwd: pwd,
+								phone: phone,
+								address: address
+							},
+							dataType: 'json',
+							success: function(data, status, jqXHR){
+								if(data.status==1){
+									Toast.show('注册成功',function(){
+										that.pageNext('dishes');
+									})
+								}else{
+									Toast.show('注册失败');
+								}
+							}
+						})
+					}
+				}
+				
+			})
+		},
+		update: function(){
+			
+		}
+	})
+	registerModule.init();
+	
 })
