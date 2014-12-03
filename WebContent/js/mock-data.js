@@ -138,7 +138,7 @@
 	Mock.mock('/DinResSys2/user!login', Datas.loginResult);
 	
 	
-	//DinResSys2/user!register			//登录		{name:'培明',pwd:'8888888', phone:'13800138000', address: '天河区五山'}
+	//DinResSys2/user!register			//注册		{name:'培明',pwd:'8888888', phone:'13800138000', address: '天河区五山'}
 	Datas.registerResult = {
 		'status': 1		//返回值1为注册成功，2为失败，其他值为登录异常（随便给个）
 	}
