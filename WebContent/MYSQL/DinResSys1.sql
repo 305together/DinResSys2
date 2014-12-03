@@ -8,12 +8,38 @@ create database DinResSys;
 use DinResSys;
 
 /*==============================================================*/
-/* Table: appraise                                              */
+/* Table: activity                                              */
 /*==============================================================*/
-DROP TABLE IF EXISTS appraise;
-create table appraise
+create table activity
 (
    id                   int not null auto_increment,
+   activityName         varchar(64) not null,
+   beginTime            datetime not null,
+   endTime              datetime not null,
+   descri               varchar(256),
+   primary key (id)
+);
+
+
+/*==============================================================*/
+/* Table: address                                               */
+/*==============================================================*/
+create table address
+(
+   id                   int not null,
+   ad                   varchar(256) not null,
+   userId               int not null,
+   isDefault            int(1) not null default 0,
+   primary key (id)
+);
+
+
+/*==============================================================*/
+/* Table: appraise                                              */
+/*==============================================================*/
+create table appraise
+(
+   id                   int not null,
    userId               int not null,
    menuId               int not null,
    praiseTime           datetime not null,
@@ -22,85 +48,57 @@ create table appraise
    primary key (id)
 );
 
-/*==============================================================*/
-/* Table: types                                           */
-/*==============================================================*/
-DROP TABLE IF EXISTS types;
-create table types
-(
-   id                   int not null auto_increment,
-   typeName             varchar(20) not null,
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: activity                                              */
-/*==============================================================*/
-DROP TABLE IF EXISTS activity;
-create table activity
-(
-   id                   int not null auto_increment,
-   activityName         varchar(64) not null,
-   beginTime            datetime not null,
-   endTime              datetime not null,
-   descri           varchar(256),
-   primary key (id)
-);
-
-/*==============================================================*/
-/* Table: address                                               */
-/*==============================================================*/
-DROP TABLE IF EXISTS address;
-create table address
-(
-   id                   int not null auto_increment,
-   ad                   varchar(256) not null,
-   userId               int not null,
-   isDefault            int(1) not null default 0,
-   primary key (id)
-);
 
 /*==============================================================*/
 /* Table: authority                                             */
 /*==============================================================*/
-DROP TABLE IF EXISTS authority;
 create table authority
 (
    id                   int not null auto_increment,
    autho                varchar(20) not null,
-   authoUrl             varchar(20),
+   authoUrl             varchar(20) not null,
    primary key (id)
 );
+
 
 /*==============================================================*/
 /* Table: menu                                                  */
 /*==============================================================*/
-DROP TABLE IF EXISTS menu;
 create table menu
 (
-   id                   int not null auto_increment,
-   activityId   		int,
-   typeId				int not null,
+   id                   int not null,
+   activityId           int,
+   typeId               int,
    item                 varchar(20) not null,
    price                int not null,
    isHot                int(1) not null default 0,
-   orderNum				int not null default 0,
+   orderNum             int not null default 0,
    praiseNum            int not null default 0,
    status               int not null default 1,
    isInActivity         int not null default 0,
-   discount				int not null default 100,
+   discount             int not null default 100,
    picture              varchar(20),
    descri               varchar(256),
    primary key (id)
 );
 
+
 /*==============================================================*/
-/* Table: orders                                               */
+/* Table: orderMenu                                             */
 /*==============================================================*/
-DROP TABLE IF EXISTS orders;
+create table orderMenu
+(
+   orderId              int not null,
+   menuId               int not null,
+   primary key (orderId, menuId)
+);
+
+/*==============================================================*/
+/* Table: orders                                                */
+/*==============================================================*/
 create table orders
 (
-   id                   int not null auto_increment,
+   id                   int not null,
    userId               int not null,
    adId                 int not null,
    price                int not null,
@@ -110,10 +108,20 @@ create table orders
    primary key (id)
 );
 
+
+/*==============================================================*/
+/* Table: type                                                  */
+/*==============================================================*/
+create table types
+(
+   id                   int not null,
+   typeName             varchar(20) not null,
+   primary key (id)
+);
+
 /*==============================================================*/
 /* Table: user                                                  */
 /*==============================================================*/
-DROP TABLE IF EXISTS user;
 create table user
 (
    id                   int not null auto_increment,
@@ -124,17 +132,20 @@ create table user
    primary key (id)
 );
 
+
 /*==============================================================*/
 /* Table: userAutho                                             */
 /*==============================================================*/
-DROP TABLE IF EXISTS userAutho;
 create table userAutho
 (
-   id                   int not null auto_increment,
    userId               int not null,
    authoId              int not null,
-   primary key (id)
+   primary key (userId, authoId)
 );
+
+
+alter table address add constraint FK_User_Address_Reference foreign key (userId)
+      references user (id) on delete restrict on update restrict;
 
 alter table appraise add constraint FK_Menu_Appraise_Reference foreign key (menuId)
       references menu (id) on delete restrict on update restrict;
@@ -142,14 +153,17 @@ alter table appraise add constraint FK_Menu_Appraise_Reference foreign key (menu
 alter table appraise add constraint FK_User_Appraise_Reference foreign key (userId)
       references user (id) on delete restrict on update restrict;
 
-alter table menu add constraint FK_Menu_Type_Refenrence foreign key (typeID)
+alter table menu add constraint FK_Reference_11 foreign key (typeId)
       references types (id) on delete restrict on update restrict;
 
-alter table address add constraint FK_User_Address_Reference foreign key (userId)
-      references user (id) on delete restrict on update restrict;
-
-alter table menu add constraint FK_Menu_Activity_Reference foreign key (activityId)
+alter table menu add constraint FK_Reference_14 foreign key (activityId)
       references activity (id) on delete restrict on update restrict;
+
+alter table orderMenu add constraint FK_Reference_12 foreign key (menuId)
+      references menu (id) on delete restrict on update restrict;
+
+alter table orderMenu add constraint FK_Reference_13 foreign key (orderId)
+      references orders (id) on delete restrict on update restrict;
 
 alter table orders add constraint FK_Order_Address_Reference foreign key (adId)
       references address (id) on delete restrict on update restrict;

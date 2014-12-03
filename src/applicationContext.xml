@@ -80,19 +80,7 @@
     
 	<!-- 让Spring通过自动扫描来查询和管理Bean -->
 	<context:component-scan base-package="com.txws"/>
-    
-	<!-- json转换器 -->
-	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">  
-		<property name="supportedMediaTypes" value="application/json" />
-	</bean>  
   
-	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">  
-		<property name="messageConverters">  
-			<list>  
-				<ref bean="mappingJacksonHttpMessageConverter" /><!-- json转换器 -->  
-			</list>  
-		</property>  
-	</bean> 
-    
 	<!-- spring配置结束 -->
+	
 </beans>
