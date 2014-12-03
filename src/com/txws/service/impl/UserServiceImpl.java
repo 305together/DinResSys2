@@ -8,8 +8,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.txws.dao.interfaces.ICommonDAO;
-import com.txws.model.Address;
-import com.txws.model.User;
+import com.txws.model.AddressTable;
+import com.txws.model.UserTable;
 import com.txws.service.interfaces.IUserService;
 
 @Service("userService")
@@ -19,11 +19,11 @@ public class UserServiceImpl implements IUserService {
 	private ICommonDAO commonDAO;
 
 	@Override
-	public User login(User u) {
-		List<User> users = commonDAO.getObjectsByKey(
-				User.class, "userName", u.getName());
+	public UserTable login(UserTable u) {
+		List<UserTable> users = commonDAO.getObjectsByKey(
+				UserTable.class, "userName", u.getName());
 		if (users.size() != 0) {
-			for (User userTable : users) {
+			for (UserTable userTable : users) {
 				if (u.getPassword().equals(users.get(0).getPassword()))
 					return userTable;
 			}
@@ -32,8 +32,8 @@ public class UserServiceImpl implements IUserService {
 	}
 	
 	@Override
-	public User loadUser(int id){
-		User user = commonDAO.getObject(User.class, id);
+	public UserTable loadUser(int id){
+		UserTable user = commonDAO.getObject(UserTable.class, id);
 		return user;
 	}
 	
@@ -43,15 +43,15 @@ public class UserServiceImpl implements IUserService {
 	}
 	
 	@Override
-	public void addUser(User user){
+	public void addUser(UserTable user){
 		commonDAO.save(user);
 	}
 	
-	public void addAddress(Address ad){
+	public void addAddress(AddressTable ad){
 		commonDAO.save(ad);
 	}
 	
-	public void delUser(User user){
+	public void delUser(UserTable user){
 		commonDAO.delete(user);
 	}
 }
