@@ -168,6 +168,8 @@
 		'status': 1		//返回值1为提交成功，2为失败，其他值为登录异常（随便给个）
 	}
 	Mock.mock('/DinResSys2/order!commitOrderResult', Datas.commitOrderResult);
+	
+	
 })();
 
 

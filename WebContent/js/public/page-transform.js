@@ -514,14 +514,6 @@ $(function(){
 					Toast.show('手机号码不能为空');
 					return ;
 				}
-				
-				var tmp = {
-						phone: phone,
-						addressID: addressID,
-						remark: remark,
-						menus: orders
-				};
-				debugger
 				$.ajax({
 					type:"get",
 					url: '/DinResSys2/order!commitOrderResult',
@@ -538,6 +530,8 @@ $(function(){
 							Toast.show('订单提交成功',function(){
 								that.pageNext('my-center');
 							})
+						}else{
+							Toast.show('订单提交失败');
 						}
 					}
 				})
@@ -572,6 +566,7 @@ $(function(){
 				that.pagePrev(that.from);
 			})
 			
+			//设置默认和选择当前使用地址
 			$('#address-select .address-list').on('tap', '.set-default-address, li', function(){
 				if($(this).is('.set-default-address')){
 					var index = $(this).parent().index();
@@ -633,7 +628,7 @@ $(function(){
 			})
 			
 			$('.add-address .add-address-btn').tap(function(){
-				var ad = $('.new-address').val().trim();
+				var ad = $('#address-select .new-address').val().trim();
 				if(ad==''){
 					Toast.show('新增地址不能为空');
 					return;
@@ -680,6 +675,106 @@ $(function(){
 		}
 	})
 	addressSelectModule.init();
+	
+	
+	
+	
+	/**
+	 * 	个人中心模块
+	 */
+	var myCenterModule = Object.extend(Module, {
+		moduleName:"my-center",
+		init:function(){
+			var that = this;
+			that.modules[that.moduleName] = that;
+			that.addresses = {};
+			//首页
+			$('#my-center .nav-back').tap(function(){
+				that.pagePrev('index');
+			})
+			
+			//初始更新地址管理栏
+			$.ajax({
+				type:"get",
+				url: '/DinResSys2/user!getUserInfo',
+				dataType: 'json',
+				success:function(data, status, jqXHR) {
+					var phone = data.phone;
+					that.addresses = data.addresses;
+					
+					that.update({addresses:that.addresses});
+				}
+			});
+			
+			//设置默认和新增地址
+			$('#my-center .address-list').on('tap', '.set-default-address, .add-address-btn', function(){
+				if($(this).is('.set-default-address')){
+					var index = $(this).parent().index();
+					$.ajax({
+						type:"get",
+						url: '/DinResSys2/address!setDefaultAddress',
+						dataType: 'json',
+						data:{
+							'address.id': that.addresses[index].id
+						},
+						success:function(data, status, jqXHR) {
+							if(parseInt(data.status)==1){
+								that.addresses.forEach(function(ele, i){
+									if(index==i){
+										that.addresses[i].isDefault = true; 
+									}else{
+										that.addresses[i].isDefault = false;
+									}
+								})
+							}
+							that.update({addresses: that.addresses});
+						}
+					})
+				}else if($(this).is('.add-address-btn')){
+					var ad = $('#my-center .new-address').val().trim();
+					if(ad==''){
+						Toast.show('新增地址不能为空');
+						return;
+					}else{
+						$.ajax({
+							type:"get",
+							url: '/DinResSys2/address!addAddress',
+							dataType: 'json',
+							data:{
+								'address.ad': ad
+							},
+							success:function(data, status, jqXHR) {
+								if(parseInt(data.status)==1){
+									that.addresses.push(data.address);
+									that.update({addresses:that.addresses})						
+								}
+							}
+						})
+					}			
+				}
+			})
+		},
+		update:function(args){
+			if(!!args.addresses){
+				this.addresses = args.addresses;
+				var lis = '';
+				this.addresses.forEach(function(ele, i){
+					lis += '<li>'+ele.address;
+					if(ele.isDefault){
+						lis += '<div class="default-address-tip">默认地址</div></li>';
+					}else{
+						lis += '<div class="set-default-address">设为默认地址</div></li>';
+					}				
+				})
+				lis += '<li class="add-address"><input class="new-address" type="text" placeholder="请填写新的地址"/><div class="add-address-btn">新增</div></li>'
+				$('#my-center .address-list').html(lis);
+			}
+			if(!!args.orders){
+				
+			}
+		}
+	})
+	myCenterModule.init();
 	
 	
 	/**
@@ -793,6 +888,7 @@ $(function(){
 		}
 	})
 	registerModule.init();
+	
 	
 	
 	
