@@ -134,11 +134,11 @@
 		addresses: [{		//返回的第一个address必须为默认地址
 			'id': 1,		//address的id
 			'address': '华农万家',	//具体地址
-			'isDefault': 1		//返回值1表示该地址为默认地址, 2为非默认地址
+			'isDefault': true		//返回值true表示该地址为默认地址, false为非默认地址
 		},{
 			'id': 2,
 			'address': '五山天河',
-			'isDefault': 0
+			'isDefault': false
 		}]
 	}
 	Mock.mock('/DinResSys2/user!getUserInfo', Datas.userInfo);
@@ -149,6 +149,25 @@
 		'status': 1		//返回值1为设置成功，2为失败，其他值为登录异常（随便给个）
 	}
 	Mock.mock('/DinResSys2/address!setDefaultAddress', Datas.setDefaultAddressResult);
+	
+	
+	//DinResSys2/address!addAddress			//新增地址（新增的地址不是默认地址）		{address.ad: '天河五山'}
+	Datas.addAddressResult = {	
+		'status': 1,		//返回值1为设置成功，2为失败，其他值为登录异常（随便给个）
+		'address': {
+			'id':3,
+			'address': '天河五山',
+			'isDefault': false
+		}
+	}
+	Mock.mock('/DinResSys2/address!addAddress', Datas.addAddressResult);
+	
+	
+	//DinResSys2/order!commitOrder			//提交订单		{phone: '13800138000', addressID:1, remark: '加饭，多谢', menus:{1:3,2:1}}
+	Datas.commitOrderResult = {	
+		'status': 1		//返回值1为提交成功，2为失败，其他值为登录异常（随便给个）
+	}
+	Mock.mock('/DinResSys2/order!commitOrderResult', Datas.commitOrderResult);
 })();
 
 

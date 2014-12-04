@@ -476,7 +476,7 @@ $(function(){
 			var that = this;
 			that.modules[that.moduleName] = that;
 			
-			var addresses;
+			that.addresses;
 			
 			$.ajax({
 				type:"get",
@@ -484,9 +484,9 @@ $(function(){
 				dataType: 'json',
 				success:function(data, status, jqXHR) {
 					var phone = data.phone;
-					addresses = data.addresses;
+					that.addresses = data.addresses;
 					
-					$('#order-info #address').val(addresses[0].address);
+					$('#order-info #address').val(that.addresses[0].address);
 					$('#order-info #tel').val(phone);
 				}
 			});
@@ -496,15 +496,58 @@ $(function(){
 				that.pagePrev(that.from);
 			})
 			
+			//向右箭头
 			$('#order-info .change-address').tap(function(){
 				that.pageNext('address-select', function(){
-					that.notify(that.modules['address-select'], addresses);
+					that.notify(that.modules['address-select'], that.addresses);
 				});
 			})
 			
+			//点击提交订单
+			$('#order-info .commit-order-btn').tap(function(){
+				var phone = $('#order-info #tel').val().trim(),
+					addressID = that.addresses[addressSelectModule.currentAddress].id,
+					remark = $('#order-info #remark').val().trim();
+				var orders = that.modules['dishes'].orders;
+				
+				if(phone==''){
+					Toast.show('手机号码不能为空');
+					return ;
+				}
+				
+				var tmp = {
+						phone: phone,
+						addressID: addressID,
+						remark: remark,
+						menus: orders
+				};
+				debugger
+				$.ajax({
+					type:"get",
+					url: '/DinResSys2/order!commitOrderResult',
+					traditional: true,
+					data:{
+						phone: phone,
+						addressID: addressID,
+						remark: remark,
+						menus: orders
+					},
+					dataType: 'json',
+					success:function(data, status, jqXHR) {
+						if(parseInt(data.status)==1){
+							Toast.show('订单提交成功',function(){
+								that.pageNext('my-center');
+							})
+						}
+					}
+				})
+			})
+			
+			
 		},
 		update:function(args){
-			
+			this.addresses = args.addresses;
+			$('#order-info #address').val(args.addresses[args.currentAddress].address);
 		}
 	})
 	orderInfoModule.init();
@@ -522,15 +565,17 @@ $(function(){
 			
 			that.addresses;
 			
+			that.currentAddress = 0;
+			
 			//返回
 			$('#address-select .nav-back').tap(function(){
 				that.pagePrev(that.from);
 			})
 			
 			$('#address-select .address-list').on('tap', '.set-default-address, li', function(){
-				
 				if($(this).is('.set-default-address')){
 					var index = $(this).parent().index();
+					
 					console.log(that.addresses[index].id)
 					$.ajax({
 						type:"get",
@@ -540,39 +585,95 @@ $(function(){
 							'address.id': that.addresses[index].id
 						},
 						success:function(data, status, jqXHR) {
-							var tmpArr = that.addresses.splice(index, 1);
-							that.addresses.unshift(tmpArr[0]);
+//							var tmpArr = that.addresses.splice(index, 1);
+//							that.addresses.unshift(tmpArr[0]);
+							
 							if(parseInt(data.status)==1){
 								var lis = '';
 								that.addresses.forEach(function(ele, i){
-									if(i==0){
-										lis += '<li class="current-address">'+ele.address+'<div class="default-address-tip">默认地址</div></li>'
-										
+									if(index==i){
+										that.addresses[i].isDefault = true;
 									}else{
-										lis += '<li>'+ele.address+'<div class="set-default-address">设为默认地址</div></li>';
+										that.addresses[i].isDefault = false;
 									}
-									$('#address-select .address-list').html(lis);
+									
+									if(that.currentAddress == i){
+										lis += '<li class="current-address">'+ele.address;
+										if(that.addresses[i].isDefault){
+											lis += '<div class="default-address-tip">默认地址</div></li>';
+										}else{
+											lis += '<div class="set-default-address">设为默认地址</div></li>';
+										}
+									}else{
+										lis += '<li>'+ele.address;
+										if(that.addresses[i].isDefault){
+											lis += '<div class="default-address-tip">默认地址</div></li>';
+										}else{
+											lis += '<div class="set-default-address">设为默认地址</div></li>';
+										}
+									}
 								})
+								$('#address-select .address-list').html(lis);
+								//that.notify(that.modules['order-info'], {address:that.addresses[index]});
 							}else{
-								
+								Toast.show('设置异常');
 							}
 						}
 					})
-				}else{
-					
+					return ;
+				}else if($(this).is('li')){
+					var index = $(this).index();
+					that.currentAddress = index;
+					$(this).addClass('current-address').siblings().removeClass('current-address');
+					that.pagePrev('order-info',function(){
+						that.notify(that.modules['order-info'], {addresses: that.addresses, currentAddress: that.currentAddress});
+					})
+					return;
 				}
 			})
 			
+			$('.add-address .add-address-btn').tap(function(){
+				var ad = $('.new-address').val().trim();
+				if(ad==''){
+					Toast.show('新增地址不能为空');
+					return;
+				}else{
+					$.ajax({
+						type:"get",
+						url: '/DinResSys2/address!addAddress',
+						dataType: 'json',
+						data:{
+							'address.ad': ad
+						},
+						success:function(data, status, jqXHR) {
+							if(parseInt(data.status)==1){
+								that.addresses.push(data.address);
+								that.notify(that, that.addresses);
+							}
+						}
+					})
+				}
+			})
 		},
 		update: function(args){		//必须要传入addresses
 			var lis = '';
 			this.addresses = args;
+			var that = this;
 			args.forEach(function(ele, i){
-				if(i==0){
-					lis += '<li class="current-address">'+ele.address+'<div class="default-address-tip">默认地址</div></li>'
-					
+				if(that.currentAddress == i){
+					lis += '<li class="current-address">'+ele.address;
+					if(ele.isDefault){
+						lis += '<div class="default-address-tip">默认地址</div></li>';
+					}else{
+						lis += '<div class="set-default-address">设为默认地址</div></li>';
+					}
 				}else{
-					lis += '<li>'+ele.address+'<div class="set-default-address">设为默认地址</div></li>';
+					lis += '<li>'+ele.address;
+					if(ele.isDefault){
+						lis += '<div class="default-address-tip">默认地址</div></li>';
+					}else{
+						lis += '<div class="set-default-address">设为默认地址</div></li>';
+					}
 				}
 				$('#address-select .address-list').html(lis);
 			})
