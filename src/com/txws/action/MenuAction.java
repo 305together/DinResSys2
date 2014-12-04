@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.oracle.net.Sdp;
+import com.txws.model.AppraiseTable;
 import com.txws.model.MenuTable;
 import com.txws.model.TypeTable;
 import com.txws.service.interfaces.IMenuService;
@@ -71,4 +73,16 @@ public class MenuAction extends ActionSupport {
 		}
 		return SUCCESS;
 	}
+	
+	public void getActivityMenuImg() {
+		List<String> list = menuService.getActivityMenuImg();
+//		for (String string : list) {
+//			dataList.add(string);
+//		}
+		for (String string : list) {
+			System.out.println(string);
+		}
+		dataList.addAll(list);
+	}
+	
 }
