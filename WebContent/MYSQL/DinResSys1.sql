@@ -26,7 +26,7 @@ create table activity
 /*==============================================================*/
 create table address
 (
-   id                   int not null,
+   id                   int not null auto_increment,
    ad                   varchar(256) not null,
    userId               int not null,
    isDefault            int(1) not null default 0,
@@ -39,7 +39,7 @@ create table address
 /*==============================================================*/
 create table appraise
 (
-   id                   int not null,
+   id                   int not null auto_increment,
    userId               int not null,
    menuId               int not null,
    praiseTime           datetime not null,
@@ -66,7 +66,7 @@ create table authority
 /*==============================================================*/
 create table menu
 (
-   id                   int not null,
+   id                   int not null auto_increment,
    activityId           int,
    typeId               int,
    item                 varchar(20) not null,
@@ -98,7 +98,7 @@ create table orderMenu
 /*==============================================================*/
 create table orders
 (
-   id                   int not null,
+   id                   int not null auto_increment,
    userId               int not null,
    adId                 int not null,
    price                int not null,
@@ -114,7 +114,7 @@ create table orders
 /*==============================================================*/
 create table types
 (
-   id                   int not null,
+   id                   int not null auto_increment,
    typeName             varchar(20) not null,
    primary key (id)
 );

@@ -10,7 +10,7 @@ public interface IUserService {
 	UserTable login(UserTable u);
 	UserTable loadUser(int id);
 	List<String> loadAuthorities(int id);
-	void addUser(UserTable user);
+	boolean addUser(UserTable user);
 	void addAddress(AddressTable ad);
 	void delUser(UserTable user);
 }

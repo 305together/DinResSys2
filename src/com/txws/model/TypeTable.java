@@ -16,16 +16,16 @@ public class TypeTable {
 	/** @pdOid 1535f0d1-7c29-457a-86e3-3a9377e129f9 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	private int id;
 	/** @pdOid 20b20792-abbd-4bd9-9e41-6a0b49012af3 */
-	public java.lang.String typeName;
+	private java.lang.String typeName;
 
 	/**
 	 * @pdRoleInfo migr=no name=MenuTable assc=reference11
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=1..*
 	 */
-	@OneToMany(mappedBy = "typeTable", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	public java.util.Collection<MenuTable> menuTable;
+	@OneToMany(mappedBy = "typeTable", fetch = FetchType.LAZY)
+	private java.util.Collection<MenuTable> menuTable;
 
 	public int getId() {
 		return id;

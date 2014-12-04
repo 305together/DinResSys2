@@ -2,6 +2,7 @@ package com.txws.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,36 +16,36 @@ public class AppraiseTable {
 	/** @pdOid 654728c9-23c1-4233-b2d4-b45e5080c496 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	private int id;
 	/** @pdOid 5d0e323b-5e1f-408b-94b2-c7f37e35ba84 */
-	public java.util.Date praiseTime;
+	private java.util.Date praiseTime;
 	/**
 	 * �û��Բ˵������۵ȼ���1-5��
 	 * 
 	 * @pdOid 0e596695-2a92-4a80-b137-b2f78d81effb
 	 */
-	public int praiseLevel = 5;
+	private int praiseLevel = 5;
 	/**
 	 * �û��Բ˵�����������
 	 * 
 	 * @pdOid ec6cca96-c5a3-4685-a77a-3067d03295e2
 	 */
-	public java.lang.String detail;
+	private java.lang.String detail;
 
 	/**
 	 * @pdRoleInfo migr=no name=MenuTable assc=menuAppraiseReference mult=1..1
 	 *             side=A
 	 */
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "menuId")
-	public MenuTable menuTable;
+	private MenuTable menuTable;
 	/**
 	 * @pdRoleInfo migr=no name=UserTable assc=userAppraiseReference mult=1..1
 	 *             side=A
 	 */
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
-	public UserTable userTable;
+	private UserTable userTable;
 
 	public int getId() {
 		return id;
@@ -115,11 +116,11 @@ public class AppraiseTable {
 			if (this.userTable != null) {
 				UserTable oldUserTable = this.userTable;
 				this.userTable = null;
-				oldUserTable.removeAppraiseTable(this);
+				//oldUserTable.removeAppraiseTable(this);
 			}
 			if (newUserTable != null) {
 				this.userTable = newUserTable;
-				this.userTable.addAppraiseTable(this);
+				//this.userTable.addAppraiseTable(this);
 			}
 		}
 	}

@@ -20,72 +20,72 @@ public class MenuTable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	private int id;
 	/**
 	 * �˵������
 	 * 
 	 * @pdOid 3d0f3be0-3103-4057-b724-de968de5023d
 	 */
-	public java.lang.String item;
+	private java.lang.String item;
 	/**
 	 * �˵���۸�
 	 * 
 	 * @pdOid 9892e320-2ef5-439c-9063-c519842a94be
 	 */
-	public int price;
+	private int price;
 	/**
 	 * �Ƿ�����˵���
 	 * 
 	 * @pdOid 2cc01ad7-78be-480c-b953-01f98f6efe2e
 	 */
-	public int isHot = 0;
+	private int isHot = 0;
 	/** @pdOid 6aaf1f7d-685b-472a-9763-f7fb05e40472 */
-	public int orderNum = 0;
+	private int orderNum = 0;
 	/** @pdOid 1ad506e9-93e8-41a7-8ce7-cc0238a982d8 */
-	public int praiseNum = 0;
+	private int praiseNum = 0;
 	/**
 	 * �˵�״̬��������0������1��
 	 * 
 	 * @pdOid 62104d3a-d5d8-481c-9d81-9580b77dc006
 	 */
-	public int status = 1;
+	private int status = 1;
 	/**
 	 * �Ƿ�������û��0����1��
 	 * 
 	 * @pdOid ba4c8232-f086-4829-92f6-4465c125b220
 	 */
-	public int isInActivity = 0;
+	private int isInActivity = 0;
 	/** @pdOid 0c1d5b02-9bba-49ac-9296-a2dd8f6f6be4 */
-	public int discount = 100;
+	private int discount = 100;
 	/** @pdOid 41d13cdb-95b2-42b1-a271-4d1f389e73c9 */
-	public java.lang.String picture;
+	private java.lang.String picture;
 	/**
 	 * �˵�����
 	 * 
 	 * @pdOid 33edef61-524a-4285-9927-8ff2bbd76177
 	 */
-	public java.lang.String descri;
+	private java.lang.String descri;
 
 	/**
 	 * @pdRoleInfo migr=no name=AppraiseTable assc=menuAppraiseReference
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
 	 */
-	@OneToMany(mappedBy = "menuTable", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	public java.util.Collection<AppraiseTable> appraiseTable;
+	@OneToMany(mappedBy = "menuTable", cascade = { CascadeType.REMOVE },fetch = FetchType.LAZY)
+	private java.util.Collection<AppraiseTable> appraiseTable;
 	/**
 	 * @pdRoleInfo migr=no name=OrdersTable assc=orderMenuTable
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
 	 */
-	@ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	public java.util.Collection<OrdersTable> Reference_13;
+	@ManyToMany(fetch = FetchType.LAZY)
+	private java.util.Collection<OrdersTable> Reference_13;
 	/** @pdRoleInfo migr=no name=TypeTable assc=reference11 mult=0..1 side=A */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "typeId")
-	public TypeTable typeTable;
+	private TypeTable typeTable;
 	/** @pdRoleInfo migr=no name=ActivityTable assc=reference14 mult=0..1 side=A */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "activityId")
-	public ActivityTable activityTable;
+	private ActivityTable activityTable;
 
 	public int getId() {
 		return id;

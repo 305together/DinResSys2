@@ -21,11 +21,13 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public UserTable login(UserTable u) {
 		List<UserTable> users = commonDAO.getObjectsByKey(
-				UserTable.class, "userName", u.getName());
+				UserTable.class, "name", u.getName());
 		if (users.size() != 0) {
 			for (UserTable userTable : users) {
-				if (u.getPassword().equals(users.get(0).getPassword()))
+				if (u.getPassword().equals(users.get(0).getPassword())){
+					System.out.println(u.getPassword());
 					return userTable;
+					}
 			}
 		}
 		return null;
@@ -43,8 +45,14 @@ public class UserServiceImpl implements IUserService {
 	}
 	
 	@Override
-	public void addUser(UserTable user){
-		commonDAO.save(user);
+	public boolean addUser(UserTable user){
+		List<UserTable> list = commonDAO.getObjectsByKey(UserTable.class, "name", user.getName());
+		if(list.size() == 0) {
+			commonDAO.save(user);
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public void addAddress(AddressTable ad){

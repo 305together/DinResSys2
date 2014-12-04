@@ -23,38 +23,38 @@ public class ActivityTable {
 	/** @pdOid 08c6122d-1a5b-41dc-9f08-5fc885bae323 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	private int id;
 	/**
 	 * ����
 	 * 
 	 * @pdOid 33a9cd15-7c34-4cfb-8c14-55117a0a838e
 	 */
-	public java.lang.String activityName;
+	private java.lang.String activityName;
 	/**
 	 * ���ʼʱ��
 	 * 
 	 * @pdOid 3ba6b607-44bf-4592-ace7-dc0da5334edb
 	 */
-	public java.util.Date beginTime;
+	private java.util.Date beginTime;
 	/**
 	 * �����ʱ��
 	 * 
 	 * @pdOid c46609f5-c120-4503-a7ca-eadf556bfdde
 	 */
-	public java.util.Date endTime;
+	private java.util.Date endTime;
 	/**
 	 * �����
 	 * 
 	 * @pdOid 5b22d3be-c171-41ac-9bd9-e71548114ed6
 	 */
-	public java.lang.String descri;
+	private java.lang.String descri;
 
 	/**
 	 * @pdRoleInfo migr=no name=MenuTable assc=reference14
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
 	 */
-	@OneToMany(mappedBy = "activityTable", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	public java.util.Collection<MenuTable> menuTable;
+	@OneToMany(mappedBy = "activityTable", fetch = FetchType.EAGER)
+	private java.util.Collection<MenuTable> menuTable;
 
 	public int getId() {
 		return id;

@@ -22,53 +22,53 @@ public class OrdersTable {
 	/** @pdOid 5b2ef31c-0e1f-4e31-9abf-6e4bd3ec16b1 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	private int id;
 	/**
 	 * �ܼۣ��µ�ʱ��������
 	 * 
 	 * @pdOid ddb7873b-98a3-488e-a221-4034701e429a
 	 */
-	public int price;
+	private int price;
 	/**
 	 * �µ�ʱ��
 	 * 
 	 * @pdOid 51a53f3d-498d-49d7-b37a-dc8cd3ab976e
 	 */
-	public java.util.Date createTime;
+	private java.util.Date createTime;
 	/**
 	 * ����״̬
 	 * 
 	 * @pdOid 1f0398e1-6549-4d66-a5fd-09dc2b890bc7
 	 */
-	public java.lang.String status;
+	private java.lang.String status;
 	/**
 	 * �û�����
 	 * 
 	 * @pdOid cdb23a12-0f91-4093-814c-16213aaa1f65
 	 */
-	public java.lang.String message;
+	private java.lang.String message;
 
 	/**
 	 * @pdRoleInfo migr=no name=UserTable assc=userOrderReference mult=1..1
 	 *             side=A
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
-	public UserTable userTable;
+	private UserTable userTable;
 	/**
 	 * @pdRoleInfo migr=no name=AddressTable assc=orderAddressReference
 	 *             mult=1..1 side=A
 	 */
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "adId")
-	public AddressTable addressTable;
+	private AddressTable addressTable;
 	/**
 	 * @pdRoleInfo migr=no name=MenuTable assc=orderMenuTable
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
 	 *             side=A
 	 */
-	@ManyToMany(mappedBy = "Reference_13", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	public java.util.Collection<MenuTable> Reference_12;
+	@ManyToMany(mappedBy = "Reference_13", fetch = FetchType.EAGER)
+	private java.util.Collection<MenuTable> Reference_12;
 
 	public int getId() {
 		return id;
@@ -124,11 +124,11 @@ public class OrdersTable {
 			if (this.userTable != null) {
 				UserTable oldUserTable = this.userTable;
 				this.userTable = null;
-				oldUserTable.removeOrdersTable(this);
+				//oldUserTable.removeOrdersTable(this);
 			}
 			if (newUserTable != null) {
 				this.userTable = newUserTable;
-				this.userTable.addOrdersTable(this);
+				//this.userTable.addOrdersTable(this);
 			}
 		}
 	}
@@ -148,11 +148,11 @@ public class OrdersTable {
 			if (this.addressTable != null) {
 				AddressTable oldAddressTable = this.addressTable;
 				this.addressTable = null;
-				oldAddressTable.removeOrdersTable(this);
+				//oldAddressTable.removeOrdersTable(this);
 			}
 			if (newAddressTable != null) {
 				this.addressTable = newAddressTable;
-				this.addressTable.addOrdersTable(this);
+				//this.addressTable.addOrdersTable(this);
 			}
 		}
 	}

@@ -25,33 +25,35 @@ public class AddressTable {
 	/** @pdOid 69b74cc8-cdc3-4a9c-b047-3bf27eeae4da */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int id;
+	private int id;
 	/**
 	 * ��ַ��Ϣ
 	 * 
 	 * @pdOid 0f7572ad-be43-4f40-baec-54875fb62db7
 	 */
-	public java.lang.String ad;
+	@Column(name = "ad")
+	private java.lang.String address;
 	/**
 	 * �Ƿ�Ĭ��ֵ
 	 * 
 	 * @pdOid b725f5c3-e6a7-482c-b932-900bdc13c343
 	 */
-	public int isDefault = 0;
+	private int isDefault = 0;
 
 	/**
 	 * @pdRoleInfo migr=no name=OrdersTable assc=orderAddressReference
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
 	 */
-	@OneToMany(mappedBy = "addressTable", cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-	public java.util.Collection<OrdersTable> ordersTable;
+	// @OneToMany(mappedBy = "addressTable", cascade = { CascadeType.REMOVE },
+	// fetch = FetchType.LAZY)
+	// public java.util.Collection<OrdersTable> ordersTable;
 	/**
 	 * @pdRoleInfo migr=no name=UserTable assc=userAddressReference mult=1..1
 	 *             side=A
 	 */
-	@ManyToOne(cascade = { CascadeType.ALL })
+	@ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
-	public UserTable userTable;
+	private UserTable userTable;
 
 	public int getId() {
 		return id;
@@ -61,12 +63,12 @@ public class AddressTable {
 		this.id = id;
 	}
 
-	public java.lang.String getAd() {
-		return ad;
+	public java.lang.String getAddress() {
+		return address;
 	}
 
-	public void setAd(java.lang.String ad) {
-		this.ad = ad;
+	public void setAddress(java.lang.String address) {
+		this.address = address;
 	}
 
 	public int getIsDefault() {
@@ -99,67 +101,57 @@ public class AddressTable {
 			}
 		}
 	}
-	  /** @pdGenerated default getter */
-	   public java.util.Collection<OrdersTable> getOrdersTable() {
-	      if (ordersTable == null)
-	         ordersTable = new java.util.HashSet<OrdersTable>();
-	      return ordersTable;
-	   }
-	   
-	   /** @pdGenerated default iterator getter */
-	   public java.util.Iterator getIteratorOrdersTable() {
-	      if (ordersTable == null)
-	         ordersTable = new java.util.HashSet<OrdersTable>();
-	      return ordersTable.iterator();
-	   }
-	   
-	   /** @pdGenerated default setter
-	     * @param newOrdersTable */
-	   public void setOrdersTable(java.util.Collection<OrdersTable> newOrdersTable) {
-	      removeAllOrdersTable();
-	      for (java.util.Iterator iter = newOrdersTable.iterator(); iter.hasNext();)
-	         addOrdersTable((OrdersTable)iter.next());
-	   }
-	   
-	   /** @pdGenerated default add
-	     * @param newOrdersTable */
-	   public void addOrdersTable(OrdersTable newOrdersTable) {
-	      if (newOrdersTable == null)
-	         return;
-	      if (this.ordersTable == null)
-	         this.ordersTable = new java.util.HashSet<OrdersTable>();
-	      if (!this.ordersTable.contains(newOrdersTable))
-	      {
-	         this.ordersTable.add(newOrdersTable);
-	         newOrdersTable.setAddressTable(this);      
-	      }
-	   }
-	   
-	   /** @pdGenerated default remove
-	     * @param oldOrdersTable */
-	   public void removeOrdersTable(OrdersTable oldOrdersTable) {
-	      if (oldOrdersTable == null)
-	         return;
-	      if (this.ordersTable != null)
-	         if (this.ordersTable.contains(oldOrdersTable))
-	         {
-	            this.ordersTable.remove(oldOrdersTable);
-	            oldOrdersTable.setAddressTable((AddressTable)null);
-	         }
-	   }
-	   
-	   /** @pdGenerated default removeAll */
-	   public void removeAllOrdersTable() {
-	      if (ordersTable != null)
-	      {
-	         OrdersTable oldOrdersTable;
-	         for (java.util.Iterator iter = getIteratorOrdersTable(); iter.hasNext();)
-	         {
-	            oldOrdersTable = (OrdersTable)iter.next();
-	            iter.remove();
-	            oldOrdersTable.setAddressTable((AddressTable)null);
-	         }
-	      }
-	   }
+/*
+	public java.util.Collection<OrdersTable> getOrdersTable() {
+		if (ordersTable == null)
+			ordersTable = new java.util.HashSet<OrdersTable>();
+		return ordersTable;
+	}
 
+	public java.util.Iterator getIteratorOrdersTable() {
+		if (ordersTable == null)
+			ordersTable = new java.util.HashSet<OrdersTable>();
+		return ordersTable.iterator();
+	}
+
+	public void setOrdersTable(java.util.Collection<OrdersTable> newOrdersTable) {
+		removeAllOrdersTable();
+		for (java.util.Iterator iter = newOrdersTable.iterator(); iter
+				.hasNext();)
+			addOrdersTable((OrdersTable) iter.next());
+	}
+
+	public void addOrdersTable(OrdersTable newOrdersTable) {
+		if (newOrdersTable == null)
+			return;
+		if (this.ordersTable == null)
+			this.ordersTable = new java.util.HashSet<OrdersTable>();
+		if (!this.ordersTable.contains(newOrdersTable)) {
+			this.ordersTable.add(newOrdersTable);
+			newOrdersTable.setAddressTable(this);
+		}
+	}
+
+	public void removeOrdersTable(OrdersTable oldOrdersTable) {
+		if (oldOrdersTable == null)
+			return;
+		if (this.ordersTable != null)
+			if (this.ordersTable.contains(oldOrdersTable)) {
+				this.ordersTable.remove(oldOrdersTable);
+				oldOrdersTable.setAddressTable((AddressTable) null);
+			}
+	}
+
+	public void removeAllOrdersTable() {
+		if (ordersTable != null) {
+			OrdersTable oldOrdersTable;
+			for (java.util.Iterator iter = getIteratorOrdersTable(); iter
+					.hasNext();) {
+				oldOrdersTable = (OrdersTable) iter.next();
+				iter.remove();
+				oldOrdersTable.setAddressTable((AddressTable) null);
+			}
+		}
+	}
+*/
 }
