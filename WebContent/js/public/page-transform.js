@@ -855,7 +855,7 @@ $(function(){
 				}else{
 					if(pwd!=pwdAgain){
 						Toast.show('两次密码输入不一致');
-					}else if(/^\d{11}$/.test(phone)){
+					}else if(!(/^\d{11}$/.test(phone))){
 						Toast.show('手机号码格式不正确')
 					}else{
 						$.ajax({

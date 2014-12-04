@@ -6,17 +6,24 @@
 		'优惠',
 		'烧烤',
 		'比萨',
-		'意式风味'
+		'意式风味',
+		'炒饭',
+		'泰式菜',
+		'韩国料理',
+		'越南菜'
 	];
 	Mock.mock('/DinResSys2/menu!getAllMenuType', Datas.allMenuType);
 	
 	
 	//DinResSys2/menu!getActivityMenuImg	返回4张参与了活动的菜式图片
 	Datas.activityMenuImg = [
-		"@IMAGE(320x213)",
-		"@IMAGE(320x213)",
-		"@IMAGE(320x213)",
-		"@IMAGE(320x213)"
+//		"@IMAGE(320x213)",
+//		"@IMAGE(320x213)",
+//		"@IMAGE(320x213)",
+//		"@IMAGE(320x213)"
+		'img/index/1.jpg',
+		'img/index/2.jpg',
+		'img/index/3.jpg'
 	];
 	Mock.mock('/DinResSys2/menu!getActivityMenuImg',Datas.activityMenuImg);
 	
