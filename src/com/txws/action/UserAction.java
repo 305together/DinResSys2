@@ -48,6 +48,8 @@ public class UserAction extends ActionSupport {
 	private IAddressService addressService;
 	private UserTable user;
 	private AddressTable address;
+	
+	private Object data;
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<Object> dataList = new ArrayList<>();
 
@@ -65,6 +67,14 @@ public class UserAction extends ActionSupport {
 
 	public void setAddress(AddressTable address) {
 		this.address = address;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 
 	public Map<String, Object> getDataMap() {
@@ -103,6 +113,8 @@ public class UserAction extends ActionSupport {
 		} else {
 			dataMap.put("status", 2);
 		}
+		
+		data = dataMap;
 		return SUCCESS;
 	}
 
@@ -131,6 +143,7 @@ public class UserAction extends ActionSupport {
 		}
 
 		session.put("user", user);
+		data = dataMap;
 		return SUCCESS;
 	}
 
@@ -169,6 +182,7 @@ public class UserAction extends ActionSupport {
 
 		dataMap.put("addresses", list);
 
+		data = dataMap;
 		return SUCCESS;
 	}
 
@@ -194,6 +208,8 @@ public class UserAction extends ActionSupport {
 		}
 
 		session.put("user", user);
+		
+		data = dataMap;
 		return SUCCESS;
 	}
 }
