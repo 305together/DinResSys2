@@ -1,9 +1,7 @@
 package com.txws.service.impl;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -12,7 +10,6 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.txws.dao.interfaces.ICommonDAO;
-import com.txws.model.AppraiseTable;
 import com.txws.model.MenuTable;
 import com.txws.model.TypeTable;
 import com.txws.service.interfaces.IMenuService;
@@ -36,10 +33,20 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public List<MenuTable> getAllMenu() {
+	public List<Object> getAllMenu() {
 		List<MenuTable> list = new ArrayList<>();
 		list = commonDAO.getObjects("MenuTable");
-		return list;
+		List<Object> dataList = new ArrayList<>();
+		for (MenuTable menuTable : list) {
+			Map<String, Object> dataMap = new HashMap<String, Object>();
+			dataMap.put("id", menuTable.getId());
+			dataMap.put("item", menuTable.getItem());
+			dataMap.put("price", menuTable.getPrice());
+			dataMap.put("saleNum", menuTable.getOrderNum());
+			dataMap.put("type", menuTable.getTypeTable().getTypeName());
+			dataList.add(dataMap);
+		}
+		return dataList;
 	}
 
 	@Override

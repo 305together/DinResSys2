@@ -38,7 +38,7 @@
 			<result type="json">
 				<!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
 				<param name="excludeNullProperties">true</param>
-				<param name="root">dataMap,dataList</param>
+				<param name="root">data</param>
 			</result>
 		</action>
 		<action name="appraise"
