@@ -108,6 +108,8 @@ public class AddressAction extends ActionSupport {
 		ActionContext ac = ActionContext.getContext();
 		Map<String, Object> session = ac.getSession();
 		user = (UserTable) session.get("user");
+		AddressTable newAddressTable = new AddressTable();
+		Map<String, Object> addressMap = new HashMap<>();
 		
 		if(user == null){
 			dataMap.put("status", 3);
@@ -122,6 +124,13 @@ public class AddressAction extends ActionSupport {
 			}
 			dataMap.put("status", 1);
 		}
+		
+		newAddressTable = addressService.loadAddressByAddressName(address.getAd());
+		addressMap.put("id", newAddressTable.getId());
+		addressMap.put("address", newAddressTable.getAd());
+		addressMap.put("isDefault", false);
+		dataMap.put("address", addressMap);
+		
 		data = dataMap;
 		return SUCCESS;
 	}

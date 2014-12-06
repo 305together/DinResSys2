@@ -32,7 +32,7 @@ public class AddressTable {
 	 * @pdOid 0f7572ad-be43-4f40-baec-54875fb62db7
 	 */
 	@Column(name = "ad")
-	private java.lang.String address;
+	private java.lang.String ad;
 	/**
 	 * �Ƿ�Ĭ��ֵ
 	 * 
@@ -63,12 +63,12 @@ public class AddressTable {
 		this.id = id;
 	}
 
-	public java.lang.String getAddress() {
-		return address;
+	public java.lang.String getAd() {
+		return ad;
 	}
 
-	public void setAddress(java.lang.String address) {
-		this.address = address;
+	public void setAd(java.lang.String address) {
+		this.ad = address;
 	}
 
 	public int getIsDefault() {
