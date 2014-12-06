@@ -9,4 +9,5 @@ public interface IAddressService {
 	void setDefaultAddress(AddressTable addressTable, int userId);
 	List<AddressTable> getAddressTablesByUser(int userId);
 	AddressTable loadAddress(int id);
+	AddressTable loadAddressByAddressName(String name);
 }

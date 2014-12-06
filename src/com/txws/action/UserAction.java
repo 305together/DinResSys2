@@ -164,7 +164,7 @@ public class UserAction extends ActionSupport {
 			if (addressTable.getIsDefault() == 1) {
 				Map<String, Object> temp = new HashMap<>();
 				temp.put("id", addressTable.getId());
-				temp.put("address", addressTable.getAddress());
+				temp.put("address", addressTable.getAd());
 				temp.put("isDefault", true);
 				list.add(temp);
 				break;
@@ -174,7 +174,7 @@ public class UserAction extends ActionSupport {
 			if (addressTable.getIsDefault() != 1) {
 				Map<String, Object> temp = new HashMap<>();
 				temp.put("id", addressTable.getId());
-				temp.put("address", addressTable.getAddress());
+				temp.put("address", addressTable.getAd());
 				temp.put("isDefault", false);
 				list.add(temp);
 			}
