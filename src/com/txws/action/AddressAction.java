@@ -8,12 +8,10 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.struts2.config.ParentPackage;
-import org.apache.struts2.config.Result;
-import org.apache.struts2.config.Results;
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.txws.model.AddressTable;
 import com.txws.model.UserTable;
@@ -21,10 +19,6 @@ import com.txws.service.interfaces.IAddressService;
 @Controller
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
-@Results({ @Result(name = "logSuccess", value = "pages/user!home", type = ServletActionRedirectResult.class),
-		@Result(name = "success", value = "index.jsp"),
-		@Result(name = "loadSuccess", value = "pages/changeEmployeeInfo.jsp"),
-		@Result(name = "logFail", value = "index.jsp"), })
 public class AddressAction extends ActionSupport {
 	/**
 	 * 
@@ -34,10 +28,11 @@ public class AddressAction extends ActionSupport {
 	@Resource(name="addressService")
 	private IAddressService addressService;
 	
-	Map<String, Object> dataMap = new HashMap<String, Object>();
-	List<Object> dataList = new ArrayList<>();
-	AddressTable address;
-	UserTable user;
+	private Object data = new Object();
+	private Map<String, Object> dataMap = new HashMap<String, Object>();
+	private List<Object> dataList = new ArrayList<>();
+	private AddressTable address;
+	private UserTable user;
 	
 	public AddressTable getAddress() {
 		return address;
@@ -53,6 +48,14 @@ public class AddressAction extends ActionSupport {
 
 	public void setUser(UserTable user) {
 		this.user = user;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 
 	public Map<String, Object> getDataMap() {
@@ -76,21 +79,50 @@ public class AddressAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	//TODO test
+	//OK
 	public String setDefaultAddress(){
+		ActionContext ac = ActionContext.getContext();
+		Map<String, Object> session = ac.getSession();
+		user = (UserTable) session.get("user");
+		
 		if(user == null){
 			dataMap.put("status", 3);
-			return "Error";
 		}else {
+			address = addressService.loadAddress(address.getId());
 			address.setIsDefault(1);
 			try {
-				addressService.setDefaultAddress(address);
+				addressService.setDefaultAddress(address,user.getId());
 			} catch (Exception e) {
 				dataMap.put("status", 2);
-				return "Error";
+				data = dataMap;
+				return SUCCESS;
 			}
 			dataMap.put("status", 1);
-			return SUCCESS;
 		}
+		data = dataMap;
+		return SUCCESS;
+	}
+	
+	//OK
+	public String addAddress(){
+		ActionContext ac = ActionContext.getContext();
+		Map<String, Object> session = ac.getSession();
+		user = (UserTable) session.get("user");
+		
+		if(user == null){
+			dataMap.put("status", 3);
+		}else {
+				address.setUserTable(user);
+			try {
+				addressService.addAddress(address);
+			} catch (Exception e) {
+				dataMap.put("status", 2);
+				data = dataMap;
+				return SUCCESS;
+			}
+			dataMap.put("status", 1);
+		}
+		data = dataMap;
+		return SUCCESS;
 	}
 }

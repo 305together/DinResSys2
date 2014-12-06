@@ -22,8 +22,9 @@ public class AddressServiceImpl implements IAddressService {
 	}
 
 	@Override
-	public void setDefaultAddress(AddressTable addressTable) {
-		int userId = addressTable.getUserTable().getId();
+	public void setDefaultAddress(AddressTable addressTable, int userId) {
+		
+		commonDAO.update(addressTable);
 		List<AddressTable> addressList = commonDAO.getObjectsByKey(AddressTable.class, "userTable", String.valueOf(userId));
 		for (AddressTable addressTable2 : addressList) {
 			if(addressTable2.getIsDefault() == 1) {
@@ -32,7 +33,6 @@ public class AddressServiceImpl implements IAddressService {
 				else {
 					addressTable2.setIsDefault(0);
 					commonDAO.update(addressTable2);
-					commonDAO.update(addressTable);
 				}
 			}
 		}
@@ -43,6 +43,12 @@ public class AddressServiceImpl implements IAddressService {
 		List<AddressTable> list = new ArrayList<>();
 		list = commonDAO.getObjectsByKey(AddressTable.class, "userId", String.valueOf(userId));
 		return list;
+	}
+
+	@Override
+	public AddressTable loadAddress(int id) {
+		AddressTable addressTable = commonDAO.getObject(AddressTable.class, id);
+		return addressTable;
 	}
 	
 }
