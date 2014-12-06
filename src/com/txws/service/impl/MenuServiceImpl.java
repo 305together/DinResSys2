@@ -50,7 +50,7 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public List<String> getActivityMenuImg() {
+	public List<? super String> getActivityMenuImg() {
 		List<String> list = commonDAO.getPartialObjects("select picture from "
 				+ "MenuTable where isInActivity = 1", 0, 4);
 		return list;

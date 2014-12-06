@@ -8,5 +8,5 @@ public interface IMenuService {
 	List<TypeTable> getMenuTypes();
 	List<TypeTable> getMenuByTypes(String typeId);
 	List<Object> getAllMenu();
-	List<String> getActivityMenuImg();
+	List<? super String> getActivityMenuImg();
 }

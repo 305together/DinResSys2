@@ -1,7 +1,9 @@
 package com.txws.service.impl;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.txws.dao.interfaces.ICommonDAO;
 import com.txws.model.AppraiseTable;
+import com.txws.model.AppraiseVO;
 import com.txws.service.interfaces.IAppraiseService;
 
 
@@ -61,16 +64,23 @@ public class AppraiseServiceImpl implements IAppraiseService {
 			praiseLevels.add(new DecimalFormat("0%").format(d));
 		}
 		
+		List<AppraiseVO> resultList = new ArrayList<>();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy.MM.dd");
 		for (Iterator<AppraiseTable> it = list.iterator(); it.hasNext(); ) {
-			if (null == it.next().getDetail()) {
-				it.remove();
+			AppraiseTable appraise = it.next();
+			if (null != appraise.getDetail()) {
+				AppraiseVO vo = new AppraiseVO();
+				vo.setName(appraise.getUserTable().getName());
+				vo.setMsg(appraise.getDetail());
+				vo.setDate(df.format(appraise.getPraiseTime()));
+				resultList.add(vo);
 			}
 		}
 		
 		map.put("num", num);
 		map.put("scope", new DecimalFormat("0.0").format(scope));
 		map.put("praiseLevels", praiseLevels);
-		map.put("appraises", list);
+		map.put("appraises", resultList);
 		return map;
 	}
 }

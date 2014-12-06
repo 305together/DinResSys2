@@ -1,5 +1,5 @@
-package com.txws.action;
 
+package com.txws.action;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -79,15 +79,10 @@ public class MenuAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public void getActivityMenuImg() {
-		List<String> list = menuService.getActivityMenuImg();
-//		for (String string : list) {
-//			dataList.add(string);
-//		}
-		for (String string : list) {
-			System.out.println(string);
-		}
-		dataList.addAll(list);
+	public String getActivityMenuImg() {
+		List<Object> list = (List<Object>) menuService.getActivityMenuImg();
+		data = list;
+		return SUCCESS;
 	}
 	
 }
