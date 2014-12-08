@@ -688,6 +688,7 @@ $(function(){
 			var that = this;
 			that.modules[that.moduleName] = that;
 			that.addresses = {};
+			that.orders = {};
 			//首页
 			$('#my-center .nav-back').tap(function(){
 				that.pagePrev('index');
@@ -701,10 +702,33 @@ $(function(){
 				success:function(data, status, jqXHR) {
 					var phone = data.phone;
 					that.addresses = data.addresses;
-					
 					that.update({addresses:that.addresses});
 				}
 			});
+			
+			//初始更新订单查看栏
+			$.ajax({
+				type:"get",
+				url: '/DinResSys2/order!getAllOrder',
+				dataType: 'json',
+				success:function(data, status, jqXHR){
+					that.orders = data.orders;
+					var uls = '';
+					that.orders.forEach(function(order, i){
+						uls += '<ul><li class="order-date">'+order.date+'<span>状态：'+order.status+'</span></li>';
+						var menus = order.menus, totalPrice  = 0;
+						menus.forEach(function(menu, j){
+							uls += '<li>'+menu.item+'<span class="appraise-btn">&gt;</span><span class="price">￥'+menu.price+'</span></li>'
+							totalPrice += menu.price;
+						})
+						uls += '<li class="clearfix"><span class="price total-price">￥'+totalPrice+'</span></li>';
+						
+						uls += '</ul>';
+					})
+					$('.order-list').html(uls);
+				}
+			})
+			
 			
 			//设置默认和新增地址
 			$('#my-center .address-list').on('tap', '.set-default-address, .add-address-btn', function(){
@@ -753,6 +777,16 @@ $(function(){
 					}			
 				}
 			})
+			
+			//点击菜式评论右箭头
+			$('.order-list').on('tap', '.appraise-btn', function(){
+				var $parent = $(this).parent(),
+					index = $parent.index()-1;
+					console.log(index);
+				that.pageNext('my-center-menu-appraise', function(){
+					that.notify(that.modules['my-center-menu-appraise'], {menuID: that.orders[index].id});
+				})
+			})
 		},
 		update:function(args){
 			if(!!args.addresses){
@@ -776,6 +810,45 @@ $(function(){
 	})
 	myCenterModule.init();
 	
+	
+	var myCenterMenuAppraise = Object.extend(Module, {
+		moduleName:"my-center-menu-appraise",
+		init:function(){
+			var that = this;
+			that.modules[that.moduleName] = that;
+			
+			//首页
+			$('#my-center-menu-appraise .nav-back').tap(function(){
+				that.pagePrev(that.from);
+			})
+		},
+		update: function(args){
+			var id = args.menuID;
+			$('#my-center-menu-appraise .commit-appraise-btn').tap(function(){
+				var msg = $('#my-center-menu-appraise .appaise-msg').val().trim(),
+					level = $('#my-center-menu-appraise .red-star').length;
+				$.ajax({
+					type:"get",
+					url: '/DinResSys2/appraise!addAppraise',
+					dataType: 'json',
+					data:{
+						'appraise.menuId':1,
+						'appraise.praiseLevel': 4,
+						'appraise.detail': msg
+					},
+					success:function(data, status, jqXHR) {
+						if(parseInt(data.status)==1){
+							Toast.show('添加成功');
+						}else{
+							Toast.show('添加不成功');
+						}
+					}
+				})
+			})
+		}
+	})
+	myCenterMenuAppraise.init();
+		
 	
 	/**
 	 * 	登录模块
@@ -888,7 +961,6 @@ $(function(){
 		}
 	})
 	registerModule.init();
-	
 	
 	
 	

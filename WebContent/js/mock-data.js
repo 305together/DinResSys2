@@ -176,7 +176,58 @@
 	}
 	Mock.mock('/DinResSys2/order!commitOrderResult', Datas.commitOrderResult);
 	
+	//DinResSys2/order!getAllOrder			//获取所有订单	
+	Datas.getAllOrderResult = {
+		orders:[{
+			id: 1,
+			date: '2014.9.30',				//下单时间
+			status: '送达',					//订单状态：订单已提交、订单已确认、在送、送达
+			menus:[{
+				'id': 7,
+				'item': '三煎比萨4',
+				'price':  13,
+				'saleNum': 30,		//月售30份
+				'type': '比萨'
+			},{
+				'id': 8,
+				'item': '麦辣比萨',
+				'price':  13,
+				'saleNum': 30,		//月售30份
+				'type': '比萨'
+			}]
+		},{
+			id: 2,
+			date: '2014.9.30',				//下单时间
+			status: '在送',					//订单状态：订单已提交、订单已确认、在送、送达
+			menus:[{
+				'id': 1,
+				'item': '三煎比萨4',
+				'price':  13,
+				'saleNum': 30,		//月售30份
+				'type': '比萨'
+			},{
+				'id': 2,
+				'item': '麦辣比萨',
+				'price':  13,
+				'saleNum': 30,		//月售30份
+				'type': '比萨'
+			},{
+				'id': 3,
+				'item': '培根比萨',
+				'price':  13,
+				'saleNum': 30,		//月售30份
+				'type': '比萨'
+			}]
+		}]
+	}
+	Mock.mock('/DinResSys2/order!getAllOrder', Datas.getAllOrderResult);
 	
+	
+	///DinResSys2/appraise!addAppraise			//添加对菜式的评论		{appraise.menuId:1, appraise.praiseLevel: 4, appraise.detail:'挺美味的'}
+	Datas.addAppraiseResult = {
+		'status': 1		//返回值1为提交成功，2为失败，其他值为登录异常（随便给个）
+	}
+	Mock.mock('/DinResSys2/appraise!addAppraise', Datas.addAppraiseResult)
 })();
 
 
