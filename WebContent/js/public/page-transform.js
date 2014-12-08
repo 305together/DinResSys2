@@ -817,9 +817,21 @@ $(function(){
 			var that = this;
 			that.modules[that.moduleName] = that;
 			
-			//首页
+			//返回
 			$('#my-center-menu-appraise .nav-back').tap(function(){
 				that.pagePrev(that.from);
+			})
+			
+			$('#my-center-menu-appraise .star').tap(function(){
+				var index = $(this).index();
+				console.log(index);
+				$('#my-center-menu-appraise .star').each(function(i, ele){
+					if(i<=index){
+						ele.className = 'star red-star';
+					}else{
+						ele.className = 'star';
+					}
+				})
 			})
 		},
 		update: function(args){
@@ -832,8 +844,8 @@ $(function(){
 					url: '/DinResSys2/appraise!addAppraise',
 					dataType: 'json',
 					data:{
-						'appraise.menuId':1,
-						'appraise.praiseLevel': 4,
+						'appraise.menuId':id,
+						'appraise.praiseLevel': level,
 						'appraise.detail': msg
 					},
 					success:function(data, status, jqXHR) {
