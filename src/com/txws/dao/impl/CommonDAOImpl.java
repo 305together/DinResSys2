@@ -1,8 +1,14 @@
 package com.txws.dao.impl;
 
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
+
 import com.txws.dao.interfaces.ICommonDAO;
 
 @Repository("commonDAO")
@@ -82,5 +88,20 @@ public class CommonDAOImpl extends BasicSupportDao implements ICommonDAO {
 	public <T> List<T> getObjectsByWhereSQL(String queryString) {
 		System.out.println(queryString);
 		return this.getHibernateTemplate().find(queryString);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getPartialObjects(final String hql, final int first, final int max) {
+		List<T> resultList = getHibernateTemplate().executeFind(new HibernateCallback<T>() {
+
+			@Override
+			public T doInHibernate(Session session) throws HibernateException,
+					SQLException {
+				Query query = session.createQuery(hql).setFirstResult(first).setMaxResults(max);
+				return (T) query.list();
+			}
+		});
+		return resultList;
 	}
 }

@@ -1,5 +1,5 @@
-package com.txws.action;
 
+package com.txws.action;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,10 +13,7 @@ import org.apache.struts2.config.Results;
 import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.opensymphony.xwork2.ActionSupport;
-import com.txws.model.MenuTable;
 import com.txws.model.TypeTable;
 import com.txws.service.interfaces.IMenuService;
 
@@ -32,9 +29,18 @@ public class MenuAction extends ActionSupport {
 	@Resource(name="menuService")
 	private IMenuService menuService;
 
+	private Object data = new Object();
 	Map<String, Object> dataMap = new HashMap<String, Object>();
 	List<Object> dataList = new ArrayList<>();
 	
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
+	}
+
 	public Map<String, Object> getDataMap() {
 		return dataMap;
 	}
@@ -51,11 +57,13 @@ public class MenuAction extends ActionSupport {
 		this.dataList = dataList;
 	}
 
+	//OK
 	public String getAllMenuType(){
 		List<TypeTable> list = menuService.getMenuTypes();
 		for (TypeTable types : list) {
 			dataList.add(types.getTypeName());
 		}
+		data = dataList;
 		return SUCCESS;
 	}
 	
@@ -64,11 +72,17 @@ public class MenuAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	//OK
 	public String getAllMenu(){
-		List<MenuTable> list = menuService.getAllMenu();
-		for (MenuTable menu : list) {
-			dataList.add(menu);
-		}
+		dataMap.put("menus", menuService.getAllMenu());
+		data = dataMap;
 		return SUCCESS;
 	}
+	
+	public String getActivityMenuImg() {
+		List<Object> list = (List<Object>) menuService.getActivityMenuImg();
+		data = list;
+		return SUCCESS;
+	}
+	
 }
