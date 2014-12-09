@@ -223,11 +223,23 @@
 	Mock.mock('/DinResSys2/order!getAllOrder', Datas.getAllOrderResult);
 	
 	
-	///DinResSys2/appraise!addAppraise			//添加对菜式的评论		{appraise.menuId:1, appraise.praiseLevel: 4, appraise.detail:'挺美味的'}
+	//DinResSys2/appraise!addAppraise			//添加对菜式的评论		{appraise.menuId:1, appraise.praiseLevel: 4, appraise.detail:'挺美味的'}
 	Datas.addAppraiseResult = {
 		'status': 1		//返回值1为提交成功，2为失败，其他值为登录异常（随便给个）
 	}
 	Mock.mock('/DinResSys2/appraise!addAppraise', Datas.addAppraiseResult)
+	
+	//DinResSys2/Activity!addActivity		//新增活动					{'Activity.activityName': '双12','Activity.describe': '在12.12号全场折扣','Activity.beginTime': '2014-12-11 23:59','Activity.endTime': '2014-12-12 23:59','promotion':80}
+	Datas.addActivityResult = {
+		'status': 1		//返回值1为提交成功，2为失败
+	}
+	Mock.mock('/DinResSys2/Activity!addActivity', Datas.addActivityResult);
+	
+	//DinResSys2/Activity!changeActivity		//新增活动					{'Activity.activityName': '双12','Activity.describe': '在12.12号全场折扣','Activity.beginTime': '2014-12-11 23:59','Activity.endTime': '2014-12-12 23:59','promotion':80}
+	Datas.changeActivityResult = {
+		'status': 1		//返回值1为提交成功，2为失败
+	}
+	Mock.mock('/DinResSys2/Activity!changeActivity', Datas.changeActivityResult);
 })();
 
 

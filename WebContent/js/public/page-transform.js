@@ -516,13 +516,11 @@ $(function(){
 				}
 				$.ajax({
 					type:"get",
-					url: '/DinResSys2/order!commitOrderResult',
-					traditional: true,
+					url: '/DinResSys2/order!commitOrderResult?'+$.param({menus:orders}),
 					data:{
 						phone: phone,
 						addressID: addressID,
-						remark: remark,
-						menus: orders
+						remark: remark
 					},
 					dataType: 'json',
 					success:function(data, status, jqXHR) {
@@ -844,7 +842,7 @@ $(function(){
 					url: '/DinResSys2/appraise!addAppraise',
 					dataType: 'json',
 					data:{
-						'appraise.menuId':id,
+						'menuId':id,
 						'appraise.praiseLevel': level,
 						'appraise.detail': msg
 					},
