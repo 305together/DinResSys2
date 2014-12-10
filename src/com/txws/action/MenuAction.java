@@ -1,5 +1,6 @@
 
 package com.txws.action;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,9 @@ public class MenuAction extends ActionSupport {
 	List<Object> dataList = new ArrayList<>();
 	private MenuTable menuTable;
 	private int id;
+	private String typeName;
+	private String activityName;
+	private File menuImg;
 	
 	public Object getData() {
 		return data;
@@ -78,6 +82,30 @@ public class MenuAction extends ActionSupport {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getActivityName() {
+		return activityName;
+	}
+
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
+
+	public File getMenuImg() {
+		return menuImg;
+	}
+
+	public void setMenuImg(File menuImg) {
+		this.menuImg = menuImg;
 	}
 
 	//OK
@@ -121,21 +149,6 @@ public class MenuAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	//TODO test,upload picture
-	public String addMenu() {
-		int typeId = 1;
-		try {
-			menuService.addMenu(menuTable,typeId);
-		} catch (Exception e) {
-			dataMap.put("status", 2);
-			data = dataMap;
-			return SUCCESS;
-		}
-		dataMap.put("status", 1);
-		data = dataMap;
-		return SUCCESS;
-	}
-	
 	//TODO test
 	@SuppressWarnings("finally")
 	public String delete(){
@@ -149,5 +162,12 @@ public class MenuAction extends ActionSupport {
 		}finally{
 			return "successDel";
 		}
+	}
+	
+	public String addMenu() {
+		menuService.addMenu(menuTable,typeName, activityName, menuImg);
+		dataMap.put("status", 1);
+		data = dataMap;
+		return SUCCESS;
 	}
 }

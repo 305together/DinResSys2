@@ -1,5 +1,7 @@
 package com.txws.service.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,13 +9,16 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 
 import com.txws.dao.interfaces.ICommonDAO;
+import com.txws.model.ActivityTable;
 import com.txws.model.MenuTable;
 import com.txws.model.OrderMenuTable;
 import com.txws.model.TypeTable;
 import com.txws.service.interfaces.IMenuService;
+import com.txws.util.PathUtils;
 @Service("menuService")
 public class MenuServiceImpl implements IMenuService {
 	@Resource(name = "commonDAO")
@@ -80,13 +85,6 @@ public class MenuServiceImpl implements IMenuService {
 	}
 
 	@Override
-	public void addMenu(MenuTable menuTable, int typeId) {
-		TypeTable type = commonDAO.getObject(TypeTable.class, typeId);
-		menuTable.setTypeTable(type);
-		commonDAO.save(menuTable);
-	}
-
-	@Override
 	public void updateMenu(MenuTable menuTable) {
 		commonDAO.update(menuTable);
 	}
@@ -97,6 +95,24 @@ public class MenuServiceImpl implements IMenuService {
 		for (MenuTable menuTable : menuList) {
 			menuTable.setActivityTable(null);
 			menuTable.setIsInActivity(0);
+		}
+	}
+	
+	@Override
+	public void addMenu(MenuTable menuTable, String typeName, String activityName, File menuImg) {
+		TypeTable type = commonDAO.getObjectsByKey(TypeTable.class, "typeName", typeName).get(0);
+		ActivityTable activity = commonDAO.getObjectsByKey(ActivityTable.class, "activityName", activityName).get(0);
+		menuTable.setTypeTable(type);
+		menuTable.setActivityTable(activity);
+		commonDAO.save(menuTable);
+		
+		String pictureName = menuTable.getId() + ".jpg";
+		menuTable.setPicture(PathUtils.getMenuImgDirPath() + "/" + pictureName);
+		File file = new File(PathUtils.getMenuImgStoreDir(), pictureName);
+		try {
+			FileUtils.copyFile(menuImg, file);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

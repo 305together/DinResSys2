@@ -52,6 +52,10 @@
 				<param name="excludeNullProperties">true</param>
 				<param name="root">data</param>
 			</result>
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">20480000</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
 		</action>
 		<action name="appraise"
 			class="com.txws.action.AppraiseAction">
