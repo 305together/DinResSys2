@@ -16,6 +16,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.txws.model.AddressTable;
 import com.txws.model.UserTable;
 import com.txws.service.interfaces.IAddressService;
+import com.txws.service.interfaces.IUserService;
 @Controller
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
@@ -27,6 +28,8 @@ public class AddressAction extends ActionSupport {
 	
 	@Resource(name="addressService")
 	private IAddressService addressService;
+	@Resource(name="userService")
+	private IUserService userService;
 	
 	private Object data = new Object();
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
@@ -99,11 +102,14 @@ public class AddressAction extends ActionSupport {
 			}
 			dataMap.put("status", 1);
 		}
+		
+		user = userService.loadUser(user.getId());
+		session.put("user", user);
+		
 		data = dataMap;
 		return SUCCESS;
 	}
-	
-	//OK
+
 	public String addAddress(){
 		ActionContext ac = ActionContext.getContext();
 		Map<String, Object> session = ac.getSession();

@@ -1,6 +1,9 @@
 package com.txws.model;
 
-import javax.persistence.CascadeType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,11 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.IndexColumn;
 
 @Entity
 @Table(name = "orders")
@@ -29,6 +28,8 @@ public class OrdersTable {
 	 * @pdOid ddb7873b-98a3-488e-a221-4034701e429a
 	 */
 	private int price;
+	
+	private String phone;
 	/**
 	 * �µ�ʱ��
 	 * 
@@ -62,14 +63,7 @@ public class OrdersTable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "adId")
 	private AddressTable addressTable;
-	/**
-	 * @pdRoleInfo migr=no name=MenuTable assc=orderMenuTable
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
-	 *             side=A
-	 */
-	@ManyToMany(mappedBy = "Reference_13", fetch = FetchType.EAGER)
-	private java.util.Collection<MenuTable> Reference_12;
-
+	
 	public int getId() {
 		return id;
 	}
@@ -84,6 +78,14 @@ public class OrdersTable {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public java.util.Date getCreateTime() {
@@ -156,25 +158,19 @@ public class OrdersTable {
 			}
 		}
 	}
-
-	/** @pdGenerated default getter */
+/*
 	public java.util.Collection<MenuTable> getReference_12() {
 		if (Reference_12 == null)
 			Reference_12 = new java.util.HashSet<MenuTable>();
 		return Reference_12;
 	}
 
-	/** @pdGenerated default iterator getter */
 	public java.util.Iterator getIteratorReference_12() {
 		if (Reference_12 == null)
 			Reference_12 = new java.util.HashSet<MenuTable>();
 		return Reference_12.iterator();
 	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newReference_12
-	 */
 	public void setReference_12(java.util.Collection<MenuTable> newReference_12) {
 		removeAllReference_12();
 		for (java.util.Iterator iter = newReference_12.iterator(); iter
@@ -182,10 +178,6 @@ public class OrdersTable {
 			addReference_12((MenuTable) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newMenuTable
-	 */
 	public void addReference_12(MenuTable newMenuTable) {
 		if (newMenuTable == null)
 			return;
@@ -197,10 +189,6 @@ public class OrdersTable {
 		}
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldMenuTable
-	 */
 	public void removeReference_12(MenuTable oldMenuTable) {
 		if (oldMenuTable == null)
 			return;
@@ -211,7 +199,6 @@ public class OrdersTable {
 			}
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllReference_12() {
 		if (Reference_12 != null) {
 			MenuTable oldMenuTable;
@@ -223,5 +210,5 @@ public class OrdersTable {
 			}
 		}
 	}
-
+*/
 }

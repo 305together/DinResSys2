@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.txws.dao.interfaces.ICommonDAO;
 import com.txws.model.MenuTable;
+import com.txws.model.OrderMenuTable;
 import com.txws.model.TypeTable;
 import com.txws.service.interfaces.IMenuService;
 @Service("menuService")
@@ -54,6 +55,40 @@ public class MenuServiceImpl implements IMenuService {
 		List<String> list = commonDAO.getPartialObjects("select picture from "
 				+ "MenuTable where isInActivity = 1", 0, 4);
 		return list;
+	}
+
+	@Override
+	public MenuTable getMenuById(int id) {
+		MenuTable menu = commonDAO.getObject(MenuTable.class, id);
+		return menu;
+	}
+
+	@Override
+	public List<MenuTable> getMenuTablesByOrderId(int orderId) {
+		List<MenuTable> menuTables = new ArrayList<>();
+		List<OrderMenuTable> orderMenuTables = commonDAO.getObjectsByKey(OrderMenuTable.class, "orderId", String.valueOf(orderId));
+		for (OrderMenuTable orderMenuTable : orderMenuTables) {
+			menuTables.add(commonDAO.getObject(MenuTable.class, orderMenuTable.getMenuId()));
+		}
+		return menuTables;
+	}
+
+	@Override
+	public void deleteMenu(MenuTable menuTable) {
+		System.out.println(menuTable.getId() + "............");
+		commonDAO.delete(menuTable);
+	}
+
+	@Override
+	public void addMenu(MenuTable menuTable, int typeId) {
+		TypeTable type = commonDAO.getObject(TypeTable.class, typeId);
+		menuTable.setTypeTable(type);
+		commonDAO.save(menuTable);
+	}
+
+	@Override
+	public void updateMenu(MenuTable menuTable) {
+		commonDAO.update(menuTable);
 	}
 
 }

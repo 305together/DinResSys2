@@ -83,4 +83,15 @@ public class AppraiseServiceImpl implements IAppraiseService {
 		map.put("appraises", resultList);
 		return map;
 	}
+
+	@Override
+	public void addAppraise(AppraiseTable appraiseTable) {
+		commonDAO.save(appraiseTable);
+	}
+
+	@Override
+	public void deleteAppraiseByMenu(int menuId) {
+		List<AppraiseTable> appraiseTables = commonDAO.getObjectsByKey(AppraiseTable.class, "menuId", String.valueOf(menuId));
+		commonDAO.deleteAll(appraiseTables);
+	}
 }

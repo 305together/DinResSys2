@@ -70,16 +70,11 @@ public class MenuTable {
 	 * @pdRoleInfo migr=no name=AppraiseTable assc=menuAppraiseReference
 	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
 	 */
-	@OneToMany(mappedBy = "menuTable", cascade = { CascadeType.REMOVE },fetch = FetchType.LAZY)
-	private java.util.Collection<AppraiseTable> appraiseTable;
-	/**
-	 * @pdRoleInfo migr=no name=OrdersTable assc=orderMenuTable
-	 *             coll=java.util.Collection impl=java.util.HashSet mult=0..*
-	 */
-	@ManyToMany(fetch = FetchType.LAZY)
-	private java.util.Collection<OrdersTable> Reference_13;
+	//@OneToMany(mappedBy = "menuTable", cascade = { CascadeType.REMOVE },fetch = FetchType.LAZY)
+	//private java.util.Collection<AppraiseTable> appraiseTable;
+
 	/** @pdRoleInfo migr=no name=TypeTable assc=reference11 mult=0..1 side=A */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "typeId")
 	private TypeTable typeTable;
 	/** @pdRoleInfo migr=no name=ActivityTable assc=reference14 mult=0..1 side=A */
@@ -174,25 +169,19 @@ public class MenuTable {
 	public void setDescri(java.lang.String descri) {
 		this.descri = descri;
 	}
-
-	/** @pdGenerated default getter */
+/*
 	public java.util.Collection<AppraiseTable> getAppraiseTable() {
 		if (appraiseTable == null)
 			appraiseTable = new java.util.HashSet<AppraiseTable>();
 		return appraiseTable;
 	}
 
-	/** @pdGenerated default iterator getter */
 	public java.util.Iterator getIteratorAppraiseTable() {
 		if (appraiseTable == null)
 			appraiseTable = new java.util.HashSet<AppraiseTable>();
 		return appraiseTable.iterator();
 	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newAppraiseTable
-	 */
 	public void setAppraiseTable(
 			java.util.Collection<AppraiseTable> newAppraiseTable) {
 		removeAllAppraiseTable();
@@ -201,10 +190,6 @@ public class MenuTable {
 			addAppraiseTable((AppraiseTable) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newAppraiseTable
-	 */
 	public void addAppraiseTable(AppraiseTable newAppraiseTable) {
 		if (newAppraiseTable == null)
 			return;
@@ -216,10 +201,6 @@ public class MenuTable {
 		}
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldAppraiseTable
-	 */
 	public void removeAppraiseTable(AppraiseTable oldAppraiseTable) {
 		if (oldAppraiseTable == null)
 			return;
@@ -230,7 +211,6 @@ public class MenuTable {
 			}
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllAppraiseTable() {
 		if (appraiseTable != null) {
 			AppraiseTable oldAppraiseTable;
@@ -242,25 +222,20 @@ public class MenuTable {
 			}
 		}
 	}
-
-	/** @pdGenerated default getter */
+*/
+/*
 	public java.util.Collection<OrdersTable> getReference_13() {
 		if (Reference_13 == null)
 			Reference_13 = new java.util.HashSet<OrdersTable>();
 		return Reference_13;
 	}
 
-	/** @pdGenerated default iterator getter */
 	public java.util.Iterator getIteratorReference_13() {
 		if (Reference_13 == null)
 			Reference_13 = new java.util.HashSet<OrdersTable>();
 		return Reference_13.iterator();
 	}
 
-	/**
-	 * @pdGenerated default setter
-	 * @param newReference_13
-	 */
 	public void setReference_13(
 			java.util.Collection<OrdersTable> newReference_13) {
 		removeAllReference_13();
@@ -269,10 +244,6 @@ public class MenuTable {
 			addReference_13((OrdersTable) iter.next());
 	}
 
-	/**
-	 * @pdGenerated default add
-	 * @param newOrdersTable
-	 */
 	public void addReference_13(OrdersTable newOrdersTable) {
 		if (newOrdersTable == null)
 			return;
@@ -284,10 +255,6 @@ public class MenuTable {
 		}
 	}
 
-	/**
-	 * @pdGenerated default remove
-	 * @param oldOrdersTable
-	 */
 	public void removeReference_13(OrdersTable oldOrdersTable) {
 		if (oldOrdersTable == null)
 			return;
@@ -298,7 +265,6 @@ public class MenuTable {
 			}
 	}
 
-	/** @pdGenerated default removeAll */
 	public void removeAllReference_13() {
 		if (Reference_13 != null) {
 			OrdersTable oldOrdersTable;
@@ -310,7 +276,7 @@ public class MenuTable {
 			}
 		}
 	}
-
+*/
 	/** @pdGenerated default parent getter */
 	public TypeTable getTypeTable() {
 		return typeTable;

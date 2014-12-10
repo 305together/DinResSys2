@@ -1,29 +1,16 @@
 package com.txws.action;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
-
-import org.apache.jasper.tagplugins.jstl.core.Out;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.ParentPackage;
-import org.apache.struts2.config.Result;
-import org.apache.struts2.config.Results;
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.sun.org.apache.xml.internal.serializer.ElemDesc;
 import com.txws.model.AddressTable;
 import com.txws.model.UserTable;
 import com.txws.service.interfaces.IAddressService;
@@ -48,7 +35,6 @@ public class UserAction extends ActionSupport {
 	private IAddressService addressService;
 	private UserTable user;
 	private AddressTable address;
-	
 	private Object data;
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<Object> dataList = new ArrayList<>();
@@ -209,6 +195,21 @@ public class UserAction extends ActionSupport {
 
 		session.put("user", user);
 		
+		data = dataMap;
+		return SUCCESS;
+	}
+	
+	//TODO test
+	public String deleteUser(){
+		try {
+			user = userService.loadUser(user.getId());
+			userService.delUser(user);
+		} catch (Exception e) {
+			dataMap.put("status", 2);
+			data = dataMap;
+			return SUCCESS;
+		}
+		dataMap.put("status", 1);
 		data = dataMap;
 		return SUCCESS;
 	}

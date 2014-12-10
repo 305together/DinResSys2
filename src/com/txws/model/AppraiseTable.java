@@ -93,11 +93,11 @@ public class AppraiseTable {
 			if (this.menuTable != null) {
 				MenuTable oldMenuTable = this.menuTable;
 				this.menuTable = null;
-				oldMenuTable.removeAppraiseTable(this);
+				//oldMenuTable.removeAppraiseTable(this);
 			}
 			if (newMenuTable != null) {
 				this.menuTable = newMenuTable;
-				this.menuTable.addAppraiseTable(this);
+				//this.menuTable.addAppraiseTable(this);
 			}
 		}
 	}
