@@ -71,12 +71,12 @@ $(function(){
 				var from = $('#'+that.moduleName), to = $('#'+toPage);
 				from.removeClass('page-active').addClass("page-next page-out");
 				to.removeClass('page-next page-active').addClass("page-prev");
-				$('.page-wrap').on("transitionend", '.page-out', function(){
+				$('.page-wrap').off().on("transitionend", '.page-out', function(){
 					$(this).removeClass("page-out");
 					afterCallback && afterCallback();
 					Toast.hide();
 				})
-				$('.page-wrap').on("transitionend", '.page-in',function(){
+				$('.page-wrap').off().on("transitionend", '.page-in',function(){
 					$(this).removeClass("page-in");
 					afterCallback && afterCallback();
 					Toast.hide();
@@ -120,12 +120,24 @@ $(function(){
 			var that = this;
 			that.modules[that.moduleName] = that;
 			
-			$('.order-wrap').tap(function(){
+			$('.order-wrap').off().tap(function(){
 				that.pageNext("dishes");
 			})
-			$('.my-order-wrap').tap(function(){
-				that.pageNext('my-center');
+			$('.my-order-wrap').off().tap(function(){
+				$.ajax({
+					type:'get',
+					url: '/DinResSys2/user!getLoginStatus',
+					dataType:'json',
+					success: function(data, status, jqXHR){
+						if(parseInt(data.status)==1){
+							that.pageNext('my-center');			
+						}else{
+							that.pageNext('login');
+						}
+					}
+				})
 			})
+			
 			
 			$.ajax({
 				type:"get",
@@ -170,7 +182,7 @@ $(function(){
 		}
 	})
 	indexModule.init();
-	
+	indexModule.init()
 	
 	/**
 	 * 菜单选择模块
@@ -268,7 +280,7 @@ $(function(){
 			}
 			
 			//点击侧边栏菜式类型
-			$('#dishes .side-type').on('tap', 'li', function(){
+			$('#dishes .side-type').off().on('tap', 'li', function(){
 				var index = $(this).index();
 				console.log(that.menuType[index].start);
 				menuScroll.scrollToElement(document.querySelector('#menu-wrap li:nth-child('+that.menuType[index].start+')'));
@@ -278,7 +290,7 @@ $(function(){
 			})
 			
 			//点击评论||价格||-（减号）			//未完成状态，没有把当前状态保存到that.orders中
-			$('#dishes #menu-wrap').on('tap', '.appraise-btn, .price-btn, .delete-num', function(){
+			$('#dishes #menu-wrap').off().on('tap', '.appraise-btn, .price-btn, .delete-num', function(){
 				var classes = this.classList;
 				var index;
 				if(classes.contains('appraise-btn')){
@@ -318,12 +330,12 @@ $(function(){
 			})
 			
 			//返回 
-			$('#dishes .nav-back').tap(function(){
+			$('#dishes .nav-back').off().tap(function(){
 				that.pagePrev('index')
 			})
 			
 			//去结算
-			$('#dishes .confirm-dishes-btn').tap(function(){
+			$('#dishes .confirm-dishes-btn').off().tap(function(){
 				$.ajax({
 					type:'get',
 					url: '/DinResSys2/user!getLoginStatus',
@@ -392,12 +404,12 @@ $(function(){
 			that.modules[that.moduleName] = that;
 			
 			//返回 
-			$('#shop-cart .nav-back').tap(function(){
+			$('#shop-cart .nav-back').off().tap(function(){
 				that.pagePrev(that.from);
 			})
 			
 			//确认美食
-			$("#shop-cart .confirm-btn").tap(function(){
+			$("#shop-cart .confirm-btn").off().tap(function(){
 				that.pageNext('order-info');
 			})
 		},
@@ -432,7 +444,7 @@ $(function(){
 			that.modules[that.moduleName] = that;
 			
 			//返回 
-			$('#appraise .nav-back').tap(function(){
+			$('#appraise .nav-back').off().tap(function(){
 				that.pagePrev(that.from);
 			})
 		},
@@ -492,19 +504,19 @@ $(function(){
 			});
 			
 			//返回
-			$('#order-info .nav-back').tap(function(){
+			$('#order-info .nav-back').off().tap(function(){
 				that.pagePrev(that.from);
 			})
 			
 			//向右箭头
-			$('#order-info .change-address').tap(function(){
+			$('#order-info .change-address').off().tap(function(){
 				that.pageNext('address-select', function(){
 					that.notify(that.modules['address-select'], that.addresses);
 				});
 			})
 			
 			//点击提交订单
-			$('#order-info .commit-order-btn').tap(function(){
+			$('#order-info .commit-order-btn').off().tap(function(){
 				var phone = $('#order-info #tel').val().trim(),
 					addressID = that.addresses[addressSelectModule.currentAddress].id,
 					remark = $('#order-info #remark').val().trim();
@@ -527,6 +539,7 @@ $(function(){
 						if(parseInt(data.status)==1){
 							Toast.show('订单提交成功',function(){
 								that.pageNext('my-center');
+								that.notify(that.modules['my-center'], {isRefresh: true});
 							})
 						}else{
 							Toast.show('订单提交失败');
@@ -538,6 +551,9 @@ $(function(){
 			
 		},
 		update:function(args){
+			if(!!args.isRefresh){
+				this.init();
+			}
 			this.addresses = args.addresses;
 			$('#order-info #address').val(args.addresses[args.currentAddress].address);
 		}
@@ -560,12 +576,12 @@ $(function(){
 			that.currentAddress = 0;
 			
 			//返回
-			$('#address-select .nav-back').tap(function(){
+			$('#address-select .nav-back').off().tap(function(){
 				that.pagePrev(that.from);
 			})
 			
 			//设置默认和选择当前使用地址
-			$('#address-select .address-list').on('tap', '.set-default-address, li', function(){
+			$('#address-select .address-list').off().on('tap', '.set-default-address, li', function(){
 				if($(this).is('.set-default-address')){
 					var index = $(this).parent().index();
 					
@@ -625,7 +641,7 @@ $(function(){
 				}
 			})
 			
-			$('.add-address .add-address-btn').tap(function(){
+			$('.add-address .add-address-btn').off().tap(function(){
 				var ad = $('#address-select .new-address').val().trim();
 				if(ad==''){
 					Toast.show('新增地址不能为空');
@@ -649,6 +665,9 @@ $(function(){
 			})
 		},
 		update: function(args){		//必须要传入addresses
+			if(!!args.isRefresh){
+				this.init();
+			}
 			var lis = '';
 			this.addresses = args;
 			var that = this;
@@ -688,7 +707,7 @@ $(function(){
 			that.addresses = {};
 			that.orders = {};
 			//首页
-			$('#my-center .nav-back').tap(function(){
+			$('#my-center .nav-back').off().tap(function(){
 				that.pagePrev('index');
 			})
 			
@@ -716,8 +735,8 @@ $(function(){
 						uls += '<ul><li class="order-date">'+order.date+'<span>状态：'+order.status+'</span></li>';
 						var menus = order.menus, totalPrice  = 0;
 						menus.forEach(function(menu, j){
-							uls += '<li>'+menu.item+'<span class="appraise-btn">&gt;</span><span class="price">￥'+menu.price+'</span></li>'
-							totalPrice += menu.price;
+							uls += '<li>'+menu.item+'<span class="appraise-btn">&gt;</span><span class="price">￥'+menu.price+'</span><span class="num">x'+menu.num+'</span></li>'
+							totalPrice += menu.price*menu.num;
 						})
 						uls += '<li class="clearfix"><span class="price total-price">￥'+totalPrice+'</span></li>';
 						
@@ -729,7 +748,7 @@ $(function(){
 			
 			
 			//设置默认和新增地址
-			$('#my-center .address-list').on('tap', '.set-default-address, .add-address-btn', function(){
+			$('#my-center .address-list').off().on('tap', '.set-default-address, .add-address-btn', function(){
 				if($(this).is('.set-default-address')){
 					var index = $(this).parent().index();
 					$.ajax({
@@ -777,7 +796,7 @@ $(function(){
 			})
 			
 			//点击菜式评论右箭头
-			$('.order-list').on('tap', '.appraise-btn', function(){
+			$('.order-list').off().on('tap', '.appraise-btn', function(){
 				var $parent = $(this).parent(),
 					index = $parent.index()-1;
 					console.log(index);
@@ -787,6 +806,9 @@ $(function(){
 			})
 		},
 		update:function(args){
+			if(!!args.isRefresh){
+				this.init();
+			}
 			if(!!args.addresses){
 				this.addresses = args.addresses;
 				var lis = '';
@@ -816,11 +838,11 @@ $(function(){
 			that.modules[that.moduleName] = that;
 			
 			//返回
-			$('#my-center-menu-appraise .nav-back').tap(function(){
+			$('#my-center-menu-appraise .nav-back').off().tap(function(){
 				that.pagePrev(that.from);
 			})
 			
-			$('#my-center-menu-appraise .star').tap(function(){
+			$('#my-center-menu-appraise .star').off().tap(function(){
 				var index = $(this).index();
 				console.log(index);
 				$('#my-center-menu-appraise .star').each(function(i, ele){
@@ -833,8 +855,9 @@ $(function(){
 			})
 		},
 		update: function(args){
+			var that = this;
 			var id = args.menuID;
-			$('#my-center-menu-appraise .commit-appraise-btn').tap(function(){
+			$('#my-center-menu-appraise .commit-appraise-btn').off().tap(function(){
 				var msg = $('#my-center-menu-appraise .appaise-msg').val().trim(),
 					level = $('#my-center-menu-appraise .red-star').length;
 				$.ajax({
@@ -849,6 +872,7 @@ $(function(){
 					success:function(data, status, jqXHR) {
 						if(parseInt(data.status)==1){
 							Toast.show('添加成功');
+							that.pagePrev('my-center');
 						}else{
 							Toast.show('添加不成功');
 						}
@@ -870,15 +894,15 @@ $(function(){
 			that.modules[that.moduleName] = that;
 			
 			//首页
-			$('#login .nav-back').tap(function(){
+			$('#login .nav-back').off().tap(function(){
 				that.pagePrev('index');
 			})
 			//注册
-			$('#login .nav-right').tap(function(){
+			$('#login .nav-right').off().tap(function(){
 				that.pageNext('register');
 			})
 			//登录			
-			$('#login .login-btn').tap(function(){
+			$('#login .login-btn').off().tap(function(){
 				var username = $('#login #loginName').val(),
 					pwd = $('#login #loginPwd').val();
 				if(username.trim() == '' || pwd.trim() == ''){
@@ -897,6 +921,7 @@ $(function(){
 						if(data.status==1){
 							Toast.show('登录成功',function(){
 								that.pageNext('dishes');
+								that.notify(that.modules['my-center'], that.modules['address-select'], that.modules[''], {isRefresh:true});
 							})
 						}else{
 							Toast.show('登录异常');
@@ -922,11 +947,11 @@ $(function(){
 			var that = this;
 			that.modules[that.moduleName] = that;
 			//首页
-			$('#register .nav-back').tap(function(){
+			$('#register .nav-back').off().tap(function(){
 				that.pagePrev('index');
 			})
 			
-			$('#register .register-btn').tap(function(){
+			$('#register .register-btn').off().tap(function(){
 				var name = $('#register #registerName').val().trim(),
 					pwd = $('#register #registerPwd').val().trim(),
 					pwdAgain = $('#register #pwd-again').val().trim(),

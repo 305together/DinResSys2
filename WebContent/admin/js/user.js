@@ -1,4 +1,4 @@
-$('.comfirm a').click(function(){
+$('.confirm a').click(function(){
 	var $td = $(this).parent().parent().parent().children(),
 		id = $td.eq(0).text().trim(),
 		name = $td.eq(1).find('input').val().trim(),
@@ -9,7 +9,7 @@ $('.comfirm a').click(function(){
 	}
 	$.ajax({
 		type:"get",
-		url:"/DinResSys2/user!changeUserInfo",
+		url:"/DinResSys2/admin/user!changeUserInfo",
 		async:true,
 		dataType:'json',
 		data:{

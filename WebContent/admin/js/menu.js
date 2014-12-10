@@ -7,7 +7,7 @@ $('.add-menu-type a').click(function(){
 	}
 	$.ajax({
 		type:"get",
-		url:"/DinResSys2/type!addMenuType",
+		url:"/DinResSys2/admin/type!addMenuType",
 		async:true,
 		dataType: 'json',
 		data:{
@@ -30,7 +30,7 @@ $('.add a').click(function(){
 	$('#price').val('');
 	$('#describe').val('');
 	$('#menuId').val('');
-	$('#menuModal  form').attr('action','/DinResSys2/menu!addMenu');
+	$('#menuModal  form').attr('action','/DinResSys2/admin/menu!addMenu');
 	$('#menuModal').modal('show');
 })
 //点击'修改', 弹出菜式填写模态框
@@ -45,7 +45,7 @@ $('.change a').click(function(){
 	$('#price').val(price);
 	$('#describe').val(describe);
 	$('#menuId').val(id);
-	$('#menuModal  form').attr('action','/DinResSys2/menu!changeMenu');
+	$('#menuModal  form').attr('action','/DinResSys2/admin/menu!changeMenu');
 	
 	$('#menuModal').modal('show');
 })

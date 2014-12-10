@@ -170,7 +170,7 @@
 	Mock.mock('/DinResSys2/address!addAddress', Datas.addAddressResult);
 	
 	
-	//DinResSys2/order!commitOrder			//提交订单		{phone: '13800138000', addressID:1, remark: '加饭，多谢', menus:{1:3,2:1}}
+	//DinResSys2/order!commitOrderResult			//提交订单		{phone: '13800138000', addressID:1, remark: '加饭，多谢', menus:{1:3,2:1}}
 	Datas.commitOrderResult = {	
 		'status': 1		//返回值1为提交成功，2为失败，其他值为登录异常（随便给个）
 	}
@@ -186,12 +186,14 @@
 				'id': 7,
 				'item': '三煎比萨4',
 				'price':  13,
+				'num': 2,			//2份三煎比萨4
 				'saleNum': 30,		//月售30份
 				'type': '比萨'
 			},{
 				'id': 8,
 				'item': '麦辣比萨',
 				'price':  13,
+				'num': 2,			//2份麦辣比萨
 				'saleNum': 30,		//月售30份
 				'type': '比萨'
 			}]
@@ -203,18 +205,21 @@
 				'id': 1,
 				'item': '三煎比萨4',
 				'price':  13,
+				'num': 3,			//3份三煎比萨4
 				'saleNum': 30,		//月售30份
 				'type': '比萨'
 			},{
 				'id': 2,
 				'item': '麦辣比萨',
 				'price':  13,
+				'num': 1,			//3份
 				'saleNum': 30,		//月售30份
 				'type': '比萨'
 			},{
 				'id': 3,
 				'item': '培根比萨',
 				'price':  13,
+				'num': 2,			//3份
 				'saleNum': 30,		//月售30份
 				'type': '比萨'
 			}]
@@ -229,36 +234,43 @@
 	}
 	Mock.mock('/DinResSys2/appraise!addAppraise', Datas.addAppraiseResult)
 	
-	//DinResSys2/activity!addActivity		//新增活动					{'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
+	
+	/**
+	 * 后台admin start
+	 */
+	//DinResSys2/admin/activity!addActivity		//新增活动					{'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
 	Datas.addActivityResult = {
 		'status': 1		//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/activity!addActivity', Datas.addActivityResult);
+	Mock.mock('/DinResSys2/admin/activity!addActivity', Datas.addActivityResult);
 	
 	
-	//DinResSys2/activity!changeActivity		//新增活动					{'activity.id':1,'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
+	//DinResSys2/admin/activity!changeActivity		//新增活动					{'activity.id':1,'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
 	Datas.changeActivityResult = {
 		'status': 1		//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/activity!changeActivity', Datas.changeActivityResult);
+	Mock.mock('/DinResSys2/admin/activity!changeActivity', Datas.changeActivityResult);
 
-	//DinResSys2/order!chahgeStatus			//改变订单状态			{'id':1, status: '在送'}
+	//DinResSys2/admin/order!changeStatus			//改变订单状态			{'id':1, status: '在送'}
 	Datas.changeStatusResult = {
 		'status': 1		//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/order!chahgeStatus', Datas.changeStatusResult);
+	Mock.mock('/DinResSys2/admin/order!changeStatus', Datas.changeStatusResult);
 	
-	//DinResSys2/type!addMenuType			//增加菜式类型		{'type.typeName':'比萨'}
+	//DinResSys2/admin/type!addMenuType			//增加菜式类型		{'type.typeName':'比萨'}
 	Datas.addMenuTypeResult = {
 		'status':1 		//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/type!addMenuType', Datas.addMenuTypeResult);
+	Mock.mock('/DinResSys2/admin/type!addMenuType', Datas.addMenuTypeResult);
 	
-	//DinResSys2/user!changeUserInfo		//修改用户账号或者密码		{'user.id': 1, 'user.name': 'derek', 'user.password': '6666'}
+	//DinResSys2/admin/user!changeUserInfo		//修改用户账号或者密码		{'user.id': 1, 'user.name': 'derek', 'user.password': '6666'}
 	Datas.changeUserInfoResult = {				
 		'status': 1			//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/user!changeUserInfo', Datas.changeUserInfoResult)
+	Mock.mock('/DinResSys2/admin/user!changeUserInfo', Datas.changeUserInfoResult);
+	/**
+	 * 后台admin end
+	 */
 })();
 
 

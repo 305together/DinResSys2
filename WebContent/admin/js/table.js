@@ -41,7 +41,7 @@ $('.commit-activity').on('click', function(){
 	if(id==''){
 		$.ajax({
 			type:"get",
-			url:"/DinResSys2/activity!addActivity",
+			url:"/DinResSys2/admin/activity!addActivity",
 			async:true,
 			dataType:'json',
 			data:{
@@ -64,7 +64,7 @@ $('.commit-activity').on('click', function(){
 	}else{
 		$.ajax({
 			type:"get",
-			url:"/DinResSys2/activity!changeActivity",
+			url:"/DinResSys2/admin/activity!changeActivity",
 			async:true,
 			dataType:'json',
 			data:{

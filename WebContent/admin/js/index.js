@@ -3,7 +3,7 @@ $('.order-status').change(function(){
 	var status = $(this).find('option:selected').val();
 	$.ajax({
 		type:"get",
-		url:"/DinResSys2/order!changeStatus",
+		url:"/DinResSys2/admin/order!changeStatus",
 		async:true,
 		dataType:'json',
 		data:{

@@ -100,8 +100,8 @@
 									<td><input type="text" value='黄培明'/></td>
 									<td><input type="text" value="666666" /></td>
 									<td>
-										<span class='comfirm'><a href="#">确定</a></span>
-										<span class='delete'><a href="/DinResSys2/user!delete?id=1">删除</a></span>
+										<span class='confirm'><a href="#">确定</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/user!delete?id=1">删除</a></span>
 									</td>
 								</tr>
 								<tr>
@@ -109,8 +109,8 @@
 									<td><input type="text" value='黄杰勇'/></td>
 									<td><input type="text" value="666666" /></td>
 									<td>
-										<span class='comfirm'><a href="#">确定</a></span>
-										<span class='delete'><a href="/DinResSys2/user!delete?id=2">删除</a></span>
+										<span class='confirm'><a href="#">确定</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/user!delete?id=2">删除</a></span>
 									</td>
 								</tr>
 								<tr>
@@ -118,8 +118,8 @@
 									<td><input type="text" value='刁辉'/></td>
 									<td><input type="text" value="666666" /></td>
 									<td>
-										<span class='comfirm'><a href="#">确定</a></span>
-										<span class='delete'><a href="/DinResSys2/user!delete?id=3">删除</a></span>
+										<span class='confirm'><a href="#">确定</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/user!delete?id=3">删除</a></span>
 									</td>
 								</tr>
 								
@@ -133,44 +133,6 @@
 
 		</div>
 
-		<div id="menuModal" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-						</button>
-						<h4 class="modal-title" id="myModalLabel">菜式信息</h4>
-					</div>
-					<div class="modal-body">
-						<div class="form-group has-success">
-							<form action="/DinResSys2/menu!addMenu" enctype="multipart/form-data" method="post">
-								<input id="item" name='menu.item' class="form-control" type='text' placeholder="菜式名">
-								<input id="price" name='menu.price' class="form-control" type='number' placeholder="单价">
-								<input id="describe" name='menu.describe' class="form-control" type='number' placeholder="描述">
-								<label for="picture">图片：</label>
-								<input id='picture' name='menu.picture' type='file' class="form-control">
-								<label for="type">类型：</label>
-								<select name="type.typeName" id="type">
-									<option value="比萨" selected>比萨</option>
-									<option value="炒饭">炒饭</option>
-								</select><br />
-								<label for="activityName">参与活动：</label>
-								<select name="activity.activityName" id='activityName'>
-									<option value="不参与活动" selected>不参与活动</option>
-									<option value="双12">双12</option>
-									<option value="双11">双11</option>
-								</select>
-								<input id='menuId' name='menu.id' type="text" style="display: none;" value=""/>
-							</form>
-						</div>					
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button class="commit-menu btn btn-primary" type="button">提交</button>
-					</div>
-				</div>
-			</div>
-		</div>
 		<!--/.main-->
 
 		<script src="js/jquery-1.11.1.min.js"></script>
@@ -181,6 +143,8 @@
 		<script src="js/easypiechart-data.js"></script>
 		<script src="js/bootstrap-datepicker.js"></script>
 		<script src="js/bootstrap-table.js"></script>
+		<script type="text/javascript" src="../js/public/mock.js" ></script>
+		<script type="text/javascript" src="../js/mock-data.js" ></script>
 		<script type="text/javascript" src="js/public.js" ></script>
 		<script>
 			! function($) {
