@@ -223,23 +223,42 @@
 	Mock.mock('/DinResSys2/order!getAllOrder', Datas.getAllOrderResult);
 	
 	
-	//DinResSys2/appraise!addAppraise			//添加对菜式的评论		{appraise.menuId:1, appraise.praiseLevel: 4, appraise.detail:'挺美味的'}
+	//DinResSys2/appraise!addAppraise			//添加对菜式的评论		{menuId:1, appraise.praiseLevel: 4, appraise.detail:'挺美味的'}
 	Datas.addAppraiseResult = {
 		'status': 1		//返回值1为提交成功，2为失败，其他值为登录异常（随便给个）
 	}
 	Mock.mock('/DinResSys2/appraise!addAppraise', Datas.addAppraiseResult)
 	
-	//DinResSys2/Activity!addActivity		//新增活动					{'Activity.activityName': '双12','Activity.describe': '在12.12号全场折扣','Activity.beginTime': '2014-12-11 23:59','Activity.endTime': '2014-12-12 23:59','promotion':80}
+	//DinResSys2/activity!addActivity		//新增活动					{'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
 	Datas.addActivityResult = {
 		'status': 1		//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/Activity!addActivity', Datas.addActivityResult);
+	Mock.mock('/DinResSys2/activity!addActivity', Datas.addActivityResult);
 	
-	//DinResSys2/Activity!changeActivity		//新增活动					{'Activity.activityName': '双12','Activity.describe': '在12.12号全场折扣','Activity.beginTime': '2014-12-11 23:59','Activity.endTime': '2014-12-12 23:59','promotion':80}
+	
+	//DinResSys2/activity!changeActivity		//新增活动					{'activity.id':1,'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
 	Datas.changeActivityResult = {
 		'status': 1		//返回值1为提交成功，2为失败
 	}
-	Mock.mock('/DinResSys2/Activity!changeActivity', Datas.changeActivityResult);
+	Mock.mock('/DinResSys2/activity!changeActivity', Datas.changeActivityResult);
+
+	//DinResSys2/order!chahgeStatus			//改变订单状态			{'id':1, status: '在送'}
+	Datas.changeStatusResult = {
+		'status': 1		//返回值1为提交成功，2为失败
+	}
+	Mock.mock('/DinResSys2/order!chahgeStatus', Datas.changeStatusResult);
+	
+	//DinResSys2/type!addMenuType			//增加菜式类型		{'type.typeName':'比萨'}
+	Datas.addMenuTypeResult = {
+		'status':1 		//返回值1为提交成功，2为失败
+	}
+	Mock.mock('/DinResSys2/type!addMenuType', Datas.addMenuTypeResult);
+	
+	//DinResSys2/user!changeUserInfo		//修改用户账号或者密码		{'user.id': 1, 'user.name': 'derek', 'user.password': '6666'}
+	Datas.changeUserInfoResult = {				
+		'status': 1			//返回值1为提交成功，2为失败
+	}
+	Mock.mock('/DinResSys2/user!changeUserInfo', Datas.changeUserInfoResult)
 })();
 
 
