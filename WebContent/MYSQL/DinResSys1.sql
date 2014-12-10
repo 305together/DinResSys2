@@ -16,7 +16,8 @@ create table activity
    activityName         varchar(64) not null,
    beginTime            datetime not null,
    endTime              datetime not null,
-   descri               varchar(256),
+   promotion			int not null default 100,
+   describe             varchar(256),
    primary key (id)
 );
 

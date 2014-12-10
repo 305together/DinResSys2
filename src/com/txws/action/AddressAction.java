@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.struts2.config.ParentPackage;
+import org.apache.struts2.config.Result;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 

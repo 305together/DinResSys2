@@ -91,4 +91,13 @@ public class MenuServiceImpl implements IMenuService {
 		commonDAO.update(menuTable);
 	}
 
+	@Override
+	public void removeActivity(int activityId) {
+		List<MenuTable> menuList = commonDAO.getObjectsByKey(MenuTable.class, "activityId", String.valueOf(activityId));
+		for (MenuTable menuTable : menuList) {
+			menuTable.setActivityTable(null);
+			menuTable.setIsInActivity(0);
+		}
+	}
+
 }

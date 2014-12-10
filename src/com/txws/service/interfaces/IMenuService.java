@@ -16,4 +16,5 @@ public interface IMenuService {
 	void deleteMenu(MenuTable menuTable);
 	void addMenu(MenuTable menuTable, int typeId);
 	void updateMenu(MenuTable menuTable);
+	void removeActivity(int activityId);
 }

@@ -27,8 +27,8 @@ public class OrderMenuServiceImpl implements IOrdersMenuService {
 
 	@Override
 	public void delOrderMenuTablesByOrderId(int orderId) {
-		// TODO 自动生成的方法存根
-		
+		List<OrderMenuTable> list = commonDAO.getObjectsByKey(OrderMenuTable.class, "orderId", String.valueOf(orderId));
+		commonDAO.deleteAll(list);
 	}
 
 	@Override

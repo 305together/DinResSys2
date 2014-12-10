@@ -27,6 +27,15 @@
 	<package name="json" extends="json-default" namespace="/">
 		<action name="user"
 			class="com.txws.action.UserAction">
+			<!--<result name="successDel">
+				index.html
+			</result>
+			<result name="failLogin">
+				login.html
+			</result>
+			<result name="successLogin">
+				/admin/index.html
+			</result>-->
 			<result type="json">
 				<!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
 				<param name="excludeNullProperties">true</param>
@@ -35,6 +44,9 @@
 		</action>
 		<action name="menu"
 			class="com.txws.action.MenuAction">
+			<result name="successDel">
+				/index.html
+			</result>
 			<result type="json">
 				<!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
 				<param name="excludeNullProperties">true</param>
@@ -59,6 +71,28 @@
 		</action>
 		<action name="order"
 			class="com.txws.action.OrderAction">
+			<result name="successDel">
+				/index.html
+			</result>
+			<result type="json">
+				<!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+				<param name="excludeNullProperties">true</param>
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="activity"
+			class="com.txws.action.ActivityAction">
+			<result name="successDel">
+				/index.html
+			</result>
+			<result type="json">
+				<!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
+				<param name="excludeNullProperties">true</param>
+				<param name="root">data</param>
+			</result>
+		</action>
+		<action name="type"
+			class="com.txws.action.TypeAction">
 			<result type="json">
 				<!-- 这里指定将被Struts2序列化的属性，该属性在action中必须有对应的getter方法 -->
 				<param name="excludeNullProperties">true</param>

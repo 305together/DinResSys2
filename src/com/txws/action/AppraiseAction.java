@@ -82,7 +82,7 @@ public class AppraiseAction extends ActionSupport {
 		this.menuId = menuId;
 	}
 
-	//TODO 是否传入orderID 对应
+	//OK
 	public String addAppraise() {
 		dataMap.clear();
 		ActionContext ac = ActionContext.getContext();

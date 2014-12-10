@@ -38,6 +38,7 @@ public class MenuAction extends ActionSupport {
 	Map<String, Object> dataMap = new HashMap<String, Object>();
 	List<Object> dataList = new ArrayList<>();
 	private MenuTable menuTable;
+	private int id;
 	
 	public Object getData() {
 		return data;
@@ -69,6 +70,14 @@ public class MenuAction extends ActionSupport {
 
 	public void setMenuTable(MenuTable menuTable) {
 		this.menuTable = menuTable;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	//OK
@@ -125,5 +134,20 @@ public class MenuAction extends ActionSupport {
 		dataMap.put("status", 1);
 		data = dataMap;
 		return SUCCESS;
+	}
+	
+	//TODO test
+	@SuppressWarnings("finally")
+	public String delete(){
+		try {
+			appraiseService.deleteAppraiseByMenu(id);
+			menuTable = menuService.getMenuById(id);
+			menuService.deleteMenu(menuTable);
+		} catch (Exception e) {
+			System.err.println(e.toString());
+			e.printStackTrace();
+		}finally{
+			return "successDel";
+		}
 	}
 }

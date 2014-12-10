@@ -1,6 +1,5 @@
 package com.txws.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,6 +27,16 @@ public class OrdersServiceImpl implements IOrdersService {
 		return ordersTables;
 	}
 
-	
-	
+	@Override
+	public void delOrder(int orderId) {
+		OrdersTable ordersTable = commonDAO.getObject(OrdersTable.class, orderId);
+		commonDAO.delete(ordersTable);
+	}
+
+	@Override
+	public void updateStatus(int orderId, String status) {
+		OrdersTable ordersTable = commonDAO.getObject(OrdersTable.class, orderId);
+		ordersTable.setStatus(status);
+		commonDAO.update(ordersTable);
+	}
 }

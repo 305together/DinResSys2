@@ -2,11 +2,8 @@ package com.txws.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
-
 import com.txws.dao.interfaces.ICommonDAO;
 import com.txws.model.AddressTable;
 import com.txws.model.UserTable;
@@ -59,7 +56,13 @@ public class UserServiceImpl implements IUserService {
 		commonDAO.save(ad);
 	}
 	
-	public void delUser(UserTable user){
+	public void delUser(int userId){
+		UserTable user = commonDAO.getObject(UserTable.class, userId);
 		commonDAO.delete(user);
+	}
+
+	@Override
+	public void updateUser(UserTable user) {
+		commonDAO.update(user);
 	}
 }

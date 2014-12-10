@@ -9,4 +9,6 @@ public interface IOrdersService {
 	
 	OrdersTable addOrder(OrdersTable ordersTable);
 	List<OrdersTable> loadAllOrdersByUser(int userId);
+	void delOrder(int orderId);
+	void updateStatus(int orderId, String status);
 }

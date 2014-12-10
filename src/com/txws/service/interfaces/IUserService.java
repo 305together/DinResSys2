@@ -12,5 +12,6 @@ public interface IUserService {
 	List<String> loadAuthorities(int id);
 	boolean addUser(UserTable user);
 	void addAddress(AddressTable ad);
-	void delUser(UserTable user);
+	void delUser(int userId);
+	void updateUser(UserTable user);
 }

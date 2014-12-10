@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.struts2.config.ParentPackage;
+import org.apache.struts2.config.Result;
+import org.apache.struts2.config.Results;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -22,6 +24,10 @@ import com.opensymphony.xwork2.ActionSupport;
 @Controller
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
+@Results({
+	@Result(name = "successLogin", value = "index.html"),
+	@Result(name = "failLogin", value = "login.html")
+})
 public class UserAction extends ActionSupport {
 
 	/**
@@ -38,6 +44,7 @@ public class UserAction extends ActionSupport {
 	private Object data;
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<Object> dataList = new ArrayList<>();
+	private int id;
 
 	public UserTable getUser() {
 		return user;
@@ -79,6 +86,14 @@ public class UserAction extends ActionSupport {
 		this.dataMap = dataMap;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String execute() {
 		user = userService.loadUser(2);
 		return "success";
@@ -99,7 +114,7 @@ public class UserAction extends ActionSupport {
 		} else {
 			dataMap.put("status", 2);
 		}
-		
+
 		data = dataMap;
 		return SUCCESS;
 	}
@@ -133,7 +148,7 @@ public class UserAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	//OK
+	// OK
 	public String getUserInfo() {
 		dataMap.clear();
 		ActionContext ac = ActionContext.getContext();
@@ -145,7 +160,7 @@ public class UserAction extends ActionSupport {
 		user = userService.loadUser(user.getId());
 
 		dataMap.put("phone", user.getTel());
-		
+
 		for (AddressTable addressTable : user.getAddressTable()) {
 			if (addressTable.getIsDefault() == 1) {
 				Map<String, Object> temp = new HashMap<>();
@@ -186,7 +201,6 @@ public class UserAction extends ActionSupport {
 				dataMap.put("status", 1);
 			else
 				dataMap.put("status", 2);
-
 		} catch (Exception e) {
 			dataMap.put("status", 3);
 			session.put("user", null);
@@ -194,16 +208,55 @@ public class UserAction extends ActionSupport {
 		}
 
 		session.put("user", user);
-		
+
 		data = dataMap;
 		return SUCCESS;
 	}
 	
 	//TODO test
-	public String deleteUser(){
+	public String adminLogin() {
+		ActionContext ac = ActionContext.getContext();
+		Map<String, Object> session = ac.getSession();
+		user.setPassword(MD5.UseMD5(user.getName() + user.getPassword()));
+		
+		try {
+			user = userService.login(user);
+		} catch (Exception e) {
+			session.put("user", null);
+			return "failLogin";
+		}
+		if(user == null){
+			session.put("user", null);
+			return "failLogin";
+		}else {
+			session.put("user", user);
+			return "successLogin";
+		}
+	}
+
+	// TODO test
+	@SuppressWarnings("finally")
+	public String delete() {
+		try {
+			userService.delUser(id);
+		} catch (Exception e) {
+			System.err.println(e.toString());
+			e.printStackTrace();
+		} finally {
+			return "successDel";
+		}
+	}
+	
+	//TODO test
+	public String changeUserInfo(){
+		dataMap.clear();
+		String name = user.getName();
+		String pw = user.getPassword();
 		try {
 			user = userService.loadUser(user.getId());
-			userService.delUser(user);
+			user.setName(name);
+			user.setPassword(MD5.UseMD5(name + pw));
+			userService.updateUser(user);
 		} catch (Exception e) {
 			dataMap.put("status", 2);
 			data = dataMap;
