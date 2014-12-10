@@ -110,7 +110,7 @@ public class OrderAction extends ActionSupport {
 		this.menus = menus;
 	}
 
-	// TODO 发货时ordernum++,menus为键值对
+	//OK
 	public String commitOrderResult() {
 		dataMap.clear();
 		ActionContext ac = ActionContext.getContext();
@@ -137,7 +137,6 @@ public class OrderAction extends ActionSupport {
 		//保存order
 		try {
 			ordersTable = ordersService.addOrder(ordersTable);
-			System.out.println("/////////////////");
 			for (Integer mapKey : menus.keySet()) {
 				OrderMenuTable orderMenuTable = new OrderMenuTable();
 				orderMenuTable.setMenuId(mapKey);
@@ -145,7 +144,6 @@ public class OrderAction extends ActionSupport {
 				orderMenuTable.setOrderId(ordersTable.getId());
 				ordersMenuService.addOrderMenuTable(orderMenuTable);
 			}
-			System.out.println("................");
 		} catch (Exception e) {
 			dataMap.put("status", 2);
 			dataMap.put("status2", menus);
@@ -160,7 +158,7 @@ public class OrderAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	//OK
+	//TODO 返回数量
 	public String getAllOrder() {
 		dataMap.clear();
 		dataList.clear();
@@ -181,10 +179,11 @@ public class OrderAction extends ActionSupport {
 			List<MenuTable> menuTables = menuService
 					.getMenuTablesByOrderId(ordersTable.getId());
 			for (MenuTable menuTable : menuTables) {
+				int num = ordersMenuService.getMenuNum(ordersTable.getId(), menuTable.getId());
 				Map<String, Object> temp = new HashMap<>();
 				temp.put("id", menuTable.getId());
 				temp.put("item", menuTable.getItem());
-				temp.put("price", menuTable.getPrice());//乘上数量
+				temp.put("price", menuTable.getPrice() * num);
 				temp.put("saleNum", menuTable.getOrderNum());
 				temp.put("type", menuTable.getTypeTable().getTypeName());
 				temp1.add(temp);

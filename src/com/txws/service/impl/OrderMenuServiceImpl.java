@@ -31,4 +31,10 @@ public class OrderMenuServiceImpl implements IOrdersMenuService {
 		
 	}
 
+	@Override
+	public int getMenuNum(int orderId, int menuId) {
+		List<OrderMenuTable> list = commonDAO.getObjectsByKeyandRequire(OrderMenuTable.class, "orderId", String.valueOf(orderId), " and menuId = " + menuId);
+		return list.get(0).getNum();
+	}
+
 }

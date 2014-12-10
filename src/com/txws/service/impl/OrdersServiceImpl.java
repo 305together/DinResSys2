@@ -19,7 +19,7 @@ public class OrdersServiceImpl implements IOrdersService {
 	@Override
 	public OrdersTable addOrder(OrdersTable ordersTable) {
 		commonDAO.save(ordersTable);
-		return commonDAO.getObjectsByKey(OrdersTable.class, "createTime", ordersTable.getCreateTime().toString()).get(0);
+		return commonDAO.getObjectsByKeys(ordersTable).get(0);
 	}
 
 	@Override

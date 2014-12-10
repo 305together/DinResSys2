@@ -42,11 +42,11 @@ public class AppraiseAction extends ActionSupport {
 
 	private Map<String, Object> dataMap = new HashMap<>();
 	private AppraiseTable appraise;
-
+	private MenuTable menu;
 	private int menuId;
 
 	public String getAppraiseByMenuID() {
-		dataMap = appraiseService.getAppraiseByMenuID(menuId);
+		dataMap = appraiseService.getAppraiseByMenuID(menu.getId());
 		return SUCCESS;
 	}
 
@@ -58,12 +58,12 @@ public class AppraiseAction extends ActionSupport {
 		this.dataMap = dataMap;
 	}
 
-	public int getMenuId() {
-		return menuId;
+	public MenuTable getMenu() {
+		return menu;
 	}
 
-	public void setMenuId(int menuId) {
-		this.menuId = menuId;
+	public void setMenu(MenuTable menu) {
+		this.menu = menu;
 	}
 
 	public AppraiseTable getAppraise() {
@@ -74,7 +74,15 @@ public class AppraiseAction extends ActionSupport {
 		this.appraise = appraise;
 	}
 
-	// TODO appraise.menuId直接传入menuId；
+	public int getMenuId() {
+		return menuId;
+	}
+
+	public void setMenuId(int menuId) {
+		this.menuId = menuId;
+	}
+
+	//TODO 是否传入orderID 对应
 	public String addAppraise() {
 		dataMap.clear();
 		ActionContext ac = ActionContext.getContext();
