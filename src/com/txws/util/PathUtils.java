@@ -16,10 +16,6 @@ public class PathUtils {
 	static {
 		try {
 			prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("path.properties"));
-			File dir = new File(prop.getProperty("menuImgStoreDir"));
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

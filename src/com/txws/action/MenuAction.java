@@ -170,4 +170,11 @@ public class MenuAction extends ActionSupport {
 		data = dataMap;
 		return SUCCESS;
 	}
+	
+	public String changeMenu() {
+		menuService.updateMenu(menuTable,typeName, activityName, menuImg);
+		dataMap.put("status", 1);
+		data = dataMap;
+		return SUCCESS;
+	}
 }

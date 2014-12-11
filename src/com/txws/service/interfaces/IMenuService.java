@@ -18,4 +18,5 @@ public interface IMenuService {
 	void addMenu(MenuTable menuTable, String typeName, String activityName, File menuImg);
 	void updateMenu(MenuTable menuTable);
 	void removeActivity(int activityId);
+	void updateMenu(MenuTable menuTable, String typeName, String activityName, File menuImg);
 }

@@ -12,6 +12,9 @@
             30
 		</session-timeout>
 	</session-config>
+	<listener>
+		<listener-class>com.txws.util.InitListener</listener-class>
+	</listener>
 	<!--struts配置-->
 	<filter>
 		<filter-name>struts2</filter-name>

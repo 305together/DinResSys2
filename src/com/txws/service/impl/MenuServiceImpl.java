@@ -116,4 +116,29 @@ public class MenuServiceImpl implements IMenuService {
 		}
 	}
 
+	@Override
+	public void updateMenu(MenuTable menuTable, String typeName, String activityName, File menuImg) {
+		int id = menuTable.getId();
+		MenuTable menu = commonDAO.getObject(MenuTable.class, id);
+		menu.setItem(menuTable.getItem());
+		menu.setPrice(menuTable.getPrice());
+		menu.setIsInActivity(menuTable.getIsInActivity());
+		menu.setDescri(menuTable.getDescri());
+		menu.setStatus(menuTable.getStatus());
+		String pictureName = id + ".jpg";
+		menu.setPicture(PathUtils.getMenuImgDirPath() + "/" + pictureName);
+		
+		TypeTable type = commonDAO.getObjectsByKey(TypeTable.class, "typeName", typeName).get(0);
+		ActivityTable activity = commonDAO.getObjectsByKey(ActivityTable.class, "activityName", activityName).get(0);
+		menu.setTypeTable(type);
+		menu.setActivityTable(activity);
+		commonDAO.update(menu);
+		
+		File file = new File(PathUtils.getMenuImgStoreDir(), pictureName);
+		try {
+			FileUtils.copyFile(menuImg, file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
