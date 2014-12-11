@@ -799,9 +799,11 @@ $(function(){
 			$('.order-list').off().on('tap', '.appraise-btn', function(){
 				var $parent = $(this).parent(),
 					index = $parent.index()-1;
+				var $parentUL = $parent.parent(),
+					orderIndex = $parentUL.index();
 					console.log(index);
 				that.pageNext('my-center-menu-appraise', function(){
-					that.notify(that.modules['my-center-menu-appraise'], {menuID: that.orders[index].id});
+					that.notify(that.modules['my-center-menu-appraise'], {menuID: that.orders[orderIndex].menus[index].id});
 				})
 			})
 		},
