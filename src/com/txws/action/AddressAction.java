@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.struts2.config.ParentPackage;
-import org.apache.struts2.config.Result;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -124,6 +123,8 @@ public class AddressAction extends ActionSupport {
 				address.setUserTable(user);
 			try {
 				addressService.addAddress(address);
+				System.out.println("asdf///////////////");
+				newAddressTable = addressService.loadAddressByAddressName(address.getAd());
 			} catch (Exception e) {
 				dataMap.put("status", 2);
 				data = dataMap;
@@ -132,7 +133,6 @@ public class AddressAction extends ActionSupport {
 			dataMap.put("status", 1);
 		}
 		
-		newAddressTable = addressService.loadAddressByAddressName(address.getAd());
 		addressMap.put("id", newAddressTable.getId());
 		addressMap.put("address", newAddressTable.getAd());
 		addressMap.put("isDefault", false);

@@ -165,13 +165,11 @@ $(function(){
 				async:true,
 				dataType:'json',
 				success:function(data, status, jqXHR){
-					var $wrap = $('.swipe-wrap'),
-					swips = "";
+					var $img = $('.swipe-wrap img');
 					
 					data.forEach(function(ele, index){
-						swips = swips + '<div class="swipe"><img src="'+ele+'" alt="" /></div>'
+						$img[index].src = ele;
 					})
-					$wrap.html(swips);
 				}
 			});
 			
@@ -269,7 +267,12 @@ $(function(){
 						that.allMenuArray = menus = sortMenu(menus);
 						menus.forEach(function(ele, index){
 							that.allMenuObj[ele.id] = ele;
-							lis += '<li><span class="menu-name">'+ele.item+'</span><span class="appraise-btn">评论></span><span class="sale-num">月售'+ele.saleNum+'</span><span class="price"><span class="price-btn">￥'+ele.price+'</span></span></li>';
+							console.log(ele.hasPromotion)
+							if(ele.hasPromotion){
+								lis += '<li><span class="menu-name">'+ele.item+'<span class="promotion-tip"></span></span><span class="appraise-btn">评论></span><span class="sale-num">月售'+ele.saleNum+'</span><span class="price"><span class="price-btn">￥'+ele.price+'</span></span></li>';
+							}else{
+								lis += '<li><span class="menu-name">'+ele.item+'</span><span class="appraise-btn">评论></span><span class="sale-num">月售'+ele.saleNum+'</span><span class="price"><span class="price-btn">￥'+ele.price+'</span></span></li>';
+							}
 						})
 						$('#menu-wrap ul').html(lis);
 						setTimeout(function () {
@@ -511,7 +514,7 @@ $(function(){
 			//向右箭头
 			$('#order-info .change-address').off().tap(function(){
 				that.pageNext('address-select', function(){
-					that.notify(that.modules['address-select'], that.addresses);
+					that.notify(that.modules['address-select'], {addresses:that.addresses});
 				});
 			})
 			
@@ -553,6 +556,7 @@ $(function(){
 		update:function(args){
 			if(!!args.isRefresh){
 				this.init();
+				return;
 			}
 			this.addresses = args.addresses;
 			$('#order-info #address').val(args.addresses[args.currentAddress].address);
@@ -667,11 +671,15 @@ $(function(){
 		update: function(args){		//必须要传入addresses
 			if(!!args.isRefresh){
 				this.init();
+				return;
+			}
+			if(!args.addresses){
+				return;
 			}
 			var lis = '';
-			this.addresses = args;
+			this.addresses = args.addresses;
 			var that = this;
-			args.forEach(function(ele, i){
+			args.addresses.forEach(function(ele, i){
 				if(that.currentAddress == i){
 					lis += '<li class="current-address">'+ele.address;
 					if(ele.isDefault){
@@ -777,6 +785,7 @@ $(function(){
 						Toast.show('新增地址不能为空');
 						return;
 					}else{
+						var $parent = $(this).parent();
 						$.ajax({
 							type:"get",
 							url: '/DinResSys2/address!addAddress',
@@ -787,7 +796,11 @@ $(function(){
 							success:function(data, status, jqXHR) {
 								if(parseInt(data.status)==1){
 									that.addresses.push(data.address);
-									that.update({addresses:that.addresses})						
+									that.update({addresses:that.addresses})
+									$parent.before('<li>'+data.address.address+'<div class="set-default-address">设为默认地址</div></li>');
+									that.notify(that.modules['address-select'], that.modules['order-info'], {isRefresh:true});
+								}else{
+									Toast.show('操作失败')
 								}
 							}
 						})
@@ -810,6 +823,7 @@ $(function(){
 		update:function(args){
 			if(!!args.isRefresh){
 				this.init();
+				return;
 			}
 			if(!!args.addresses){
 				this.addresses = args.addresses;
@@ -923,7 +937,7 @@ $(function(){
 						if(data.status==1){
 							Toast.show('登录成功',function(){
 								that.pageNext('dishes');
-								that.notify(that.modules['my-center'], that.modules['address-select'], that.modules[''], {isRefresh:true});
+								that.notify(that.modules['my-center'], that.modules['address-select'], that.modules['order-info'], {isRefresh:true});
 							})
 						}else{
 							Toast.show('登录异常');
@@ -981,7 +995,9 @@ $(function(){
 							success: function(data, status, jqXHR){
 								if(data.status==1){
 									Toast.show('注册成功',function(){
-										that.pageNext('dishes');
+										that.pageNext('dishes', function(){
+											that.notify(that.modules['my-center'], that.modules['address-select'], that.modules['order-info'], {isRefresh:true});
+										});
 									})
 								}else{
 									Toast.show('注册失败');

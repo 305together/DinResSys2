@@ -17,4 +17,5 @@ public interface ICommonDAO {
 	<T> List<T> getObjectsByKeys(T t);
 	String shiftEnter(String srcStr); 
 	<T> List<T> getPartialObjects(String hql, int first, int max);
+	<T> List<T> getAllObjects(Class<T> entityClass);
 }

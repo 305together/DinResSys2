@@ -104,4 +104,9 @@ public class CommonDAOImpl extends BasicSupportDao implements ICommonDAO {
 		});
 		return resultList;
 	}
+
+	@Override
+	public <T> List<T> getAllObjects(Class<T> entityClass) {
+		return this.getHibernateTemplate().loadAll(entityClass);
+	}
 }

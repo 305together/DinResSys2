@@ -19,9 +19,11 @@ $('.confirm a').click(function(){
 		},
 		success:function(data){
 			if(parseInt(data.status)==1){
-				alert('修改成功');	
+				alert('修改成功');
+				location.href =　'/DinResSys2/admin/user!getAllUser';
 			}else{
 				alert('修改失败');
+				location.href =　'/DinResSys2/admin/user!getAllUser';
 			}
 		}
 	})

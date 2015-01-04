@@ -1,20 +1,14 @@
 package com.txws.action;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.apache.struts2.config.ParentPackage;
 import org.apache.struts2.config.Result;
 import org.apache.struts2.config.Results;
-import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -33,6 +27,7 @@ import com.txws.service.interfaces.IUserService;
 @Results({ @Result(name = "success", value = "index.jsp"), })
 public class AppraiseAction extends ActionSupport {
 
+	private static final long serialVersionUID = -4420479385334433523L;
 	@Resource(name = "appraiseService")
 	private IAppraiseService appraiseService;
 	@Resource(name = "userService")
@@ -82,7 +77,7 @@ public class AppraiseAction extends ActionSupport {
 		this.menuId = menuId;
 	}
 
-	//OK
+	// OK
 	public String addAppraise() {
 		dataMap.clear();
 		ActionContext ac = ActionContext.getContext();
@@ -93,11 +88,10 @@ public class AppraiseAction extends ActionSupport {
 			dataMap.put("status", 3);
 			return SUCCESS;
 		} else {
-			appraise.setMenuTable(menuService.getMenuById(menuId));
-			appraise.setUserTable(userService.loadUser(userTable.getId()));
-			appraise.setPraiseTime(new Date());
-
 			try {
+				appraise.setMenuTable(menuService.getMenuById(menuId));
+				appraise.setUserTable(userService.loadUser(userTable.getId()));
+				appraise.setPraiseTime(new Date());
 				appraiseService.addAppraise(appraise);
 			} catch (Exception e) {
 				System.err.println(e.toString());

@@ -39,4 +39,10 @@ public class OrdersServiceImpl implements IOrdersService {
 		ordersTable.setStatus(status);
 		commonDAO.update(ordersTable);
 	}
+
+	@Override
+	public List<OrdersTable> loadAllOrders() {
+		List<OrdersTable> list = commonDAO.getAllObjects(OrdersTable.class);
+		return list;
+	}
 }

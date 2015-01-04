@@ -1,17 +1,21 @@
 package com.txws.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.ParentPackage;
-import org.omg.CORBA.PUBLIC_MEMBER;
+import org.apache.struts2.config.Result;
+import org.apache.struts2.config.Results;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -26,10 +30,15 @@ import com.txws.service.interfaces.IAddressService;
 import com.txws.service.interfaces.IMenuService;
 import com.txws.service.interfaces.IOrdersMenuService;
 import com.txws.service.interfaces.IOrdersService;
+import com.txws.service.interfaces.IUserService;
 
 @Controller
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
+@Results({ //@Result(name = "logSuccess", value = "pages/user!home", type = ServletActionRedirectResult.class),
+	@Result(name = "successGetOrders", value = "index.jsp")
+	}
+)
 public class OrderAction extends ActionSupport {
 
 	/**
@@ -40,6 +49,7 @@ public class OrderAction extends ActionSupport {
 	private Object data = new Object();
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<Object> dataList = new ArrayList<>();
+	private List<Object> orderList = new ArrayList<>();
 	private String phone;
 	private int addressID;
 	private String remark;
@@ -49,6 +59,8 @@ public class OrderAction extends ActionSupport {
 
 	@Resource(name = "ordersService")
 	private IOrdersService ordersService;
+	@Resource(name = "userService")
+	private IUserService userService;
 	@Resource(name = "addressService")
 	private IAddressService addressService;
 	@Resource(name = "menuService")
@@ -78,6 +90,14 @@ public class OrderAction extends ActionSupport {
 
 	public void setDataList(List<Object> dataList) {
 		this.dataList = dataList;
+	}
+
+	public List<Object> getOrderList() {
+		return orderList;
+	}
+
+	public void setOrderList(List<Object> orderList) {
+		this.orderList = orderList;
 	}
 
 	public String getPhone() {
@@ -176,7 +196,6 @@ public class OrderAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	// TODO 返回数量
 	public String getAllOrder() {
 		dataMap.clear();
 		dataList.clear();
@@ -202,7 +221,8 @@ public class OrderAction extends ActionSupport {
 				Map<String, Object> temp = new HashMap<>();
 				temp.put("id", menuTable.getId());
 				temp.put("item", menuTable.getItem());
-				temp.put("price", menuTable.getPrice() * num);
+				temp.put("price", (menuTable.getPrice() * num * menuTable.getDiscount())/100);
+				temp.put("num", num);
 				temp.put("saleNum", menuTable.getOrderNum());
 				temp.put("type", menuTable.getTypeTable().getTypeName());
 				temp1.add(temp);
@@ -215,7 +235,6 @@ public class OrderAction extends ActionSupport {
 		return SUCCESS;
 	}
 
-	// TODO test
 	@SuppressWarnings("finally")
 	public String delete() {
 		try {
@@ -229,9 +248,23 @@ public class OrderAction extends ActionSupport {
 		}
 	}
 	
-	//TODO test
-	public String changeStatus() {
-		dataMap.clear();
+	//OK
+	public void changeStatus() throws IOException {
+		HttpServletResponse response=ServletActionContext.getResponse();
+		PrintWriter out = response.getWriter();  
+		try {
+			ordersService.updateStatus(order.getId(), order.getStatus());
+		} catch (Exception e) {
+			String jsonString="{\"status\":\"2\"}"; 
+			out.println(jsonString);  
+		    out.flush();
+		    out.close();
+		}
+		String jsonString="{\"status\":\"1\"}"; 
+	    out.println(jsonString);  
+	    out.flush();
+	    out.close();
+		/*dataMap.clear();
 		try {
 			ordersService.updateStatus(order.getId(), order.getStatus());
 		} catch (Exception e) {
@@ -242,7 +275,43 @@ public class OrderAction extends ActionSupport {
 		}
 		dataMap.put("status", 1);
 		data = dataMap;
-		return SUCCESS;
+		return SUCCESS;*/
+	}
+	
+	public String getAllOrderAdmin(){
+		List<OrdersTable> ordersTables = ordersService.loadAllOrders();
+
+		for (OrdersTable ordersTable : ordersTables) {
+			int totalPrice = 0;
+			Map<String, Object> tempMap = new HashMap<>();
+			List<Map<String, Object>> temp1 = new ArrayList<>();
+			tempMap.put("id", ordersTable.getId());
+			tempMap.put("phone", ordersTable.getPhone());
+			tempMap.put("status", ordersTable.getStatus());
+			tempMap.put("message", ordersTable.getMessage());
+			tempMap.put("userName", ordersTable.getUserTable().getName());
+			tempMap.put("address", ordersTable.getAddressTable().getAd());
+			List<MenuTable> menuTables = menuService
+					.getMenuTablesByOrderId(ordersTable.getId());
+			for (MenuTable menuTable : menuTables) {
+				int num = ordersMenuService.getMenuNum(ordersTable.getId(),
+						menuTable.getId());
+				int price = menuTable.getPrice() * num;
+				totalPrice += price;
+				Map<String, Object> temp = new HashMap<>();
+				temp.put("id", menuTable.getId());
+				temp.put("item", menuTable.getItem());
+				temp.put("price", price);
+				temp.put("num", num);
+				temp.put("saleNum", menuTable.getOrderNum());
+				temp.put("type", menuTable.getTypeTable().getTypeName());
+				temp1.add(temp);
+			}
+			tempMap.put("menus", temp1);
+			tempMap.put("totalPrice", totalPrice);
+			orderList.add(tempMap);
+		}
+		return "successGetOrders";
 	}
 
 }

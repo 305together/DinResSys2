@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html>
 <html>
 
@@ -59,7 +62,7 @@
 			<ul class="nav menu">
 				<li><a href="order!getAllOrderAdmin"><span class="glyphicon glyphicon-dashboard"></span> 订单管理</a>
 				</li>
-				<li class="active"><a href="menu.html"><span class="glyphicon glyphicon-th"></span> 菜单管理</a>
+				<li class="active"><a href="menu!getAllMenus"><span class="glyphicon glyphicon-th"></span> 菜单管理</a>
 				</li>
 				<li><a href="user!getAllUser"><span class="glyphicon glyphicon-stats"></span> 客户管理</a>
 				</li>
@@ -102,23 +105,30 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>1</td>
-									<td>扬州炒饭</td>
-									<td>美味鲜橙多汁的炒饭</td>
+								<s:iterator value="menuList" id="p" status="status">
+									<td><s:property value="#p.id"/></td>
+									<td><s:property value="#p.item"/></td>
+									<td><s:property value="#p.dec"/></td>
+									<s:if test="%{#p.img != null}">
+									<td><img src="/DinResSys2/${p.img}" alt="" width='50'/></td>
+									</s:if>
+									<s:else>
 									<td><img src="" alt="" /></td>
-									<td>80</td>
-									<td><span class="price">￥52</span></td>
-									<td>31</td>
-									<td>炒饭</td>
-									<td>双12</td>
+									</s:else>
+									<td><s:property value="#p.dis"/></td>
+									<td><span class="price">￥<s:property value="#p.price"/></span></td>
+									<td><s:property value="#p.salenum"/></td>
+									<td><s:property value="#p.type"/></td>
+									<td><s:property value="#p.activity"/></td>
 									<td>
 										<span class='add'><a href="#">新增</a></span>
-										<span class='delete'><a href="/DinResSys2/admin/menu!delete?id=1">删除</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/menu!delete?id=${p.id}">删除</a></span>
 										<span class="change"><a href="#">修改</a></span>
 										
 									</td>
 								</tr>
-								<tr>
+								</s:iterator>
+								<!-- <tr>
 									<td>2</td>
 									<td>至尊比萨</td>
 									<td>美味鲜橙多汁的比萨</td>
@@ -134,7 +144,7 @@
 										<span class="change"><a href="#">修改</a></span>
 									</td>
 								</tr>
-								
+								 -->
 								
 							</tbody>
 						</table>
@@ -151,7 +161,10 @@
 						<table class="table">
 							<tr>
 								<td>
-									类型：比萨、炒饭
+									类型：
+									<s:iterator value="typeList" id="p" status="status">
+									<s:property value="#p.typeName"/>、
+									</s:iterator>
 								</td>
 							</tr>
 							<tr>
@@ -179,21 +192,23 @@
 						<div class="form-group has-success">
 							<form action="/DinResSys2/admin/menu!addMenu" enctype="multipart/form-data" method="post">
 								<input id="item" name='menu.item' class="form-control" type='text' placeholder="菜式名">
-								<input id="price" name='menuImg' class="form-control" type='number' placeholder="单价">
-								<input id="describe" name='menu.describe' class="form-control" type='text' placeholder="描述">
+								<input id="price" name='menu.price' class="form-control" type='number' placeholder="单价">
+								<input id="describe" name='menu.descri' class="form-control" type='text' placeholder="描述">
 								<label for="picture">图片：</label>
-								<input id='picture' name='menu.picture' type='file' class="form-control">
+								<input id='picture' name='menuImg' type='file' class="form-control">
 								<label for="type">类型：</label>
 								<select name="typeName" id="type">
-									<option value="比萨" selected>比萨</option>
-									<option value="炒饭">炒饭</option>
+								<s:iterator value="typeList" id="p" status="status">
+									<option selected><s:property value="#p.typeName"/></option>
+									</s:iterator>
 								</select><br />
 								<label for="activityName">参与活动：</label>
 								<select name="activityName" id='activityName'>
 									<option value="不参与活动" selected>不参与活动</option>
-									<option value="双12">双12</option>
-									<option value="双11">双11</option>
-								</select>
+									<s:iterator value="activityTables" id="p" status="status">
+									<option><s:property value="#p.activityName"/></option>
+									</s:iterator>
+								</select>  
 								<input id='menuId' name='menu.id' type="text" style="display: none;" value=""/>
 							</form>
 						</div>					

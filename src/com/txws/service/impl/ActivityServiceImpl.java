@@ -1,5 +1,7 @@
 package com.txws.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -33,6 +35,12 @@ public class ActivityServiceImpl implements IActivityService {
 	@Override
 	public void updateActivity(ActivityTable activityTable) {
 		commonDAO.update(activityTable);
+	}
+
+	@Override
+	public List<ActivityTable> loadAllActivity() {
+		List<ActivityTable> activityList = commonDAO.getAllObjects(ActivityTable.class);
+		return activityList;
 	}
 
 }

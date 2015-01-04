@@ -16,29 +16,42 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.txws.model.ActivityTable;
 import com.txws.model.MenuTable;
 import com.txws.model.TypeTable;
+import com.txws.service.interfaces.IActivityService;
 import com.txws.service.interfaces.IAppraiseService;
 import com.txws.service.interfaces.IMenuService;
+import com.txws.service.interfaces.ITypeService;
 
 @Controller
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
-@Results({ @Result(name = "logSuccess", value = "pages/user!home", type = ServletActionRedirectResult.class),
-	@Result(name = "success", value = "index.jsp"), })
+@Results({
+	@Result(name = "success", value = "menu!getAllMenus", type = ServletActionRedirectResult.class), 
+	@Result(name = "successGetMe", value = "menu.jsp"),
+	@Result(name="successDel", value = "menu!getAllMenus", type = ServletActionRedirectResult.class)
+})
 public class MenuAction extends ActionSupport {
 	
 	private static final long serialVersionUID = 7293136559505921937L;
 	
 	@Resource(name="menuService")
 	private IMenuService menuService;
+	@Resource(name="activityService")
+	private IActivityService activityService;
+	@Resource(name="typeService")
+	private ITypeService typeService;
 	@Resource(name="appraiseService")
 	private IAppraiseService appraiseService;
 
 	private Object data = new Object();
 	Map<String, Object> dataMap = new HashMap<String, Object>();
 	List<Object> dataList = new ArrayList<>();
-	private MenuTable menuTable;
+	private MenuTable menu;
+	private List<Object> menuList = new ArrayList<>();
+	private List<TypeTable> typeList = new ArrayList<>();
+	private List<ActivityTable> activityTables = new ArrayList<>();
 	private int id;
 	private String typeName;
 	private String activityName;
@@ -68,12 +81,36 @@ public class MenuAction extends ActionSupport {
 		this.dataList = dataList;
 	}
 
-	public MenuTable getMenuTable() {
-		return menuTable;
+	public MenuTable getMenu() {
+		return menu;
 	}
 
-	public void setMenuTable(MenuTable menuTable) {
-		this.menuTable = menuTable;
+	public void setMenu(MenuTable menu) {
+		this.menu = menu;
+	}
+
+	public List<Object> getMenuList() {
+		return menuList;
+	}
+
+	public void setMenuList(List<Object> menuList) {
+		this.menuList = menuList;
+	}
+
+	public List<TypeTable> getTypeList() {
+		return typeList;
+	}
+
+	public void setTypeList(List<TypeTable> typeList) {
+		this.typeList = typeList;
+	}
+
+	public List<ActivityTable> getActivityTables() {
+		return activityTables;
+	}
+
+	public void setActivityTables(List<ActivityTable> activityTables) {
+		this.activityTables = activityTables;
 	}
 
 	public int getId() {
@@ -126,12 +163,12 @@ public class MenuAction extends ActionSupport {
 	}
 	
 	public String getActivityMenuImg() {
+		@SuppressWarnings("unchecked")
 		List<Object> list = (List<Object>) menuService.getActivityMenuImg();
 		data = list;
 		return SUCCESS;
 	}
 	
-	//TODO test,input menuId
 	public String deleteMenu() {
 		int menuId = 19;
 		try {
@@ -149,13 +186,12 @@ public class MenuAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	//TODO test
 	@SuppressWarnings("finally")
 	public String delete(){
 		try {
 			appraiseService.deleteAppraiseByMenu(id);
-			menuTable = menuService.getMenuById(id);
-			menuService.deleteMenu(menuTable);
+			menu = menuService.getMenuById(id);
+			menuService.deleteMenu(menu);
 		} catch (Exception e) {
 			System.err.println(e.toString());
 			e.printStackTrace();
@@ -165,16 +201,36 @@ public class MenuAction extends ActionSupport {
 	}
 	
 	public String addMenu() {
-		menuService.addMenu(menuTable,typeName, activityName, menuImg);
+		menuService.addMenu(menu,typeName, activityName, menuImg);
 		dataMap.put("status", 1);
 		data = dataMap;
 		return SUCCESS;
 	}
 	
 	public String changeMenu() {
-		menuService.updateMenu(menuTable,typeName, activityName, menuImg);
+		menuService.updateMenu(menu,typeName, activityName, menuImg);
 		dataMap.put("status", 1);
 		data = dataMap;
 		return SUCCESS;
+	}
+	
+	public String getAllMenus(){
+		List<MenuTable> me = menuService.getAllMenus();
+		for (MenuTable menu: me) {
+			Map<String, Object> tempMap = new HashMap<>();
+			tempMap.put("id", menu.getId());
+			tempMap.put("item", menu.getItem());
+			tempMap.put("dec", menu.getDescri());
+			tempMap.put("img", menu.getPicture());
+			tempMap.put("dis", menu.getDiscount());
+			tempMap.put("price", menu.getPrice());
+			tempMap.put("salenum", menu.getOrderNum());
+			tempMap.put("type", menu.getTypeTable().getTypeName());
+			tempMap.put("activity", menu.getActivityTable() == null?"无":menu.getActivityTable().getActivityName());
+			menuList.add(tempMap);
+		}
+		typeList = typeService.getAllType();
+		activityTables = activityService.loadAllActivity();
+		return "successGetMe";
 	}
 }

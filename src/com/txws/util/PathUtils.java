@@ -1,6 +1,5 @@
 package com.txws.util;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -17,7 +16,6 @@ public class PathUtils {
 		try {
 			prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("path.properties"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

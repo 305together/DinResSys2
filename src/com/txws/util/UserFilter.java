@@ -38,12 +38,10 @@ public class UserFilter implements Filter {
             
             Object o = session.getAttribute("user");
             
-            if (o != null || req.getRequestURI().endsWith("index.jsp") || req.getRequestURI().endsWith("/user!login") 
-            		|| req.getRequestURI().contains("/css/") || req.getRequestURI().contains("/fonts/") 
-            		|| req.getRequestURI().contains("/img/") || req.getRequestURI().contains("/js/")) {
+            if (o != null || !req.getRequestURI().endsWith("login.html") || req.getRequestURI().contains("/admin/")) {
                     chain.doFilter(req, resp);
             } else {
-                    resp.sendRedirect(req.getContextPath() + "/index.jsp");
+                    resp.sendRedirect(req.getContextPath() + "/index.html");
             }
         }
 

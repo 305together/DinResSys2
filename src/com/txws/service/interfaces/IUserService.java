@@ -2,7 +2,6 @@ package com.txws.service.interfaces;
 
 
 import java.util.List;
-
 import com.txws.model.AddressTable;
 import com.txws.model.UserTable;
 
@@ -14,4 +13,5 @@ public interface IUserService {
 	void addAddress(AddressTable ad);
 	void delUser(int userId);
 	void updateUser(UserTable user);
+	List<UserTable> loadAllUser();
 }

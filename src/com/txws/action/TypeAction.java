@@ -1,10 +1,14 @@
 package com.txws.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.ParentPackage;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -51,9 +55,8 @@ public class TypeAction extends ActionSupport {
 		this.dataMap = dataMap;
 	}
 
-	//TODO test
-	public String addMenuType() {
-		dataMap.clear();
+	public void addMenuType() throws IOException {
+		/*dataMap.clear();
 		
 		try {
 			typeService.addType(type);
@@ -65,6 +68,20 @@ public class TypeAction extends ActionSupport {
 		
 		dataMap.put("status", 1);
 		data = dataMap;
-		return SUCCESS;
+		return SUCCESS;*/
+		HttpServletResponse response=ServletActionContext.getResponse();
+		PrintWriter out = response.getWriter();  
+		try {
+			typeService.addType(type);
+		} catch (Exception e) {
+			String jsonString="{\"status\":\"2\"}";
+			out.println(jsonString);  
+		    out.flush();
+		    out.close();
+		}
+		String jsonString="{\"status\":\"1\"}"; 
+	    out.println(jsonString);  
+	    out.flush();
+	    out.close();
 	}
 }

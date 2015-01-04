@@ -19,4 +19,5 @@ public interface IMenuService {
 	void updateMenu(MenuTable menuTable);
 	void removeActivity(int activityId);
 	void updateMenu(MenuTable menuTable, String typeName, String activityName, File menuImg);
+	List<MenuTable> getAllMenus();
 }

@@ -1,17 +1,11 @@
 package com.txws.model;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -53,14 +47,14 @@ public class OrdersTable {
 	 * @pdRoleInfo migr=no name=UserTable assc=userOrderReference mult=1..1
 	 *             side=A
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "userId")
 	private UserTable userTable;
 	/**
 	 * @pdRoleInfo migr=no name=AddressTable assc=orderAddressReference
 	 *             mult=1..1 side=A
 	 */
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "adId")
 	private AddressTable addressTable;
 	
@@ -124,6 +118,7 @@ public class OrdersTable {
 	public void setUserTable(UserTable newUserTable) {
 		if (this.userTable == null || !this.userTable.equals(newUserTable)) {
 			if (this.userTable != null) {
+				@SuppressWarnings("unused")
 				UserTable oldUserTable = this.userTable;
 				this.userTable = null;
 				//oldUserTable.removeOrdersTable(this);
@@ -148,6 +143,7 @@ public class OrdersTable {
 		if (this.addressTable == null
 				|| !this.addressTable.equals(newAddressTable)) {
 			if (this.addressTable != null) {
+				@SuppressWarnings("unused")
 				AddressTable oldAddressTable = this.addressTable;
 				this.addressTable = null;
 				//oldAddressTable.removeOrdersTable(this);

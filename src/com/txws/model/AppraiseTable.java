@@ -1,6 +1,5 @@
 package com.txws.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -91,6 +90,7 @@ public class AppraiseTable {
 	public void setMenuTable(MenuTable newMenuTable) {
 		if (this.menuTable == null || !this.menuTable.equals(newMenuTable)) {
 			if (this.menuTable != null) {
+				@SuppressWarnings("unused")
 				MenuTable oldMenuTable = this.menuTable;
 				this.menuTable = null;
 				//oldMenuTable.removeAppraiseTable(this);
@@ -114,6 +114,7 @@ public class AppraiseTable {
 	public void setUserTable(UserTable newUserTable) {
 		if (this.userTable == null || !this.userTable.equals(newUserTable)) {
 			if (this.userTable != null) {
+				@SuppressWarnings("unused")
 				UserTable oldUserTable = this.userTable;
 				this.userTable = null;
 				//oldUserTable.removeAppraiseTable(this);

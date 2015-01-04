@@ -1,4 +1,4 @@
-(function(){
+/*(function(){
 	var Datas = {};
 	
 	//DinResSys2/menu!getAllMenuType	获取菜式类型
@@ -37,54 +37,63 @@
 			'id': 1,
 			'item': '扬州炒饭',
 			'price':  13,
+			'hasPromotion': true,
 			'saleNum': 30,		//月售30份
 			'type': '优惠'
 		},{
 			'id': 2,
 			'item': '面条',
 			'price':  13,
+			'hasPromotion': true,
 			'saleNum': 30,		//月售30份
 			'type': '意式风味'
 		},{
 			'id': 3,
 			'item': '三煎比萨',
 			'price':  13,
+			'hasPromotion': false,
 			'saleNum': 30,		//月售30份
 			'type': '比萨'
 		},{
 			'id': 4,
 			'item': '牛肉烧烤',
 			'price':  20,
+			'hasPromotion': false,
 			'saleNum': 10,		//月售10份
 			'type':'烧烤'
 		},{
 			'id': 5,
 			'item': '三煎比萨2',
 			'price':  13,
+			'hasPromotion': false,
 			'saleNum': 30,		//月售30份
 			'type': '比萨'
 		},{
 			'id': 6,
 			'item': '三煎比萨3',
 			'price':  13,
+			'hasPromotion': false,
 			'saleNum': 30,		//月售30份
 			'type': '比萨'
 		},{
 			'id': 7,
 			'item': '三煎比萨4',
 			'price':  13,
+			'hasPromotion': false,
 			'saleNum': 30,		//月售30份
 			'type': '比萨'
 		},{
 			'id': 8,
 			'item': '麦辣比萨',
 			'price':  13,
+			'hasPromotion': false,
 			'saleNum': 30,		//月售30份
 			'type': '比萨'
 		},{
 			'id': 9,
 			'item': '培根比萨',
 			'price':  13,
+			'hasPromotion': false,
 			'saleNum': 30,		//月售30份
 			'type': '比萨'
 		}]
@@ -235,9 +244,9 @@
 	Mock.mock('/DinResSys2/appraise!addAppraise', Datas.addAppraiseResult)
 	
 	
-	/**
+	*//**
 	 * 后台admin start
-	 */
+	 *//*
 	//DinResSys2/admin/activity!addActivity		//新增活动					{'activity.activityName': '双12','activity.describe': '在12.12号全场折扣','activity.beginTime': '2014-12-11 23:59','activity.endTime': '2014-12-12 23:59','promotion':80}
 	Datas.addActivityResult = {
 		'status': 1		//返回值1为提交成功，2为失败
@@ -268,9 +277,10 @@
 		'status': 1			//返回值1为提交成功，2为失败
 	}
 	Mock.mock('/DinResSys2/admin/user!changeUserInfo', Datas.changeUserInfoResult);
-	/**
+	*//**
 	 * 后台admin end
-	 */
+	 *//*
 })();
 
 
+*/

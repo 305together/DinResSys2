@@ -11,4 +11,5 @@ public interface IOrdersService {
 	List<OrdersTable> loadAllOrdersByUser(int userId);
 	void delOrder(int orderId);
 	void updateStatus(int orderId, String status);
+	List<OrdersTable> loadAllOrders();
 }

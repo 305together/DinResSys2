@@ -59,7 +59,7 @@ public class AddressServiceImpl implements IAddressService {
 	
 	@Override
 	public AddressTable loadAddressByAddressName(String name) {
-		List<AddressTable> addressTables = commonDAO.getObjectsByKey(AddressTable.class, "address", name);
+		List<AddressTable> addressTables = commonDAO.getObjectsByKey(AddressTable.class, "ad", name);
 		return addressTables.get(0);
 	}
 	

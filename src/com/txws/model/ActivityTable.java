@@ -1,9 +1,5 @@
 package com.txws.model;
 
-import java.util.*;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -48,6 +44,8 @@ public class ActivityTable {
 	 * @pdOid 5b22d3be-c171-41ac-9bd9-e71548114ed6
 	 */
 	private java.lang.String descri;
+	
+	private int promotion = 80;
 
 	/**
 	 * @pdRoleInfo migr=no name=MenuTable assc=reference14
@@ -96,6 +94,14 @@ public class ActivityTable {
 		this.descri = descri;
 	}
 
+	public int getPromotion() {
+		return promotion;
+	}
+
+	public void setPromotion(int promotion) {
+		this.promotion = promotion;
+	}
+
 	/** @pdGenerated default getter */
 	public java.util.Collection<MenuTable> getMenuTable() {
 		if (menuTable == null)
@@ -104,6 +110,7 @@ public class ActivityTable {
 	}
 
 	/** @pdGenerated default iterator getter */
+	@SuppressWarnings("rawtypes")
 	public java.util.Iterator getIteratorMenuTable() {
 		if (menuTable == null)
 			menuTable = new java.util.HashSet<MenuTable>();
@@ -116,7 +123,8 @@ public class ActivityTable {
 	 */
 	public void setMenuTable(java.util.Collection<MenuTable> newMenuTable) {
 		removeAllMenuTable();
-		for (java.util.Iterator iter = newMenuTable.iterator(); iter.hasNext();)
+		for (@SuppressWarnings("rawtypes")
+		java.util.Iterator iter = newMenuTable.iterator(); iter.hasNext();)
 			addMenuTable((MenuTable) iter.next());
 	}
 
@@ -153,7 +161,8 @@ public class ActivityTable {
 	public void removeAllMenuTable() {
 		if (menuTable != null) {
 			MenuTable oldMenuTable;
-			for (java.util.Iterator iter = getIteratorMenuTable(); iter
+			for (@SuppressWarnings("rawtypes")
+			java.util.Iterator iter = getIteratorMenuTable(); iter
 					.hasNext();) {
 				oldMenuTable = (MenuTable) iter.next();
 				iter.remove();

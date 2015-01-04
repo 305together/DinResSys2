@@ -1,7 +1,5 @@
 package com.txws.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -51,6 +49,7 @@ public class TypeTable {
 	}
 
 	/** @pdGenerated default iterator getter */
+	@SuppressWarnings("rawtypes")
 	public java.util.Iterator getIteratorMenuTable() {
 		if (menuTable == null)
 			menuTable = new java.util.HashSet<MenuTable>();
@@ -61,6 +60,7 @@ public class TypeTable {
 	 * @pdGenerated default setter
 	 * @param newMenuTable
 	 */
+	@SuppressWarnings("rawtypes")
 	public void setMenuTable(java.util.Collection<MenuTable> newMenuTable) {
 		removeAllMenuTable();
 		for (java.util.Iterator iter = newMenuTable.iterator(); iter.hasNext();)
@@ -97,6 +97,7 @@ public class TypeTable {
 	}
 
 	/** @pdGenerated default removeAll */
+	@SuppressWarnings("rawtypes")
 	public void removeAllMenuTable() {
 		if (menuTable != null) {
 			MenuTable oldMenuTable;

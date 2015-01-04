@@ -1,16 +1,20 @@
 package com.txws.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.ParentPackage;
 import org.apache.struts2.config.Result;
 import org.apache.struts2.config.Results;
+import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -22,22 +26,26 @@ import com.txws.service.interfaces.IMenuService;
 @Controller
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
-@Results({
-	@Result(name = "successDel", value = "/index.html")
-})
+@Results({ 
+	@Result(name = "successDel", value = "activity!getAllActivity", type = ServletActionRedirectResult.class),
+	@Result(name = "successGetAc", value = "activity.jsp")
+	}
+)
 public class ActivityAction extends ActionSupport {
 	private static final long serialVersionUID = 6887701169383402623L;
-	
-	@Resource(name="activityService")
+
+	@Resource(name = "activityService")
 	private IActivityService activityService;
-	@Resource(name="menuService")
+	@Resource(name = "menuService")
 	private IMenuService menuService;
-	
+
 	private Object data = new Object();
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<Object> dataList = new ArrayList<>();
-	
+
+	private List<ActivityTable> activityList = new ArrayList<>();
 	private ActivityTable activity;
+	
 	private int id;
 
 	public Object getData() {
@@ -64,6 +72,14 @@ public class ActivityAction extends ActionSupport {
 		this.dataList = dataList;
 	}
 
+	public List<ActivityTable> getActivityList() {
+		return activityList;
+	}
+
+	public void setActivityList(List<ActivityTable> activityList) {
+		this.activityList = activityList;
+	}
+
 	public ActivityTable getActivity() {
 		return activity;
 	}
@@ -80,12 +96,24 @@ public class ActivityAction extends ActionSupport {
 		this.id = id;
 	}
 
-	//TODO activity.descri,activity.promotion
-	public String addActivity() {
+	public void saveActivity() throws IOException {
+		HttpServletResponse response=ServletActionContext.getResponse();
+		PrintWriter out = response.getWriter();
 		try {
 			activityService.addActivity(activity);
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			String jsonString="{\"status\":\"2\"}";
+			out.println(jsonString);  
+		    out.flush();
+		    out.close();
+		}
+		String jsonString="{\"status\":\"1\"}"; 
+	    out.println(jsonString);  
+	    out.flush();
+	    out.close();
+/*		try {
+			activityService.addActivity(activity);
+		} catch (Exception e) {
 			dataMap.put("status", 2);
 			data = dataMap;
 			return SUCCESS;
@@ -93,11 +121,24 @@ public class ActivityAction extends ActionSupport {
 		dataMap.put("status", 1);
 		data = dataMap;
 		return SUCCESS;
-	}
-	
-	//TODO test
-	public String changeActivity() {
+*/	}
+
+	public void changeActivity() throws IOException {
+		HttpServletResponse response=ServletActionContext.getResponse();
+		PrintWriter out = response.getWriter();  
 		try {
+			activityService.updateActivity(activity);
+		} catch (Exception e) {
+			String jsonString="{\"status\":\"2\"}";
+			out.println(jsonString);  
+		    out.flush();
+		    out.close();
+		}
+		String jsonString="{\"status\":\"1\"}"; 
+	    out.println(jsonString);  
+	    out.flush();
+	    out.close();
+		/*try {
 			activityService.updateActivity(activity);
 		} catch (Exception e) {
 			dataMap.put("status", 2);
@@ -106,20 +147,25 @@ public class ActivityAction extends ActionSupport {
 		}
 		dataMap.put("status", 1);
 		data = dataMap;
-		return SUCCESS;
+		return SUCCESS;*/
 	}
-	
-	//TODO 修改return值和路径
+
 	@SuppressWarnings("finally")
-	public String delete(){
+	public String delete() {
 		try {
 			menuService.removeActivity(id);
 			activityService.delActivity(id);
 		} catch (Exception e) {
 			System.err.println(e.toString());
 			e.printStackTrace();
-		}finally{
+		} finally {
 			return "successDel";
 		}
+	}
+
+	//OK
+	public String getAllActivity() {
+		activityList = activityService.loadAllActivity();
+		return "successGetAc";
 	}
 }

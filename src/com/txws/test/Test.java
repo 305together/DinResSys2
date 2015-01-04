@@ -9,9 +9,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 
+
 import com.txws.model.AppraiseTable;
 import com.txws.service.interfaces.IAppraiseService;
-import com.txws.service.interfaces.IMenuService;
 
 
 public class Test {
@@ -21,6 +21,7 @@ public class Test {
 		
 		IAppraiseService service = (IAppraiseService) ctx.getBean("appraiseService");
 		Map<String, Object> map = service.getAppraiseByMenuID(1);
+		@SuppressWarnings("unchecked")
 		List<AppraiseTable> list = (List<AppraiseTable>) map.get("appraises");
 		for (AppraiseTable appraiseTable : list) {
 			System.out.println(appraiseTable.getDetail());

@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE html>
 <html>
 
@@ -11,7 +14,7 @@
 		<link href="css/bootstrap-table.css" rel="stylesheet">
 		<link href="css/styles.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/public.css">
-		<link rel="stylesheet" href="css/index.css">
+		<link rel="stylesheet" href="css/user.css">
 
 		<!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -57,11 +60,11 @@
 				</div>
 			</form>
 			<ul class="nav menu">
-				<li class="active"><a href="index.html"><span class="glyphicon glyphicon-dashboard"></span> 订单管理</a>
+				<li><a href="order!getAllOrderAdmin"><span class="glyphicon glyphicon-dashboard"></span> 订单管理</a>
 				</li>
-				<li><a href="menu.html"><span class="glyphicon glyphicon-th"></span> 菜单管理</a>
+				<li><a href="menu!getAllMenus"><span class="glyphicon glyphicon-th"></span> 菜单管理</a>
 				</li>
-				<li><a href="user!getAllUser"><span class="glyphicon glyphicon-stats"></span> 客户管理</a>
+				<li class="active"><a href="user!getAllUser"><span class="glyphicon glyphicon-stats"></span> 客户管理</a>
 				</li>
 				<li><a href="activity!getAllActivity"><span class="glyphicon glyphicon-list-alt"></span> 活动管理</a>
 				</li>
@@ -74,7 +77,7 @@
 				<ol class="breadcrumb">
 					<li><a href="#"><span class="glyphicon glyphicon-home"></span></a>
 					</li>
-					<li class="active">订单</li>
+					<li class="active">客户</li>
 				</ol>
 			</div>
 			<!--/.row-->
@@ -83,71 +86,49 @@
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<!-- Default panel contents -->
-						<div class="panel-heading">订单列表</div>
+						<div class="panel-heading">客户列表</div>
 						<!-- Table -->
 						<table class="table">
 							<thead>
 								<tr>
 									<th>ID</th>
-									<th>菜式</th>
-									<th>总价</th>
-									<th>客户名</th>
-									<th>电话</th>
-									<th>送餐地址</th>
-									<th>备注</th>
-									<th>状态</th>
+									<th>用户名</th>
+									<th>密码</th>
+									<th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
+							<s:iterator value="userList" id="p" status="status">
 								<tr>
-									<td>1</td>
-									<td class="price-td">
-										<ul>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥26</span></li>
-											<li>桂林米粉&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥16</span></li>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥10</span></li>
-										</ul>
-										
-									</td>
-									<td><span class="price">￥52</span></td>
-									<td>derek</td>
-									<td>13800138000</td>
-									<td>广东五山</td>
-									<td>加饭</td>
+									<td><s:property value="#p.id"/></td>
+									<td><input type="text" value="${p.name}"/></td>
+									<td><input type="text" value="******" /></td>
 									<td>
-										<select class="order-status">
-											<option value="订单已提交" selected>订单已提交</option>
-											<option value="订单已确认">订单已确认</option>
-											<option value="在送">在送</option>
-											<option value="送达">送达</option>
-										</select>
+										<span class='confirm'><a href="#">确定</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/user!delete?id=${p.id}">删除</a></span>
+									</td>
+								</tr>
+								</s:iterator>
+								<!-- 
+								<tr>
+									<td>2</td>
+									<td><input type="text" value='黄杰勇'/></td>
+									<td><input type="text" value="666666" /></td>
+									<td>
+										<span class='confirm'><a href="#">确定</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/user!delete?id=2">删除</a></span>
 									</td>
 								</tr>
 								<tr>
 									<td>2</td>
-									<td class="price-td">
-										<ul>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥26</span></li>
-											<li>桂林米粉&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥16</span></li>
-											<li>扬州炒饭&nbsp;&nbsp;x1&nbsp;&nbsp;<span class="price">￥10</span></li>
-										</ul>
-										
-									</td>
-									<td><span class="price">￥52</span></td>
-									<td>alix</td>
-									<td>13800138000</td>
-									<td>广东五山</td>
-									<td>加饭</td>
+									<td><input type="text" value='刁辉'/></td>
+									<td><input type="text" value="666666" /></td>
 									<td>
-										<select class="order-status">
-											<option value="订单已提交">订单已提交</option>
-											<option value="订单已确认">订单已确认</option>
-											<option value="在送" selected>在送</option>
-											<option value="送达">送达</option>
-										</select>
+										<span class='confirm'><a href="#">确定</a></span>
+										<span class='delete'><a href="/DinResSys2/admin/user!delete?id=3">删除</a></span>
 									</td>
 								</tr>
-								
+								 -->
 							</tbody>
 						</table>
 					</div>
@@ -186,7 +167,7 @@
 				if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
 			})
 		</script>
-		<script type="text/javascript" src="js/index.js"></script>
+		<script type="text/javascript" src="js/user.js"></script>
 	</body>
 
 </html>

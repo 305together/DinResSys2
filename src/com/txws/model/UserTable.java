@@ -1,14 +1,12 @@
 package com.txws.model;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -111,12 +109,14 @@ public class UserTable {
 		return addressTable;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public java.util.Iterator getIteratorAddressTable() {
 		if (addressTable == null)
 			addressTable = new java.util.HashSet<AddressTable>();
 		return addressTable.iterator();
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void setAddressTable(
 			java.util.Collection<AddressTable> newAddressTable) {
 		removeAllAddressTable();
@@ -146,6 +146,7 @@ public class UserTable {
 			}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public void removeAllAddressTable() {
 		if (addressTable != null) {
 			AddressTable oldAddressTable;

@@ -1,15 +1,20 @@
 package com.txws.action;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.ParentPackage;
 import org.apache.struts2.config.Result;
 import org.apache.struts2.config.Results;
+import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
@@ -25,8 +30,10 @@ import com.opensymphony.xwork2.ActionSupport;
 @Scope("prototype")
 @ParentPackage(value = "struts-default")
 @Results({
-	@Result(name = "successLogin", value = "index.html"),
-	@Result(name = "failLogin", value = "login.html")
+	@Result(name = "successLogin", value = "order!getAllOrderAdmin", type = ServletActionRedirectResult.class),
+	@Result(name = "failLogin", value = "login.html"),
+	@Result(name = "successDel", value = "user!getAllUser", type = ServletActionRedirectResult.class),
+	@Result(name = "successGetUser", value = "user.jsp")
 })
 public class UserAction extends ActionSupport {
 
@@ -44,6 +51,7 @@ public class UserAction extends ActionSupport {
 	private Object data;
 	private Map<String, Object> dataMap = new HashMap<String, Object>();
 	private List<Object> dataList = new ArrayList<>();
+	private List<UserTable> userList = new ArrayList<>();
 	private int id;
 
 	public UserTable getUser() {
@@ -92,6 +100,14 @@ public class UserAction extends ActionSupport {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public List<UserTable> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<UserTable> userList) {
+		this.userList = userList;
 	}
 
 	public String execute() {
@@ -213,7 +229,6 @@ public class UserAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	//TODO test
 	public String adminLogin() {
 		ActionContext ac = ActionContext.getContext();
 		Map<String, Object> session = ac.getSession();
@@ -234,7 +249,6 @@ public class UserAction extends ActionSupport {
 		}
 	}
 
-	// TODO test
 	@SuppressWarnings("finally")
 	public String delete() {
 		try {
@@ -247,9 +261,28 @@ public class UserAction extends ActionSupport {
 		}
 	}
 	
-	//TODO test
-	public String changeUserInfo(){
-		dataMap.clear();
+	//OK
+	public void changeUserInfo() throws IOException{
+		HttpServletResponse response=ServletActionContext.getResponse();
+		PrintWriter out = response.getWriter();  
+		String name = user.getName();
+		String pw = user.getPassword();
+		try {
+			user = userService.loadUser(user.getId());
+			user.setName(name);
+			user.setPassword(MD5.UseMD5(name + pw));
+			userService.updateUser(user);
+		} catch (Exception e) {
+			String jsonString="{\"status\":\"2\"}";
+			out.println(jsonString);  
+		    out.flush();
+		    out.close();
+		}
+		String jsonString="{\"status\":\"1\"}"; 
+	    out.println(jsonString);  
+	    out.flush();
+	    out.close();
+		/*dataMap.clear();
 		String name = user.getName();
 		String pw = user.getPassword();
 		try {
@@ -264,6 +297,14 @@ public class UserAction extends ActionSupport {
 		}
 		dataMap.put("status", 1);
 		data = dataMap;
-		return SUCCESS;
+		return SUCCESS;*/
+	}
+	
+	public String getAllUser(){
+		userList = userService.loadAllUser();
+		for (UserTable userTable : userList) {
+			System.out.println(userTable.getId() + ":" + userTable.getName() + ":" + userTable.getPassword());
+		}
+		return "successGetUser";
 	}
 }

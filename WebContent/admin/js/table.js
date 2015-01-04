@@ -29,8 +29,8 @@ $('.change a').on('click',function(){
 $('.commit-activity').on('click', function(){
 	var activityName = $('#activity-name').val(),
 		describe = $('#activity-describe').val(),
-		beginTime = $('#start-date').val()+$('#start-time').val(),
-		endTime = $('#end-date').val()+$('#end-time').val(),
+		beginTime = $('#start-date').val()+" "+$('#start-time').val(),
+		endTime = $('#end-date').val()+" "+$('#end-time').val(),
 		promotion = $('#promotion-num').val();
 		
 	if(activityName=='' || describe=='' || beginTime=='' || endTime=='' || promotion==''){
@@ -41,21 +41,21 @@ $('.commit-activity').on('click', function(){
 	if(id==''){
 		$.ajax({
 			type:"get",
-			url:"/DinResSys2/admin/activity!addActivity",
+			url:"/DinResSys2/admin/activity!saveActivity",
 			async:true,
 			dataType:'json',
 			data:{
 				'activity.activityName': activityName,
-				'activity.describe':  describe,
+				'activity.descri':  describe,
 				'activity.beginTime': beginTime,
 				'activity.endTime': endTime,
-				'promotion':promotion
+				'activity.promotion':promotion
 			},
 			success:function(data){
 				if(parseInt(data.status)==1){
 					alert('添加成功');
 					$('#addNewActivityModel').modal('hide');
-					location.reload();
+					location.href = '/DinResSys2/admin/activity!getAllActivity';
 				}else{
 					alert('添加失败');
 				}
@@ -70,18 +70,19 @@ $('.commit-activity').on('click', function(){
 			data:{
 				'activity.id': id,
 				'activity.activityName': activityName,
-				'activity.describe':  describe,
+				'activity.descri':  describe,
 				'activity.beginTime': beginTime,
 				'activity.endTime': endTime,
-				'promotion':promotion
+				'activity.promotion':promotion
 			},
 			success:function(data){
 				if(parseInt(data.status)==1){
 					alert('修改成功');
 					$('#addNewActivityModel').modal('hide');
-					location.reload();
+					location.href = '/DinResSys2/admin/activity!getAllActivity';
 				}else{
 					alert('修改失败');
+					location.href = '/DinResSys2/admin/activity!getAllActivity';
 				}
 			}
 		});

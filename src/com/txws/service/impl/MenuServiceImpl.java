@@ -47,9 +47,14 @@ public class MenuServiceImpl implements IMenuService {
 			Map<String, Object> dataMap = new HashMap<String, Object>();
 			dataMap.put("id", menuTable.getId());
 			dataMap.put("item", menuTable.getItem());
-			dataMap.put("price", menuTable.getPrice());
+			dataMap.put("price", (menuTable.getPrice() * menuTable.getDiscount())/100);
 			dataMap.put("saleNum", menuTable.getOrderNum());
 			dataMap.put("type", menuTable.getTypeTable().getTypeName());
+			if(menuTable.getIsInActivity() != 0){
+				dataMap.put("hasPromotion", true);
+			}else {
+				dataMap.put("hasPromotion", false);				
+			}
 			dataList.add(dataMap);
 		}
 		return dataList;
@@ -101,11 +106,19 @@ public class MenuServiceImpl implements IMenuService {
 	@Override
 	public void addMenu(MenuTable menuTable, String typeName, String activityName, File menuImg) {
 		TypeTable type = commonDAO.getObjectsByKey(TypeTable.class, "typeName", typeName).get(0);
-		ActivityTable activity = commonDAO.getObjectsByKey(ActivityTable.class, "activityName", activityName).get(0);
+		ActivityTable activity = null;
+		if (!"不参与活动".equals(activityName)) {
+			activity = commonDAO.getObjectsByKey(ActivityTable.class, "activityName", activityName).get(0);
+			menuTable.setIsInActivity(1);
+			menuTable.setDiscount(activity.getPromotion());
+		}
 		menuTable.setTypeTable(type);
 		menuTable.setActivityTable(activity);
 		commonDAO.save(menuTable);
 		
+		if (menuImg == null) {
+			return;
+		}
 		String pictureName = menuTable.getId() + ".jpg";
 		menuTable.setPicture(PathUtils.getMenuImgDirPath() + "/" + pictureName);
 		File file = new File(PathUtils.getMenuImgStoreDir(), pictureName);
@@ -129,16 +142,29 @@ public class MenuServiceImpl implements IMenuService {
 		menu.setPicture(PathUtils.getMenuImgDirPath() + "/" + pictureName);
 		
 		TypeTable type = commonDAO.getObjectsByKey(TypeTable.class, "typeName", typeName).get(0);
-		ActivityTable activity = commonDAO.getObjectsByKey(ActivityTable.class, "activityName", activityName).get(0);
+		ActivityTable activity = null;
+		if (!"不参与活动".equals(activityName)) {
+			activity = commonDAO.getObjectsByKey(ActivityTable.class, "activityName", activityName).get(0);
+			menu.setIsInActivity(1);
+			menu.setDiscount(activity.getPromotion());
+		}
 		menu.setTypeTable(type);
 		menu.setActivityTable(activity);
 		commonDAO.update(menu);
 		
+		if (menuImg == null) {
+			return;
+		}
 		File file = new File(PathUtils.getMenuImgStoreDir(), pictureName);
 		try {
 			FileUtils.copyFile(menuImg, file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public List<MenuTable> getAllMenus() {
+		return commonDAO.getAllObjects(MenuTable.class);
 	}
 }

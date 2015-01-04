@@ -2,10 +2,15 @@ package com.txws.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
+
 import com.txws.dao.interfaces.ICommonDAO;
 import com.txws.model.AddressTable;
+import com.txws.model.AppraiseTable;
+import com.txws.model.OrdersTable;
 import com.txws.model.UserTable;
 import com.txws.service.interfaces.IUserService;
 
@@ -57,6 +62,10 @@ public class UserServiceImpl implements IUserService {
 	}
 	
 	public void delUser(int userId){
+		List<OrdersTable> ordersTables = commonDAO.getObjectsByKey(OrdersTable.class, "userId", String.valueOf(userId));
+		commonDAO.deleteAll(ordersTables);
+		List<AppraiseTable> appraiseTables = commonDAO.getObjectsByKey(AppraiseTable.class, "userId", String.valueOf(userId));
+		commonDAO.deleteAll(appraiseTables);
 		UserTable user = commonDAO.getObject(UserTable.class, userId);
 		commonDAO.delete(user);
 	}
@@ -64,5 +73,11 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void updateUser(UserTable user) {
 		commonDAO.update(user);
+	}
+
+	@Override
+	public List<UserTable> loadAllUser() {
+		List<UserTable> userList = commonDAO.getAllObjects(UserTable.class);
+		return userList;
 	}
 }
